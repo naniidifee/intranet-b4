@@ -20,3 +20,5 @@ class Comunicado(models.Model):
 
   def __str__(self):
     return self.titulo
+
+  

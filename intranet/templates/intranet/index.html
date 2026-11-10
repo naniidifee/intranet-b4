@@ -1,0 +1,210 @@
+{% extends 'intranet/base.html' %}
+
+
+
+{% block title %}Inicio - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block content %}
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-graduation-cap"></i> Educación Técnico Profesional
+      </div>
+      <h1>Un estudiante hoy <span>un profesional de excelencia mañana</span></h1>
+      <p>Comprometidos con la excelencia académica, la inclusión y la preparación técnica de nuestros estudiantes.</p>
+      <div class="hero-ctas">
+        <a href="#especialidades" class="btn btn-primary">Ver Especialidades</a>
+        <a href="#nosotros" class="btn btn-outline">Conocer Más</a>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>+40</strong>
+          <span>Años de Historia</span>
+        </div>
+        <div class="stat">
+          <strong>100%</strong>
+          <span>Compromiso</span>
+        </div>
+      </div>
+      <div class="hero-logros">
+        <div class="logro-card">
+          <i class="fa-solid fa-award" style="color: var(--gold);"></i>
+          <div>
+            <h4>Excelencia</h4>
+            <p>Formación TP integral</p>
+          </div>
+        </div>
+        <div class="logro-card">
+          <i class="fa-solid fa-users" style="color: var(--gold);"></i>
+          <div>
+            <h4>Comunidad</h4>
+            <p>Ambiente inclusivo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PLATFORMS -->
+  <div class="platforms">
+    <h2>Plataformas Educativas</h2>
+    <div class="platform-cards">
+      <a href="#" class="platform-card">
+        <i class="fa-solid fa-envelope"></i> Correo Institucional
+      </a>
+      <a href="#" class="platform-card">
+        <i class="fa-solid fa-book"></i> Biblioteca Digital
+      </a>
+      <a href="#" class="platform-card">
+        <i class="fa-solid fa-laptop-code"></i> Aprendo en Línea
+      </a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="nosotros">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div>
+          <span class="section-label">Sobre Nosotros</span>
+          <h2 class="section-title">Una institución orientada al desarrollo técnico y humano</h2>
+          <p class="section-desc">El Liceo Bicentenario de Excelencia Antonio Varas de la Barra, es un establecimiento dependiente del Servicio Local de Educación Pública "Chinchorro" y tiene la oportunidad de llevar a la realidad y ofrecer la oportunidad, a nuestros alumnos y alumnas de entregar una educación de calidad, gracias al esfuerzo y trabajo visionario de los docentes y a su espíritu creativo para entregar una educación de excelencia.
+                                    Actualmente el Liceo es dirigido por el director don David Delgado Meza y es secundado en sus funciones por 2 Directivos Docentes y 4 Directivos Técnicos Pedagógicos. Cuenta con una planta de 80 Docentes, 60 Asistentes de la Educación y una matrícula de 1101 estudiantes.</p>
+          <div class="about-cards">
+            <div class="about-card">
+              <h4>Nuestra Misión</h4>
+              <p>Formar personas integrales y técnicos de nivel medio con competencias para el siglo XXI, emprendedores y comprometidos con la protección del medioambiente.</p>
+            </div>
+            <div class="about-card">
+              <h4>Nuestra Visión</h4>
+              <p>Ser referente educativo en Arica y las regiones del norte del país, forjando jóvenes con competencias personales, socioemocionales y técnicas.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="about-card" style="background: var(--navy); color: var(--white);">
+            <h4 style="color: var(--gold);">Proyecto Educativo</h4>
+            <p style="color: rgba(255,255,255,0.8);">Enfocados en el aprendizaje significativo, valores éticos y desarrollo de competencias profesionales de nivel medio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIALTIES -->
+  <section id="especialidades">
+    <div class="section-inner">
+      <span class="section-label">Formación Técnica</span>
+      <h2 class="section-title">Nuestras Especialidades</h2>
+      <p class="section-desc">Ofrecemos opciones de formación técnico-profesional ajustadas a los requerimientos del sector productivo regional.</p>
+      
+      <div class="specs-grid">
+        <div class="spec-card spec-navy">
+          <div class="spec-top">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Administración</h3>
+            <p>Gestión administrativa, contabilidad, recursos humanos y sistemas de información empresarial.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+
+        <div class="spec-card spec-gold">
+          <div class="spec-top">
+            <i class="fa-solid fa-microchip"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Electrónica</h3>
+            <p>Sistemas digitales, automatización industrial, instrumentación y telecomunicaciones.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+
+        <div class="spec-card spec-teal">
+          <div class="spec-top">
+            <i class="fa-solid fa-child"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Electricidad</h3>
+            <p>Instalaciones eléctricas residenciales e industriales, mantenimiento y sistemas fotovoltaicos.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+
+        <div class="spec-card spec-teal">
+          <div class="spec-top">
+            <i class="fa-solid fa-child"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Programación</h3>
+            <p>Desarrollo de software, aplicaciones web y móviles, bases de datos y fundamentos de computación.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+
+        <div class="spec-card spec-teal">
+          <div class="spec-top">
+            <i class="fa-solid fa-child"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Gastronomía</h3>
+            <p>Técnicas culinarias nacionales e internacionales, pastelería y gestión de cocina profesional.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+
+        <div class="spec-card spec-teal">
+          <div class="spec-top">
+            <i class="fa-solid fa-child"></i>
+          </div>
+          <div class="spec-body">
+            <h3>Turismo</h3>
+            <p>Gestión turística, hospitalidad, patrimonio cultural y natural del norte de Chile y el altiplano.</p>
+            <span class="spec-tag">Técnico Medio</span>
+            <br>
+            <button class="spec-btn">
+                <i class="fas fa-arrow-right">
+                </i>
+                <a href="especialidades">Ver detalles</a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

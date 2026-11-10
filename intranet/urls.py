@@ -9,4 +9,5 @@ urlpatterns = [
     path('intranet/', views.intranet_login, name='login'),
     path('intranet/panel/', views.intranet_dashboard, name='intranet_dashboard'),
     path('intranet/salir/', views.cerrar_sesion, name='logout'),
+    
 ]
