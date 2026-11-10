@@ -2,34 +2,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Liceo Antonio Varas de la Barra{% endblock %}</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Liceo Técnico Profesional Antonio Varas de la Barra{% endblock %}</title>
   
-  <!-- Estilos estáticos -->
-  <link rel="stylesheet" href="{% static 'recursos/css/styles.css' %}">
+  <!-- Fuentes e Íconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    onerror="this.onerror=null;this.href='https://use.fontawesome.com/releases/v6.4.0/css/all.css'"/>
+  
+  <!-- CSS estático de Django -->
+  <link rel="stylesheet" href="{% static 'recursos/css/styles.css' %}"/>
 </head>
 <body>
 
-  <!-- 1. Barra de Navegación -->
-  <nav class="navbar">
-    <a href="{% url 'home' %}">Inicio</a>
-    <a href="{% url 'login' %}">Intranet</a>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <i class="fa-solid fa-location-dot"></i> Av. Loa 2200, Arica, Chile
+      <span style="margin: 0 0.5rem;">|</span>
+      <i class="fa-solid fa-phone"></i> +56 58 222 3344
+    </div>
+    <div>
+      <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="{% url 'home' %}" class="nav-logo">
+      <div class="nav-logo-text">
+        <strong>LICEO ANTONIO VARAS DE LA BARRA</strong>
+        <span>Arica - Chile</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Inicio</a></li>
+      <li class="dropdown">
+        <a href="#">Institución</a>
+        <div class="dropdown-menu">
+          <a href="{% url 'home' %}#nosotros">Nosotros</a>
+          <a href="#">Misión y Visión</a>
+          <a href="#">Proyecto Educativo</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="{% url 'home' %}#especialidades">Especialidades</a>
+        <div class="dropdown-menu">
+          <a href="#">Administración</a>
+          <a href="#">Electrónica</a>
+          <a href="#">Electricidad</a>
+          <a href="#">Gastronomía</a>
+          <a href="#">Programación</a>
+        </div>
+      </li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
+    <a href="{% url 'login' %}" class="btn-intranet">
+      <i class="fa-solid fa-lock"></i> Intranet
+    </a>
   </nav>
 
-  <!-- 2. Bloque de Mensajes (Alertas / Django Messages) -->
-  {% if messages %}
-    <div class="messages-container">
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <!-- 3. Bloque de Contenido Dinámico -->
-  <main class="content">
+  <!-- CONTENIDO VARIABLE -->
+  <main>
     {% block content %}
     {% endblock %}
   </main>
