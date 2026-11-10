@@ -14,9 +14,9 @@
 
 | Integrante | Rol / Contribución |
 | :--- | :--- |
-| **Marjorie Gómez** | Desarrollo Full-Stack & Arquitectura |
-| **Alison Limachi** | Módulos de Gestión & Lógica de Negocio |
-| **Lucas Muñoz** | Interfaces, Sprints & Control de Calidad |
+| **Marjorie Gómez** | 
+| **Alison Limachi** | 
+| **Lucas Muñoz** | 
 
 ---
 
