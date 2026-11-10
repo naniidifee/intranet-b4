@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Liceo Antonio Varas de la Barra{% endblock %}</title>
+  
+  <!-- Estilos estáticos -->
+  <link rel="stylesheet" href="{% static 'recursos/css/styles.css' %}">
+</head>
+<body>
+
+  <!-- 1. Barra de Navegación -->
+  <nav class="navbar">
+    <a href="{% url 'home' %}">Inicio</a>
+    <a href="{% url 'login' %}">Intranet</a>
+  </nav>
+
+  <!-- 2. Bloque de Mensajes (Alertas / Django Messages) -->
+  {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- 3. Bloque de Contenido Dinámico -->
+  <main class="content">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+</body>
+</html>
