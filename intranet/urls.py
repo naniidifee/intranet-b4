@@ -7,7 +7,8 @@ urlpatterns = [
     
     # Módulo de Intranet
     path('intranet/', views.intranet_login, name='login'),
-    path('intranet/panel/', views.intranet_dashboard, name='intranet_dashboard'),
-    path('intranet/salir/', views.cerrar_sesion, name='logout'),
+
+     # Ruta dinámica para las especialidades
+    path('especialidades/<slug:slug>/', views.especialidad_detail, name='especialidad_detail'),
     
 ]

@@ -1,0 +1,95 @@
+{% extends 'intranet/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ esp.nombre }} - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block content %}
+<!-- Enlaces a los archivos externos independientes -->
+<link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}"/>
+
+<header class="esp-header">
+  <div class="esp-top-nav">
+    <div class="esp-icon-badge">
+      <i class="fa-solid {{ esp.icono }}"></i>
+    </div>
+    <div class="esp-nav-arrows">
+      <a href="{% url 'home' %}" class="esp-nav-btn" title="Volver al Inicio"><i class="fa-solid fa-house"></i></a>
+      <a href="{% url 'home' %}" class="esp-nav-btn" title="Cerrar"><i class="fa-solid fa-xmark"></i></a>
+    </div>
+  </div>
+
+  <h1>{{ esp.nombre }}</h1>
+  <p class="subhead">{{ esp.subtitulo }}</p>
+
+  <div class="esp-coord">
+    <div class="esp-coord-avatar">
+      <i class="fa-solid fa-user"></i>
+    </div>
+    <div>
+      <strong style="display:block; font-size: 0.8rem; color: #fff;">{{ esp.coordinador }}</strong>
+      <span style="font-size: 0.68rem; color: rgba(255,255,255,0.7);">Coordinador/a de Especialidad</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="openTab(event, 'detalles')">
+    <i class="fa-solid fa-circle-info"></i> Detalles
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'perfil')">
+    <i class="fa-solid fa-user-graduate"></i> Perfil de Egreso
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'campo')">
+    <i class="fa-solid fa-briefcase"></i> Campo Laboral
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'docentes')">
+    <i class="fa-solid fa-chalkboard-user"></i> Docentes
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'plan')">
+    <i class="fa-solid fa-calendar-days"></i> Plan de Estudios
+  </button>
+</div>
+
+<div class="tab-container">
+  <div id="detalles" class="tab-content active">
+    <p class="esp-description">{{ esp.descripcion }}</p>
+    <div class="tags-wrapper">
+      {% for tag in esp.tags %}
+        <span class="chip-tag"><i class="fa-solid fa-circle-check"></i> {{ tag }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="perfil" class="tab-content">
+    <h3 style="color: var(--navy); margin-bottom: 1rem;">Perfil del Egresado</h3>
+    <p class="esp-description">{{ esp.perfil_egreso }}</p>
+  </div>
+
+  <div id="campo" class="tab-content">
+    <h3 style="color: var(--navy); margin-bottom: 1rem;">Oportunidades Laborales</h3>
+    <p class="esp-description">{{ esp.campo_laboral }}</p>
+  </div>
+
+  <div id="docentes" class="tab-content">
+    <h3 style="color: var(--navy); margin-bottom: 1rem;">Equipo Docente de Especialidad</h3>
+    <ul class="list-styled">
+      {% for doc in esp.docentes %}
+        <li><i class="fa-solid fa-user-check"></i> {{ doc }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="plan" class="tab-content">
+    <h3 style="color: var(--navy); margin-bottom: 1rem;">Módulos de Formación Técnica</h3>
+    <ul class="list-styled">
+      {% for mod in esp.plan_estudios %}
+        <li><i class="fa-solid fa-book-bookmark"></i> {{ mod }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- Enlace al archivo JavaScript independiente -->
+<script src="{% static 'recursos/js/especialidades.js' %}"></script>
+{% endblock %}
