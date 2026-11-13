@@ -1,95 +1,143 @@
 {% extends 'intranet/base.html' %}
-
 {% load static %}
 
 {% block title %}{{ esp.nombre }} - Liceo Antonio Varas de la Barra{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}">
+{% endblock %}
+
 {% block content %}
-<!-- Enlaces a los archivos externos independientes -->
-<link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}"/>
-
-<header class="esp-header">
-  <div class="esp-top-nav">
-    <div class="esp-icon-badge">
-      <i class="fa-solid {{ esp.icono }}"></i>
+<div class="liceo-detail-wrapper">
+  
+  <!-- FICHA PRINCIPAL (Estilo Referencia) -->
+  <div class="liceo-hero-card">
+    
+    <!-- Banner Superior -->
+    <div class="liceo-hero-banner">
+      {% if esp.imagen %}
+        <img src="{% static esp.imagen %}" alt="{{ esp.nombre }}">
+      {% else %}
+        <!-- Degradado institucional con ícono gigante si aún no cargas foto -->
+        <div class="liceo-banner-fallback">
+          <i class="fa-solid {{ esp.icon }}"></i>
+        </div>
+      {% endif %}
     </div>
-    <div class="esp-nav-arrows">
-      <a href="{% url 'home' %}" class="esp-nav-btn" title="Volver al Inicio"><i class="fa-solid fa-house"></i></a>
-      <a href="{% url 'home' %}" class="esp-nav-btn" title="Cerrar"><i class="fa-solid fa-xmark"></i></a>
+
+    <!-- Etiquetas (Badges) -->
+    <div class="liceo-pills-row">
+      <span class="liceo-pill pill-area">
+        <span class="pill-icon-box"><i class="fa-solid {{ esp.icon }}"></i></span>
+        {{ esp.badge|default:"Especialidades TP" }}
+      </span>
+      <span class="liceo-pill pill-modalidad">
+        Educación Técnico Profesional
+      </span>
+    </div>
+
+    <!-- Título y Bajada -->
+    <h1 class="liceo-main-title">{{ esp.nombre }}</h1>
+    <p class="liceo-main-subtitle">{{ esp.descripcion }}</p>
+
+    <hr class="liceo-divider">
+
+    <!-- Metadatos en 2 columnas -->
+    <div class="liceo-meta-grid">
+      
+      <!-- Título / Certificación -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Título</span>
+          <strong class="meta-value">Técnico de Nivel Medio en {{ esp.nombre }}</strong>
+        </div>
+      </div>
+
+      <!-- Duración -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-regular fa-clock"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Duración</span>
+          <strong class="meta-value">2 Años (3° y 4° Medio) + Práctica</strong>
+        </div>
+      </div>
+
+      <!-- Institución -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Institución que otorga el título</span>
+          <strong class="meta-value">Liceo Bicentenario Antonio Varas de la Barra</strong>
+        </div>
+      </div>
+
+      <!-- Jornada -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-sun"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Jornada</span>
+          <strong class="meta-value">Diurna</strong>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <h1>{{ esp.nombre }}</h1>
-  <p class="subhead">{{ esp.subtitulo }}</p>
+  <!-- RUTA DE NAVEGACIÓN (Breadcrumb) -->
+  <nav class="liceo-breadcrumb" aria-label="Breadcrumb">
+    <a href="{% url 'inicio' %}#especialidades">Especialidades</a>
+    <span>&rsaquo;</span>
+    <a href="{% url 'inicio' %}#especialidades">Área {{ esp.badge|default:"Técnico Profesional" }}</a>
+    <span>&rsaquo;</span>
+    <strong>{{ esp.nombre }}</strong>
+  </nav>
 
-  <div class="esp-coord">
-    <div class="esp-coord-avatar">
-      <i class="fa-solid fa-user"></i>
+  <!-- CONTENIDO CURRICULAR (Secciones inferiores) -->
+  <div class="spec-info-grid">
+    
+    <!-- Perfil de Egreso -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-user-check"></i> Perfil de Egreso</h3>
+      <p>{{ esp.perfil }}</p>
     </div>
-    <div>
-      <strong style="display:block; font-size: 0.8rem; color: #fff;">{{ esp.coordinador }}</strong>
-      <span style="font-size: 0.68rem; color: rgba(255,255,255,0.7);">Coordinador/a de Especialidad</span>
+
+    <!-- Campo Laboral -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-briefcase"></i> Campo Laboral</h3>
+      <ul>
+        {% for item in esp.campo %}
+          <li><span>✓</span> {{ item }}</li>
+        {% endfor %}
+      </ul>
     </div>
+
+    <!-- Módulos Clave -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-book-bookmark"></i> Módulos Clave</h3>
+      <ul>
+        {% for modulo in esp.modulos %}
+          <li><span>✓</span> {{ modulo }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
   </div>
-</header>
 
-<div class="tabs-bar">
-  <button class="tab-btn active" onclick="openTab(event, 'detalles')">
-    <i class="fa-solid fa-circle-info"></i> Detalles
-  </button>
-  <button class="tab-btn" onclick="openTab(event, 'perfil')">
-    <i class="fa-solid fa-user-graduate"></i> Perfil de Egreso
-  </button>
-  <button class="tab-btn" onclick="openTab(event, 'campo')">
-    <i class="fa-solid fa-briefcase"></i> Campo Laboral
-  </button>
-  <button class="tab-btn" onclick="openTab(event, 'docentes')">
-    <i class="fa-solid fa-chalkboard-user"></i> Docentes
-  </button>
-  <button class="tab-btn" onclick="openTab(event, 'plan')">
-    <i class="fa-solid fa-calendar-days"></i> Plan de Estudios
-  </button>
+  <!-- BOTÓN VOLVER A LA SECCIÓN ESPECIALIDADES DEL INDEX -->
+  <div class="spec-back-wrapper">
+    <a href="{% url 'inicio' %}#especialidades" class="spec-back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Volver a Especialidades
+    </a>
+  </div>
+
 </div>
-
-<div class="tab-container">
-  <div id="detalles" class="tab-content active">
-    <p class="esp-description">{{ esp.descripcion }}</p>
-    <div class="tags-wrapper">
-      {% for tag in esp.tags %}
-        <span class="chip-tag"><i class="fa-solid fa-circle-check"></i> {{ tag }}</span>
-      {% endfor %}
-    </div>
-  </div>
-
-  <div id="perfil" class="tab-content">
-    <h3 style="color: var(--navy); margin-bottom: 1rem;">Perfil del Egresado</h3>
-    <p class="esp-description">{{ esp.perfil_egreso }}</p>
-  </div>
-
-  <div id="campo" class="tab-content">
-    <h3 style="color: var(--navy); margin-bottom: 1rem;">Oportunidades Laborales</h3>
-    <p class="esp-description">{{ esp.campo_laboral }}</p>
-  </div>
-
-  <div id="docentes" class="tab-content">
-    <h3 style="color: var(--navy); margin-bottom: 1rem;">Equipo Docente de Especialidad</h3>
-    <ul class="list-styled">
-      {% for doc in esp.docentes %}
-        <li><i class="fa-solid fa-user-check"></i> {{ doc }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div id="plan" class="tab-content">
-    <h3 style="color: var(--navy); margin-bottom: 1rem;">Módulos de Formación Técnica</h3>
-    <ul class="list-styled">
-      {% for mod in esp.plan_estudios %}
-        <li><i class="fa-solid fa-book-bookmark"></i> {{ mod }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
-<!-- Enlace al archivo JavaScript independiente -->
-<script src="{% static 'recursos/js/especialidades.js' %}"></script>
 {% endblock %}

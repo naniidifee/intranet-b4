@@ -1,8 +1,11 @@
 {% extends 'intranet/base.html' %}
-
-
+{% load static %}
 
 {% block title %}Inicio - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}">
+{% endblock %}
 
 {% block content %}
   <!-- HERO -->
@@ -96,114 +99,130 @@
   </section>
 
   <!-- SPECIALTIES -->
-  <section id="especialidades">
-    <div class="section-inner">
-      <span class="section-label">Formación Técnica</span>
-      <h2 class="section-title">Nuestras Especialidades</h2>
-      <p class="section-desc">Ofrecemos opciones de formación técnico-profesional ajustadas a los requerimientos del sector productivo regional.</p>
-      
-      <div class="specs-grid">
-        <div class="spec-card spec-navy">
-          <div class="spec-top">
-            <i class="fa-solid fa-folder-open"></i>
+  <section id="especialidades" style="padding: 5rem 0; background: #f8fafc;">
+    <div class="liceo-specs-wrapper">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <span class="section-label">Formación Académica</span>
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Nuestras Especialidades</h2>
+        <p class="section-desc" style="margin: 0 auto;">Explora las carreras técnicas de nivel medio orientadas al desarrollo profesional y productivo de nuestra región.</p>
+      </div>
+
+      <div class="liceo-specs-grid-box">
+        
+        <!-- 1. Administración -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header navy">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-folder-open"></i> Gestión
+            </div>
+            <span class="liceo-badge-pill">TP</span>
           </div>
-          <div class="spec-body">
-            <h3>Administración</h3>
-            <p>Gestión administrativa, contabilidad, recursos humanos y sistemas de información empresarial.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Administración</h3>
+            <p class="liceo-spec-desc">Gestión administrativa, contabilidad, recursos humanos y sistemas de información empresarial.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
+          </div>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='administracion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
           </div>
         </div>
 
-        <div class="spec-card spec-gold">
-          <div class="spec-top">
-            <i class="fa-solid fa-microchip"></i>
+        <!-- 2. Electrónica -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header gold">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-microchip"></i> Tecnología
+            </div>
+            <span class="liceo-badge-pill">TP</span>
           </div>
-          <div class="spec-body">
-            <h3>Electrónica</h3>
-            <p>Sistemas digitales, automatización industrial, instrumentación y telecomunicaciones.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Electrónica</h3>
+            <p class="liceo-spec-desc">Sistemas digitales, automatización industrial, instrumentación y telecomunicaciones.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
-        </div>
-
-        <div class="spec-card spec-teal">
-          <div class="spec-top">
-            <i class="fa-solid fa-child"></i>
-          </div>
-          <div class="spec-body">
-            <h3>Electricidad</h3>
-            <p>Instalaciones eléctricas residenciales e industriales, mantenimiento y sistemas fotovoltaicos.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='electronica' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
           </div>
         </div>
 
-        <div class="spec-card spec-teal">
-          <div class="spec-top">
-            <i class="fa-solid fa-child"></i>
+        <!-- 3. Programación -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header teal">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-laptop-code"></i> Informática
+            </div>
+            <span class="liceo-badge-pill">TP</span>
           </div>
-          <div class="spec-body">
-            <h3>Programación</h3>
-            <p>Desarrollo de software, aplicaciones web y móviles, bases de datos y fundamentos de computación.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Programación</h3>
+            <p class="liceo-spec-desc">Desarrollo de software, aplicaciones web y móviles, bases de datos y fundamentos de computación.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
-        </div>
-
-        <div class="spec-card spec-teal">
-          <div class="spec-top">
-            <i class="fa-solid fa-child"></i>
-          </div>
-          <div class="spec-body">
-            <h3>Gastronomía</h3>
-            <p>Técnicas culinarias nacionales e internacionales, pastelería y gestión de cocina profesional.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='programacion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
           </div>
         </div>
 
-        <div class="spec-card spec-teal">
-          <div class="spec-top">
-            <i class="fa-solid fa-child"></i>
+        <!-- 4. Electricidad -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header navy">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-bolt"></i> Industrial
+            </div>
+            <span class="liceo-badge-pill">TP</span>
           </div>
-          <div class="spec-body">
-            <h3>Turismo</h3>
-            <p>Gestión turística, hospitalidad, patrimonio cultural y natural del norte de Chile y el altiplano.</p>
-            <span class="spec-tag">Técnico Medio</span>
-            <br>
-            <button class="spec-btn">
-                <i class="fas fa-arrow-right">
-                </i>
-                <a href="especialidades">Ver detalles</a>
-            </button>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Electricidad</h3>
+            <p class="liceo-spec-desc">Instalaciones eléctricas residenciales e industriales, mantenimiento y sistemas fotovoltaicos.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
+          </div>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='electricidad' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
           </div>
         </div>
+
+        <!-- 5. Gastronomía -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header teal">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-utensils"></i> Servicios
+            </div>
+            <span class="liceo-badge-pill">TP</span>
+          </div>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Gastronomía</h3>
+            <p class="liceo-spec-desc">Técnicas culinarias nacionales e internacionales, pastelería y gestión de cocina profesional.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
+          </div>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='gastronomia' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+          </div>
+        </div>
+
+        <!-- 6. Turismo -->
+        <div class="liceo-spec-card">
+          <div class="liceo-card-header gold">
+            <div class="liceo-header-title">
+              <i class="fa-solid fa-plane-departure"></i> Hospitalidad
+            </div>
+            <span class="liceo-badge-pill">TP</span>
+          </div>
+          <div class="liceo-card-body">
+            <h3 class="liceo-spec-title">Turismo</h3>
+            <p class="liceo-spec-desc">Gestión turística, hospitalidad, patrimonio cultural y natural del norte de Chile y el altiplano.</p>
+            <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
+          </div>
+          <div class="liceo-card-footer">
+            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='turismo' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
