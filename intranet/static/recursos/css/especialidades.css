@@ -1,0 +1,473 @@
+/* ── 1. ESTILOS DE LA REJILLA DE ESPECIALIDADES (INICIO) ── */
+.liceo-specs-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.liceo-specs-grid-box {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 2rem !important;
+  width: 100% !important;
+}
+
+.liceo-spec-card {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 10px 30px rgba(15, 37, 87, 0.04) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: all 0.3s ease !important;
+}
+
+.liceo-spec-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 20px 40px rgba(15, 37, 87, 0.1) !important;
+  border-color: #f5a800 !important;
+}
+
+.liceo-card-header {
+  padding: 1.2rem 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  color: #ffffff !important;
+}
+
+.liceo-card-header.navy { background: linear-gradient(135deg, #0f2557 0%, #1a3a8f 100%) !important; }
+.liceo-card-header.gold { background: linear-gradient(135deg, #b37d00 0%, #f5a800 100%) !important; color: #0a1628 !important; }
+.liceo-card-header.teal { background: linear-gradient(135deg, #065f46 0%, #047857 100%) !important; }
+
+.liceo-header-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+}
+
+.liceo-badge-pill {
+  background: rgba(255, 255, 255, 0.2) !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 50px !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
+
+.liceo-card-body {
+  padding: 1.5rem !important;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.liceo-spec-title {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #0f2557 !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.liceo-spec-desc {
+  font-size: 0.85rem !important;
+  color: #64748b !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1.2rem !important;
+  flex: 1 !important;
+}
+
+.liceo-tag-nivel {
+  display: inline-block !important;
+  background: #f1f5f9 !important;
+  color: #0f2557 !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  padding: 0.3rem 0.8rem !important;
+  border-radius: 50px !important;
+  align-self: flex-start !important;
+}
+
+.liceo-card-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #f1f5f9 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #fafafa !important;
+}
+
+.liceo-jornada {
+  font-size: 0.78rem !important;
+  color: #64748b !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+}
+
+.liceo-ver-mas {
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  color: #0f2557 !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+}
+
+.liceo-ver-mas:hover {
+  color: #f5a800 !important;
+}
+
+
+/* ── 2. ESTILOS DE LA PÁGINA DE DETALLE (ESPECIALIDADES.HTML) ── */
+.spec-detail-hero {
+  background: linear-gradient(135deg, #0a1628 0%, #0f2557 100%);
+  color: #ffffff;
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.spec-detail-badge {
+  background: rgba(245, 168, 0, 0.15);
+  color: #f5a800;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.spec-detail-hero h1 {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.spec-detail-hero p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.spec-detail-container {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.spec-main-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(15, 37, 87, 0.05);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.spec-main-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0f2557 0%, #1a3a8f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spec-main-icon i {
+  font-size: 2.5rem;
+  color: #f5a800;
+}
+
+.spec-main-info h3 {
+  font-size: 1.4rem;
+  color: #0f2557;
+  margin-bottom: 0.4rem;
+}
+
+.spec-main-info p {
+  color: #64748b;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.spec-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.spec-info-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-info-box h3 {
+  font-size: 1.1rem;
+  color: #0f2557;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spec-info-box h3 i {
+  color: #f5a800;
+}
+
+.spec-info-box p, 
+.spec-info-box ul {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.spec-info-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.spec-info-box ul li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.spec-info-box ul li span {
+  position: absolute;
+  left: 0;
+  color: #f5a800;
+  font-weight: bold;
+}
+
+.spec-back-wrapper {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.spec-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #0f2557;
+  color: #ffffff;
+  padding: 0.75rem 1.8rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(15, 37, 87, 0.15);
+}
+
+.spec-back-btn:hover {
+  background: #f5a800;
+  color: #0a1628;
+  transform: translateY(-2px);
+}
+
+/* Contenedor general */
+.liceo-detail-wrapper {
+  max-width: 1020px;
+  margin: 2.5rem auto 4rem;
+  padding: 0 1.25rem;
+}
+
+/* Tarjeta principal tipo ficha */
+.liceo-hero-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+/* Banner superior */
+.liceo-hero-banner {
+  width: 100%;
+  height: 210px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #0f294a 0%, #1d4ed8 60%, #0d9488 100%);
+}
+
+.liceo-hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.liceo-banner-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 5rem;
+}
+
+/* Fila de Badges / Píldoras */
+.liceo-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.liceo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pill-area {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+.pill-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e3a8a; /* Azul institucional */
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.pill-modalidad {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+/* Título y Descripción */
+.liceo-main-title {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 0 0 0.6rem;
+}
+
+.liceo-main-subtitle {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0 0 1.25rem;
+}
+
+.liceo-divider {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.25rem 0;
+}
+
+/* Cuadrícula de Metadatos */
+.liceo-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem 2rem;
+}
+
+.liceo-meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.liceo-meta-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: #eff6ff;
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.liceo-meta-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 0.15rem;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+/* Breadcrumb inferior */
+.liceo-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 1rem 0 2rem;
+  padding: 0 0.25rem;
+}
+
+.liceo-breadcrumb a {
+  color: #475569;
+  text-decoration: none;
+}
+
+.liceo-breadcrumb a:hover {
+  color: #1e3a8a;
+  text-decoration: underline;
+}
+
+.liceo-breadcrumb strong {
+  color: #0f172a;
+}
+
+@media (max-width: 640px) {
+  .liceo-meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .liceo-main-title {
+    font-size: 1.55rem;
+  }
+}
+

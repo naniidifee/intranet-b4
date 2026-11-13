@@ -1,0 +1,153 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}{{ esp.nombre }} - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="liceo-detail-wrapper">
+  
+  <!-- FICHA PRINCIPAL -->
+  <div class="liceo-hero-card">
+    
+    <!-- Banner Superior -->
+    <div class="liceo-hero-banner">
+      {% if esp.imagen %}
+        <img src="{% static esp.imagen %}" alt="{{ esp.nombre }}">
+      {% else %}
+        <div class="liceo-banner-fallback">
+          <i class="fa-solid {{ esp.icon }}"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Etiquetas (Badges) -->
+    <div class="liceo-pills-row">
+      <span class="liceo-pill pill-area">
+        <span class="pill-icon-box"><i class="fa-solid {{ esp.icon }}"></i></span>
+        {{ esp.badge|default:"Especialidades TP" }}
+      </span>
+      <span class="liceo-pill pill-modalidad">
+        Educación Técnico Profesional
+      </span>
+    </div>
+
+    <!-- Título y Bajada -->
+    <h1 class="liceo-main-title">{{ esp.nombre }}</h1>
+    <p class="liceo-main-subtitle">{{ esp.descripcion }}</p>
+
+    <hr class="liceo-divider">
+
+    <!-- Metadatos en 2 columnas (Incluyendo Coordinador) -->
+    <div class="liceo-meta-grid">
+      
+      <!-- Título / Certificación -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Título</span>
+          <strong class="meta-value">Técnico de Nivel Medio en {{ esp.nombre }}</strong>
+        </div>
+      </div>
+
+      <!-- Duración -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-regular fa-clock"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Duración</span>
+          <strong class="meta-value">2 Años (3° y 4° Medio) + Práctica</strong>
+        </div>
+      </div>
+
+      <!-- Institución -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Institución que otorga el título</span>
+          <strong class="meta-value">Liceo Bicentenario Antonio Varas de la Barra</strong>
+        </div>
+      </div>
+
+      <!-- Coordinador de Especialidad -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Coordinador(a) de Especialidad</span>
+          <strong class="meta-value">{{ esp.coordinador|default:"Por confirmar" }}</strong>
+        </div>
+      </div>
+
+      <!-- Jornada -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-sun"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Jornada</span>
+          <strong class="meta-value">Diurna</strong>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RUTA DE NAVEGACIÓN (Breadcrumb) -->
+  <nav class="liceo-breadcrumb" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}#especialidades">Especialidades</a>
+    <span>&rsaquo;</span>
+    <a href="{% url 'home' %}#especialidades">Área {{ esp.badge|default:"Técnico Profesional" }}</a>
+    <span>&rsaquo;</span>
+    <strong>{{ esp.nombre }}</strong>
+  </nav>
+
+  <!-- CONTENIDO CURRICULAR -->
+  <div class="spec-info-grid">
+    
+    <!-- Perfil de Egreso -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-user-check"></i> Perfil de Egreso</h3>
+      <p>{{ esp.perfil }}</p>
+    </div>
+
+    <!-- Campo Laboral -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-briefcase"></i> Campo Laboral</h3>
+      <ul>
+        {% for item in esp.campo %}
+          <li><span>✓</span> {{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Módulos Clave -->
+    <div class="spec-info-box">
+      <h3><i class="fa-solid fa-book-bookmark"></i> Módulos Clave</h3>
+      <ul>
+        {% for modulo in esp.modulos %}
+          <li><span>✓</span> {{ modulo }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- BOTÓN VOLVER -->
+  <div class="spec-back-wrapper">
+    <a href="{% url 'home' %}#especialidades" class="spec-back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Volver a Especialidades
+    </a>
+  </div>
+
+</div>
+{% endblock %}

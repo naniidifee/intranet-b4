@@ -1,0 +1,87 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'recursos/css/footer.css' %}">
+
+<!-- FOOTER INSTITUCIONAL LICEO AVB -->
+<footer class="liceo-footer">
+  
+  <!-- BARRA SUPERIOR DE REDES SOCIALES -->
+  <div class="footer-social-bar">
+    <div class="footer-social-container">
+      <a href="https://www.facebook.com/tu-pagina" target="_blank">
+        <i class="fa-brands fa-facebook-f"></i> Facebook
+      </a>
+      <a href="https://www.instagram.com/tu-instagram" target="_blank">
+        <i class="fa-brands fa-instagram"></i> Instagram
+      </a>
+      <a href="mailto:contacto@liceoavb.cl">
+        <i class="fa-solid fa-envelope"></i> Correo
+      </a>
+    </div>
+  </div>
+
+  <!-- CONTENEDOR PRINCIPAL DEL FOOTER -->
+  <div class="footer-main-container">
+    
+    <!-- Columna 1 -->
+    <div class="footer-col footer-brand-col">
+      <div class="footer-logo-row">
+        <span class="footer-logo-text">Liceo Antonio Varas de la Barra</span>
+      </div>
+      <p class="footer-desc">
+        Liceo Técnico Profesional "Antonio Varas de la Barra" — Liceo Bicentenario de Excelencia. 
+        Dependiente del Servicio Local de Educación Pública "Chinchorro", Arica, Chile.
+      </p>
+      <p class="footer-slogan">"Un estudiante hoy, un profesional de excelencia mañana"</p>
+    </div>
+
+    <!-- Columna 2 -->
+    <div class="footer-col">
+      <h4>UBÍCANOS Y CONTACTO</h4>
+      <ul class="footer-links">
+        <li>
+          <i class="fa-solid fa-house"></i> 
+          <span>Avenida Loa #2200<br>Arica | Chile</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-phone"></i> 
+          <span>Fono: +56 4 4220 7138</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-envelope"></i> 
+          <span>contacto@liceoavb.cl<br>lic.antoniovaras@educacionpublica.cl</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Columna 3 -->
+    <div class="footer-col">
+      <h4>INSTITUCIÓN</h4>
+      <ul class="footer-links">
+        <li><a href="#nosotros">Quiénes Somos</a></li>
+        <li><a href="#nosotros">Sellos Educativos</a></li>
+        <li><a href="#nosotros">Nuestros Valores</a></li>
+        <li><a href="#noticias">Noticias y Novedades</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 4 -->
+    <div class="footer-col">
+      <h4>ESPECIALIDADES</h4>
+      <ul class="footer-links">
+        <li><a href="{% url 'especialidad_detail' slug='administracion' %}">Administración</a></li>
+        <li><a href="{% url 'especialidad_detail' slug='programacion' %}">Programación</a></li>
+        <li><a href="{% url 'especialidad_detail' slug='electricidad' %}">Electricidad</a></li>
+        <li><a href="{% url 'especialidad_detail' slug='electronica' %}">Electrónica</a></li>
+        <li><a href="{% url 'especialidad_detail' slug='gastronomia' %}">Gastronomía</a></li>
+        <li><a href="{% url 'especialidad_detail' slug='turismo' %}">Turismo</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="footer-bottom">
+    <p>© Alumnos de Ingeneria Segundo Año MaL. Todos los derechos reservados.</p>
+  </div>
+
+</footer>
