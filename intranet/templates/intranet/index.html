@@ -5,6 +5,7 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'recursos/css/especialidades.css' %}">
+  <link rel="stylesheet" href="{% static 'recursos/css/noticias.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -227,6 +228,49 @@
     </div>
   </section>
 
+<!-- NOTICIAS Y NOVEDADES -->
+  <section id="noticias" class="liceo-news-section">
+    <div class="liceo-news-container">
+      
+      <div class="liceo-news-header">
+        <span class="news-accent-bar"></span>
+        <h2>Noticias</h2>
+      </div>
 
-  
+      <div class="liceo-news-grid" id="liceo-news-grid"></div>
+
+      <div class="liceo-news-footer">
+        <a href="#noticias" class="btn-portal-noticias">
+          Ir a portal noticias <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MODAL PARA LEER NOTICIA COMPLETA -->
+  <div id="newsModal" class="news-modal-backdrop">
+    <div class="news-modal-card">
+      <button id="closeNewsModal" class="news-modal-close" type="button">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="news-modal-img-wrap">
+        <img id="modalNewsImg" src="" alt="Noticia">
+      </div>
+      <div class="news-modal-body">
+        <div class="news-modal-meta">
+          <span id="modalNewsCat" class="news-modal-badge">Categoría</span>
+          <span id="modalNewsDate"><i class="fa-regular fa-calendar"></i> Fecha</span>
+          <span id="modalNewsAuthor"><i class="fa-regular fa-user"></i> Autor</span>
+        </div>
+        <h2 id="modalNewsTitle">Título de la noticia</h2>
+        <p id="modalNewsDesc" class="news-modal-lead"></p>
+        <div id="modalNewsContent" class="news-modal-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENLACE AL ARCHIVO JS EXTERNO -->
+  <script src="{% static 'recursos/js/noticias.js' %}"></script>
+
 {% endblock %}
