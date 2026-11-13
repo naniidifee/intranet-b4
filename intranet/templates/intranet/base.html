@@ -13,6 +13,7 @@
   
   <!-- CSS estático de Django -->
   <link rel="stylesheet" href="{% static 'recursos/css/styles.css' %}"/>
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -24,8 +25,8 @@
       <i class="fa-solid fa-phone"></i> +56 58 222 3344
     </div>
     <div>
-      <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/LiceoAVB"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/liceo.avb.arica/"><i class="fa-brands fa-instagram"></i></a>
       <a href="#"><i class="fa-solid fa-envelope"></i></a>
     </div>
   </div>
@@ -44,7 +45,7 @@
         <a href="#">Institución</a>
         <div class="dropdown-menu">
           <a href="{% url 'home' %}#nosotros">Nosotros</a>
-          <a href="#">Misión y Visión</a>
+          <a href="#">Equipo de Gestión</a>
           <a href="#">Proyecto Educativo</a>
         </div>
       </li>

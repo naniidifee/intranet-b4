@@ -10,7 +10,7 @@
 {% block content %}
 <div class="liceo-detail-wrapper">
   
-  <!-- FICHA PRINCIPAL (Estilo Referencia) -->
+  <!-- FICHA PRINCIPAL -->
   <div class="liceo-hero-card">
     
     <!-- Banner Superior -->
@@ -18,7 +18,6 @@
       {% if esp.imagen %}
         <img src="{% static esp.imagen %}" alt="{{ esp.nombre }}">
       {% else %}
-        <!-- Degradado institucional con ícono gigante si aún no cargas foto -->
         <div class="liceo-banner-fallback">
           <i class="fa-solid {{ esp.icon }}"></i>
         </div>
@@ -42,7 +41,7 @@
 
     <hr class="liceo-divider">
 
-    <!-- Metadatos en 2 columnas -->
+    <!-- Metadatos en 2 columnas (Incluyendo Coordinador) -->
     <div class="liceo-meta-grid">
       
       <!-- Título / Certificación -->
@@ -78,6 +77,17 @@
         </div>
       </div>
 
+      <!-- Coordinador de Especialidad -->
+      <div class="liceo-meta-item">
+        <div class="liceo-meta-icon">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="liceo-meta-text">
+          <span class="meta-label">Coordinador(a) de Especialidad</span>
+          <strong class="meta-value">{{ esp.coordinador|default:"Por confirmar" }}</strong>
+        </div>
+      </div>
+
       <!-- Jornada -->
       <div class="liceo-meta-item">
         <div class="liceo-meta-icon">
@@ -94,14 +104,14 @@
 
   <!-- RUTA DE NAVEGACIÓN (Breadcrumb) -->
   <nav class="liceo-breadcrumb" aria-label="Breadcrumb">
-    <a href="{% url 'inicio' %}#especialidades">Especialidades</a>
+    <a href="{% url 'home' %}#especialidades">Especialidades</a>
     <span>&rsaquo;</span>
-    <a href="{% url 'inicio' %}#especialidades">Área {{ esp.badge|default:"Técnico Profesional" }}</a>
+    <a href="{% url 'home' %}#especialidades">Área {{ esp.badge|default:"Técnico Profesional" }}</a>
     <span>&rsaquo;</span>
     <strong>{{ esp.nombre }}</strong>
   </nav>
 
-  <!-- CONTENIDO CURRICULAR (Secciones inferiores) -->
+  <!-- CONTENIDO CURRICULAR -->
   <div class="spec-info-grid">
     
     <!-- Perfil de Egreso -->
@@ -132,9 +142,9 @@
 
   </div>
 
-  <!-- BOTÓN VOLVER A LA SECCIÓN ESPECIALIDADES DEL INDEX -->
+  <!-- BOTÓN VOLVER -->
   <div class="spec-back-wrapper">
-    <a href="{% url 'inicio' %}#especialidades" class="spec-back-btn">
+    <a href="{% url 'home' %}#especialidades" class="spec-back-btn">
       <i class="fa-solid fa-arrow-left"></i> Volver a Especialidades
     </a>
   </div>

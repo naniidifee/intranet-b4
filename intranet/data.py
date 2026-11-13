@@ -3,7 +3,8 @@ ESPECIALIDADES_DATA = {
         'nombre': 'Administración',
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-folder-open',
-        'descripcion': 'Formación especializada en gestión operativa, contabilidad aplicada, legislación laboral y administración de recursos humanos para empresas públicas y privadas.',
+        'descripcion': 'La especialidad de Administración forma técnicos capaces de gestionar procesos organizacionales en empresas públicas y privadas. Los estudiantes desarrollan competencias en contabilidad, gestión de personal, manejo de sistemas informáticos y atención al cliente.',
+        'coordinador': 'Prof. Laura Alarcon',
         'perfil': 'El técnico en Administración está capacitado para procesar información comercial, ejecutar trámites tributarios y laborales, apoyar la gestión financiera y aplicar sistemas informáticos de gestión contable.',
         'campo': [
             'Empresas del sector comercial, servicios e industrial',
@@ -22,7 +23,8 @@ ESPECIALIDADES_DATA = {
         'nombre': 'Electrónica',
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-microchip',
-        'descripcion': 'Especialidad enfocada en el diseño, montaje, mantenimiento y programación de sistemas electrónicos, automatización industrial y telecomunicaciones.',
+        'descripcion': 'La especialidad de Electrónica forma técnicos capaces de analizar, instalar y mantener sistemas electrónicos analógicos y digitales, equipos de telecomunicaciones y sistemas de automatización industrial.',
+        'coordinador': 'Prof. Jorge Tabilo',
         'perfil': 'Capacitados para diagnosticar, reparar y programar circuitos electrónicos, microcontroladores y sistemas automatizados respetando normas internacionales de seguridad técnica.',
         'campo': [
             'Empresas de telecomunicaciones y redes',
@@ -41,7 +43,8 @@ ESPECIALIDADES_DATA = {
         'nombre': 'Electricidad',
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-bolt',
-        'descripcion': 'Preparación técnica para la instalación, mantención y certificación de redes eléctricas domiciliarias e industriales, junto con la integración de energía solar fotovoltaica.',
+        'descripcion': 'La especialidad de Electrónica forma técnicos capaces de analizar, instalar y mantener sistemas electrónicos analógicos y digitales, equipos de telecomunicaciones y sistemas de automatización industrial.',
+        'coordinador': 'Prof. Jorge Bugueño',
         'perfil': 'Desarrolla proyectos eléctricos cumpliendo la normativa SEC vigente, ejecuta mantenimientos preventivos y correctivos en tableros y opera sistemas fotovoltaicos.',
         'campo': [
             'Empresas de montaje y mantenimiento eléctrico',
@@ -61,6 +64,7 @@ ESPECIALIDADES_DATA = {
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-laptop-code',
         'descripcion': 'Formación práctica en el ciclo de desarrollo de software, creación de aplicaciones web, administración de bases de datos y soporte técnico en TIC.',
+        'coordinador': 'Prof. Juan Carlos Díaz',
         'perfil': 'Capaz de construir aplicaciones funcionales orientadas a objetos, estructurar bases de datos relacionales y diseñar interfaces de usuario responsivas para entornos web y móviles.',
         'campo': [
             'Empresas de desarrollo de software e innovación digital',
@@ -79,7 +83,8 @@ ESPECIALIDADES_DATA = {
         'nombre': 'Gastronomía',
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-utensils',
-        'descripcion': 'Especialización en artes culinarias, elaboración de preparaciones frías y calientes, repostería avanzada y control estricto de higiene alimentaria (HACCP).',
+        'descripcion': 'La especialidad de Gastronomía forma técnicos con dominio de técnicas culinarias nacionales e internacionales, pastelería profesional y gestión de cocina. Con énfasis en la gastronomía nortina y andina.',
+        'coordinador': 'Prof. Alejandra Tello',
         'perfil': 'El egresado administra cocinas profesionales, ejecuta técnicas de corte y cocción nacionales e internacionales y planifica menús equilibrados y rentables.',
         'campo': [
             'Restaurantes, hoteles y cruceros',
@@ -98,7 +103,8 @@ ESPECIALIDADES_DATA = {
         'nombre': 'Turismo',
         'badge': 'Técnico de Nivel Medio',
         'icon': 'fa-plane-departure',
-        'descripcion': 'Desarrollo de competencias en guiado turístico, puesta en valor del patrimonio natural y cultural regional, sostenibilidad y atención protocolar de excelencia.',
+        'descripcion': 'La especialidad de Turismo prepara técnicos con sólida formación en gestión de servicios turísticos, hospitalidad y valoración del patrimonio cultural y natural del norte de Chile.',
+        'coordinador': 'Prof. Claudia Sandrock',
         'perfil': 'Capacitado para diseñar itinerarios turísticos, coordinar servicios de alojamiento y traslados, comunicar atributos patrimoniales y brindar atención directa a turistas en múltiples idiomas.',
         'campo': [
             'Agencias de viajes y touroperadores regionales',
