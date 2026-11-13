@@ -24,56 +24,57 @@
 
 El desarrollo del sistema se encuentra organizado de forma modular a través de iteraciones Scrum:
 
-### 🔄 Sprint 1: Auth & Consultas *(24 sep – 8 oct)*
-> *Garantizar el acceso seguro de los usuarios según su rol y permitir la consulta centralizada y protegida de la parrilla horaria y salidas de alumnos.*
+# 🏫 Trazabilidad de Historias de Usuario - Módulo Intranet
 
-*   `SCRUM-15` **HU11:** Consulta de horarios de salida diarios
-*   `SCRUM-34` **HU30:** Anonimización y protección de datos sensibles
-*   `SCRUM-10` **HU06:** Detalle de asignaturas electivas y talleres
-*   `SCRUM-7` **HU03:** Consulta centralizada de horarios
-*   `SCRUM-5` **HU01:** Autenticación dual de usuarios
-*   `SCRUM-6` **HU02:** Gestión de roles y permisos
-*   `SCRUM-9` **HU05:** Recuperación autoservicio de clave
+Este documento detalla la correspondencia técnica y funcional entre los componentes desarrollados en el frontend/backend (`base.html`, `index.html`, `footer.html`, `especialidades.html`) y las Historias de Usuario (HUs) del backlog del proyecto para el **Liceo Bicentenario de Excelencia Antonio Varas de la Barra**.
 
 ---
 
-### 🔄 Sprint 2: Gestión & Claves *(27 sep – 22 oct)*
-> *Habilitar la edición dinámica y carga masiva de horarios por parte de UTP, asegurando la trazabilidad mediante registros de auditoría y gestión de reemplazos.*
+## 🔐 1. Sprint 1: Auth & Consultas
+*Garantizar el acceso seguro de los usuarios según su rol y permitir la consulta centralizada de horarios y salidas.*
 
-*   `SCRUM-19` **HU15:** Carga masiva de horarios vía Excel/CSV
-*   `SCRUM-16` **HU12:** Registro de suspensiones y avisos de jornada
-*   `SCRUM-21` **HU17:** Asignación temporal de profesores reemplazantes
-*   `SCRUM-29` **HU25:** Justificación obligatoria de cambios de horario
-*   `SCRUM-14` **HU10:** Registro de auditoría y cambios (Logs)
-*   `SCRUM-8` **HU04:** Edición dinámica de horarios
-*   `SCRUM-27` **HU23:** Configuración de vigencia de contraseñas
-
----
-
-### 🔄 Sprint 3: Recintos & Mapa *(27 sep – 5 nov)*
-> *Implementar el módulo de gestión y reserva de espacios físicos con validación automática de choques y visualización en mapa.*
-
-*   `SCRUM-22` **HU18:** Gestión y aprobación de reservas de recintos
-*   `SCRUM-23` **HU19:** Parametrización de salas y equipamiento
-*   `SCRUM-25` **HU21:** Búsqueda de salas y espacios desocupados
-*   `SCRUM-28` **HU24:** Monitoreo visual de ocupación por pabellón
-*   `SCRUM-13` **HU09:** Mapa de orientación digital (Wayfinding)
-*   `SCRUM-12` **HU08:** Validación de cruces en reservas
-*   `SCRUM-11` **HU07:** Reserva digital de espacios comunes
+| ID | Historia de Usuario | Componente / Vista Asociada | Descripción Funcional |
+| :--- | :--- | :--- | :--- |
+| **SCRUM-5** | **HU01: Autenticación dual** | `base.html` (Navbar / Acceso) | Diferenciación del acceso seguro según el rol institucional (estudiante, docente, UTP o inspectoría). |
+| **SCRUM-6** | **HU02: Gestión de roles y permisos** | `base.html` / Control de Sesión | Restricción de navegación y vistas según los privilegios del usuario autenticado. |
+| **SCRUM-7** | **HU03: Consulta centralizada de horarios** | `index.html` (Estructura Base) | Punto de partida para que la comunidad escolar consulte la información general y horarios. |
+| **SCRUM-15** | **HU11: Consulta de salidas diarias** | `footer.html` / Accesos Institucionales | Visualización de flujos y horarios de salida diarios de los alumnos. |
+| **SCRUM-10** | **HU06: Detalle de electivos y talleres** | `especialidades.html` | Muestra estructurada de perfiles, módulos clave y campos laborales de la formación técnica. |
 
 ---
 
-### 🔄 Sprint 4: TP e Inspectoría *(27 sep – 19 nov)*
-> *Optimizar la operación diaria del liceo mediante alertas en tiempo real, monitoreo de salas por pabellón y filtros especializados para la enseñanza TP e Inspectoría.*
+## ⚙️ 2. Sprint 2: Gestión & Claves
+*Habilitar la edición dinámica y carga masiva de horarios, asegurando trazabilidad y control administrativo.*
 
-*   `SCRUM-18` **HU14:** Coordinación horaria y articulación PIE
-*   `SCRUM-17` **HU13:** Identificación visual de profesores volantes
-*   `SCRUM-20` **HU16:** Exportación de horario semanal a PDF
-*   `SCRUM-24` **HU20:** Notificación de cambio de sala de última hora
-*   `SCRUM-26` **HU22:** Programación de rotación de grupos en talleres
-*   `SCRUM-30` **HU26:** Filtro de parrilla por especialidad técnica
-*   `SCRUM-31` **HU27:** Búsqueda rápida de docentes por ubicación
-*   `SCRUM-32` **HU28:** Inhabilitación temporal de salas por mantención
-*   `SCRUM-33` **HU29:** Generación de planilla diaria de control de salidas
+| ID | Historia de Usuario | Componente / Backend Asociado | Descripción Funcional |
+| :--- | :--- | :--- | :--- |
+| **SCRUM-8** | **HU04: Edición dinámica de horarios** | Módulo UTP | Gestión ágil de la matriz horaria directamente desde el panel de administración. |
+| **SCRUM-19** | **HU15: Carga masiva (Excel/CSV)** | Motor de Importación UTP | Actualización masiva de parrillas académicas reflejadas de forma automática en el frontend. |
+| **SCRUM-14** | **HU10: Auditoría y cambios (Logs)** | Sistema de Trazabilidad | Registro histórico de modificaciones realizadas sobre las parrillas académicas. |
+| **SCRUM-29** | **HU25: Justificación de cambios** | Validación de Cambios UTP | Requisito administrativo obligatorio al modificar la planificación horaria. |
 
 ---
+
+## 🗺️ 3. Sprint 3: Recintos, Wayfinding & Reservas
+*Implementación del módulo de orientación espacial, gestión y monitoreo de ocupación.*
+
+| ID | Historia de Usuario | Módulo / Enlace Conceptual | Descripción Funcional |
+| :--- | :--- | :--- | :--- |
+| **SCRUM-13** | **HU09: Mapa de orientación digital** | Catálogos Institucionales | Vinculación visual de dependencias, pabellones y especialidades dentro del recinto. |
+| **SCRUM-11** | **HU07: Reserva de espacios comunes** | Módulo de Infraestructura | Solicitud digital de salas, laboratorios y recintos compartidos. |
+| **SCRUM-12** | **HU08: Validación de cruces** | Motor de Restricciones | Prevención automática de superposiciones en reservas de salas. |
+| **SCRUM-22** | **HU18: Aprobación de reservas** | Panel de Administración | Gestión y validación de solicitudes de espacios físicos. |
+| **SCRUM-23** | **HU19: Parametrización de salas** | Configuración de Equipamiento | Registro de capacidades, recursos y características por espacio. |
+| **SCRUM-25** | **HU21: Búsqueda de desocupados** | Filtros de Disponibilidad | Localización rápida de salas y espacios libres en tiempo real. |
+| **SCRUM-28** | **HU24: Monitoreo por pabellón** | Panel Visual General | Estado de ocupación física de las instalaciones del establecimiento. |
+
+---
+
+## 🛠️ 4. Sprint 4: TP e Inspectoría
+*Optimización de la operación diaria mediante filtros especializados y control de asistencia.*
+
+| ID | Historia de Usuario | Componente Asociado | Descripción Funcional |
+| :--- | :--- | :--- | :--- |
+| **SCRUM-30** | **HU26: Filtro por especialidad técnica** | `especialidades.html` / Parrilla TP | Desglose y segmentación de horarios por especialidad (Administración, Programación, Electricidad, Electrónica, Gastronomía y Turismo). |
+| **SCRUM-33** | **HU29: Planilla diaria de control de salidas** | `footer.html` / Inspectoría | Soporte operativo para el registro y validación de salidas de estudiantes. |
+| **SCRUM-18** | **HU14: Coordinación horaria y PIE** | Apoyo Pedagógico | Sincronización de horarios de integración escolar y apoyos docentes. |
