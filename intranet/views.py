@@ -27,7 +27,7 @@ def intranet_login(request):
         else:
             messages.error(request, 'Credenciales incorrectas. Verifique su usuario y contraseña.')
 
-    return render(request, 'intranet/login.html')
+    return render(request, 'usuarios/login.html')
 
 
 # Diccionario centralizado con la información de cada especialidad
@@ -49,3 +49,22 @@ def horario_estudiante(request):
         'intranet/estudiantes/horario.html',
         {'horarios': horarios}
     )
+
+@login_required(login_url="login")
+def intranet_dashboard(request):
+    if request.user.is_superuser:
+        return redirect("crear_usuario")
+    try:
+        rol = request.user.perfil.rol.nombre
+    except AttributeError:
+        messages.error(request, "Tu cuenta aún no tiene un rol asignado.")
+        return redirect("home")
+
+    if rol == "Administrador":
+        return redirect("crear_usuario")
+
+    if rol == "Estudiante":
+        return redirect("horario_estudiante")
+
+    messages.info(request, "La pantalla de tu rol aún está en preparación.")
+    return redirect("home")

@@ -14,7 +14,7 @@ class Rol(models.Model):
 class perfil(models.Model):
     rol = models.ForeignKey(Rol, on_delete=models.RESTRICT, default=rol_defecto)
     nombre_completo= models.CharField(max_length=25)
-    rut = models.CharField(max_length=9)
+    rut = models.CharField(max_length=10)
     curso = models.CharField( max_length=25)
 
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)

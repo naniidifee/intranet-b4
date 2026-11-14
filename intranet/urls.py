@@ -12,4 +12,6 @@ urlpatterns = [
     path('especialidades/<slug:slug>/', views.especialidad_detail, name='especialidad_detail'),
 
     path('estudiantes/horario/', views.horario_estudiante, name='horario_estudiante'),
+
+    path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
 ]
