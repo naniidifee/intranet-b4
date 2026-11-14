@@ -41,3 +41,11 @@ def especialidad_detail(request, slug):
     if not esp:
         return render(request, '404.html', status=404)
     return render(request, 'intranet/especialidades.html', {'esp': esp})
+
+def horario_estudiante(request):
+    horarios = []
+    return render(
+        request,
+        'intranet/estudiantes/horario.html',
+        {'horarios': horarios}
+    )

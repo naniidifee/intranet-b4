@@ -1,0 +1,169 @@
+{% extends "intranet/base.html" %}
+
+{% block title %}Horario del estudiante{% endblock %}
+
+{% block content %}
+
+<div class="portal-estudiante">
+    <aside class="portal-menu">
+        <h2>Accesos directos</h2>
+        <nav aria-label="Accesos directos">
+            <a href="#mi-horario">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Mi horario</span>
+            </a>
+
+            <a href="#mi-electividad">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Mi electividad</span>
+            </a>
+        </nav>
+        <p class="portal-menu-label">VIDA ESCOLAR</p>
+        <nav aria-label="Vida escolar">
+            <a href="#mi-curso">
+                <i class="fa-solid fa-users"></i>
+                <span>Mi curso</span>
+            </a>
+
+            <a href="#talleres">
+                <i class="fa-solid fa-palette"></i>
+                <span>Talleres</span>
+            </a>
+
+            <a href="#mapa-liceo">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Mapa del liceo</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="portal-contenido">
+
+        <section class="horario-estudiante" id="mi-horario">
+            <div class="horario-cabecera">
+                <div>
+                    <h2>Mi horario</h2>
+                    <p>Vista semanal de tus clases</p>
+                </div>
+                <span class="horario-etiqueta">Lunes a viernes</span>
+            </div>
+
+            <div class="tabla-horario-scroll">
+                <table class="horario-semanal">
+                    <thead>
+                        <tr>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bloque in bloques %}
+                            <tr>
+                                <th class="horario-bloque">
+                                    Bloque {{ bloque.numero }}
+                                    <small>
+                                        {{ bloque.hora_inicio }}–{{ bloque.hora_fin }}
+                                    </small>
+                                </th>
+
+                                {% for dia in bloque.dias %}
+                                    <td>
+                                        {% for clase in dia.clases %}
+                                            <article class="clase-card tipo-{{ clase.tipo }}">
+                                                <strong>{{ clase.asignatura }}</strong>
+                                                <span>
+                                                    {{ clase.hora_inicio }}–{{ clase.hora_fin }}
+                                                </span>
+                                                <span>{{ clase.docente }}</span>
+                                                <span>{{ clase.sala }}</span>
+                                                <small class="clase-tipo">
+                                                    {{ clase.tipo_etiqueta }}
+                                                </small>
+                                            </article>
+                                        {% empty %}
+                                            <span class="bloque-vacio">—</span>
+                                        {% endfor %}
+                                    </td>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6">
+                                            <p class="mensaje-vacio">
+                                                Aún no hay bloques de horario disponibles.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <p class="mensaje-vacio">
+                                        Aún no hay horarios disponibles para esta semana.
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="electividad-estudiante" id="mi-electividad">
+            <h2>Mi electividad</h2>
+
+            {% if electividad %}
+                <p><strong>Asignatura:</strong> {{ electividad.asignatura }}</p>
+                <p><strong>Docente:</strong> {{ electividad.docente }}</p>
+                <p><strong>Día:</strong> {{ electividad.dia }}</p>
+                <p><strong>Bloques:</strong> {{ electividad.bloques }}</p>
+                <p><strong>Sala:</strong> {{ electividad.sala }}</p>
+            {% else %}
+                <p>Aún no hay una electividad asignada.</p>
+            {% endif %}
+        </section>
+
+        <section class="horario-estudiante" id="mi-curso">
+            <h2>Mi curso</h2>
+
+            {% if curso_estudiante %}
+                <p><strong>Curso:</strong> {{ curso_estudiante.nombre }}</p>
+                <p><strong>Profesor/a jefe:</strong> {{ curso_estudiante.profesor_jefe }}</p>
+            {% else %}
+                <p class="mensaje-vacio">Aún no hay información de tu curso.</p>
+            {% endif %}
+        </section>
+
+        <section class="horario-estudiante" id="talleres">
+            <h2>Mis talleres</h2>
+
+            {% if talleres %}
+                <ul>
+                    {% for taller in talleres %}
+                        <li>
+                            <strong>{{ taller.nombre }}</strong>
+                            {% if taller.dia %} — {{ taller.dia }}{% endif %}
+                            {% if taller.horario %}, {{ taller.horario }}{% endif %}
+                            {% if taller.lugar %}, {{ taller.lugar }}{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="mensaje-vacio">Aún no tienes talleres asignados para mostrar.</p>
+            {% endif %}
+        </section>
+
+        <section class="horario-estudiante" id="mapa-liceo">
+            <h2>Mapa del liceo</h2>
+
+            {% if mapa_liceo_url %}
+                <img src="{{ mapa_liceo_url }}" alt="Mapa del liceo">
+            {% else %}
+                <p class="mensaje-vacio">El mapa del liceo estará disponible próximamente.</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}

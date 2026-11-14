@@ -2611,3 +2611,306 @@ footer {
     }
 }
 
+/* Portal de estudiantes: consulta de horario */
+.horario-estudiante {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 2rem;
+}
+
+.horario-estudiante h1 {
+    color: #102b4e;
+    margin-bottom: 0.5rem;
+}
+
+.horario-estudiante .mensaje-vacio {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-left: 4px solid #c99a2e;
+    background: #f5f7fa;
+    color: #334155;
+    border-radius: 0.5rem;
+}
+
+.horario-estudiante table {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+}
+
+.horario-estudiante th,
+.horario-estudiante td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #dbe2ea;
+    text-align: left;
+}
+
+.horario-estudiante th {
+    background: #102b4e;
+    color: white;
+}
+
+.horario-estudiante tbody tr:nth-child(even) {
+    background: #f5f7fa;
+}
+
+/* Estructura del portal de estudiantes */
+.portal-estudiante {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.portal-menu {
+    position: sticky;
+    top: 1.5rem;
+    padding: 1.25rem;
+    background: #102b4e;
+    border-radius: 0.75rem;
+}
+
+.portal-menu h2 {
+    margin: 0 0 1rem;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.portal-menu nav {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.portal-menu a {
+    display: block;
+    padding: 0.75rem;
+    border-radius: 0.4rem;
+    color: white;
+    text-decoration: none;
+}
+
+.portal-menu a:hover,
+.portal-menu a:focus {
+    background: #c99a2e;
+    color: #102b4e;
+}
+
+.portal-contenido {
+    min-width: 0;
+}
+
+.portal-contenido .horario-estudiante {
+    max-width: none;
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px rgb(16 43 78 / 8%);
+}
+
+.portal-contenido .electividad-estudiante {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px rgb(16 43 78 / 8%);
+}
+
+@media (max-width: 760px) {
+    .portal-estudiante {
+        grid-template-columns: 1fr;
+    }
+
+    .portal-menu {
+        position: static;
+    }
+}
+.portal-menu {
+    background: #102b4e;
+}
+
+.portal-menu h2 {
+    color: #ffffff;
+}
+
+.portal-menu a {
+    background: #173b63;
+    color: #ffffff;
+}
+
+.portal-menu a:hover,
+.portal-menu a:focus {
+    background: #c99a2e;
+    color: #102b4e;
+}
+.portal-menu {
+    background: #102b4e;
+}
+
+.portal-menu-label {
+    margin: 1.25rem 0 0.5rem;
+    color: #d6deea;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.portal-menu nav {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.portal-menu nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.6rem;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.portal-menu nav a i {
+    width: 1.2rem;
+    text-align: center;
+}
+
+.portal-menu nav a:hover,
+.portal-menu nav a:focus,
+.portal-menu nav a.activo {
+    background: #c99a2e;
+    color: #102b4e;
+}
+/* Evita el fondo blanco del menú */
+.portal-menu nav {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* Las opciones quedan azules por defecto */
+.portal-menu nav a {
+    background: #173b63;
+    color: #ffffff;
+}
+
+/* Amarillo al pasar el cursor o al seleccionar una sección */
+.portal-menu nav a:hover,
+.portal-menu nav a:focus,
+body:has(#mi-horario:target) .portal-menu a[href="#mi-horario"],
+body:has(#mi-electividad:target) .portal-menu a[href="#mi-electividad"],
+body:has(#horario-especialidad:target) .portal-menu a[href="#horario-especialidad"],
+body:has(#mi-curso:target) .portal-menu a[href="#mi-curso"],
+body:has(#talleres:target) .portal-menu a[href="#talleres"],
+body:has(#mapa-liceo:target) .portal-menu a[href="#mapa-liceo"] {
+    background: #c99a2e;
+    color: #102b4e;
+}
+/* Horario semanal */
+.horario-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.horario-cabecera h2 {
+    margin-bottom: 0.3rem;
+    color: #102b4e;
+}
+
+.horario-cabecera p {
+    margin: 0;
+    color: #5b6573;
+}
+
+.horario-etiqueta {
+    padding: 0.5rem 0.75rem;
+    border-radius: 999px;
+    background: #eef2f7;
+    color: #102b4e;
+    font-size: 0.85rem;
+}
+
+.tabla-horario-scroll {
+    overflow-x: auto;
+}
+
+.horario-semanal {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0.4rem;
+}
+
+.horario-semanal th,
+.horario-semanal td {
+    padding: 0.75rem;
+    vertical-align: top;
+    text-align: left;
+}
+
+.horario-semanal thead th {
+    background: #102b4e;
+    color: #ffffff;
+    border-radius: 0.5rem;
+}
+
+.horario-semanal .horario-bloque {
+    min-width: 115px;
+    background: #eef2f7;
+    color: #102b4e;
+    border-radius: 0.5rem;
+}
+
+.horario-bloque small {
+    display: block;
+    margin-top: 0.35rem;
+    font-weight: 400;
+}
+
+.horario-semanal td {
+    min-width: 140px;
+    background: #f5f7fa;
+    border-radius: 0.5rem;
+}
+
+.clase-card {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    border-left: 4px solid #102b4e;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: #243247;
+    font-size: 0.88rem;
+}
+
+.clase-card + .clase-card {
+    margin-top: 0.5rem;
+}
+
+.clase-card.tipo-electiva {
+    border-left-color: #c99a2e;
+}
+
+.clase-card.tipo-especialidad {
+    border-left-color: #397a9b;
+}
+
+.clase-card .clase-tipo {
+    width: fit-content;
+    padding: 0.2rem 0.45rem;
+    border-radius: 999px;
+    background: #eef2f7;
+    color: #102b4e;
+}
+
+.bloque-vacio {
+    color: #8a94a3;
+}
