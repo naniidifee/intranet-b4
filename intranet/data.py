@@ -1,122 +1,178 @@
 ESPECIALIDADES_DATA = {
     'administracion': {
         'nombre': 'Administración',
-        'badge': 'Técnico de Nivel Medio',
+        'slug': 'administracion',
+        'badge': 'Gestión',
         'icon': 'fa-folder-open',
-        'descripcion': 'La especialidad de Administración forma técnicos capaces de gestionar procesos organizacionales en empresas públicas y privadas. Los estudiantes desarrollan competencias en contabilidad, gestión de personal, manejo de sistemas informáticos y atención al cliente.',
-        'coordinador': 'Prof. Laura Alarcon',
-        'perfil': 'El técnico en Administración está capacitado para procesar información comercial, ejecutar trámites tributarios y laborales, apoyar la gestión financiera y aplicar sistemas informáticos de gestión contable.',
+        'descripcion': 'Gestión administrativa, contabilidad, recursos humanos y sistemas de información empresarial.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'El Técnico de Nivel Medio en Administración está preparado para realizar gestiones administrativas en las áreas contable, financiera y de recursos humanos de una empresa.',
         'campo': [
-            'Empresas del sector comercial, servicios e industrial',
-            'Instituciones públicas y municipales',
-            'Departamentos de Recursos Humanos y Contabilidad',
-            'Emprendimientos propios o gestión independiente'
+            'Empresas públicas y privadas de diversos sectores económicos.',
+            'Departamentos de administración, finanzas y recursos humanos.',
+            'Emprendimientos propios y gestión de negocios.'
         ],
         'modulos': [
-            'Gestión comercial y tributaria',
-            'Procesos administrativos y contables',
-            'Legislación laboral y remuneraciones',
-            'Atención a clientes y comunicación organizacional'
-        ]
+            'Gestión de Oficinas',
+            'Contabilidad General',
+            'Administración de Recursos Humanos',
+            'Emprendimiento y Habilidades Emprendedoras'
+        ],
+        'pdf_url': 'recursos/pdf/Programa_Administracion.pdf'
     },
     'electronica': {
         'nombre': 'Electrónica',
-        'badge': 'Técnico de Nivel Medio',
+        'slug': 'electronica',
+        'badge': 'Tecnología',
         'icon': 'fa-microchip',
-        'descripcion': 'La especialidad de Electrónica forma técnicos capaces de analizar, instalar y mantener sistemas electrónicos analógicos y digitales, equipos de telecomunicaciones y sistemas de automatización industrial.',
-        'coordinador': 'Prof. Jorge Tabilo',
-        'perfil': 'Capacitados para diagnosticar, reparar y programar circuitos electrónicos, microcontroladores y sistemas automatizados respetando normas internacionales de seguridad técnica.',
+        'descripcion': 'Sistemas digitales, automatización industrial, instrumentación y telecomunicaciones.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'Capacitado para montar, mantener y reparar sistemas electrónicos analógicos y digitales, equipos de control industrial y redes de comunicación.',
         'campo': [
-            'Empresas de telecomunicaciones y redes',
-            'Industria automatizada y robótica aplicada',
-            'Servicios técnicos informáticos y electrónicos',
-            'Plantas de producción minera e industrial'
+            'Industrias de manufactura y minería.',
+            'Empresas de telecomunicaciones y redes.',
+            'Servicios técnicos de mantenimiento de equipos electrónicos.'
         ],
         'modulos': [
-            'Circuitos y sistemas digitales',
-            'Microcontroladores y programación',
-            'Sistemas de telecomunicaciones',
-            'Mantenimiento de equipos electrónicos'
-        ]
-    },
-    'electricidad': {
-        'nombre': 'Electricidad',
-        'badge': 'Técnico de Nivel Medio',
-        'icon': 'fa-bolt',
-        'descripcion': 'La especialidad de Electrónica forma técnicos capaces de analizar, instalar y mantener sistemas electrónicos analógicos y digitales, equipos de telecomunicaciones y sistemas de automatización industrial.',
-        'coordinador': 'Prof. Jorge Bugueño',
-        'perfil': 'Desarrolla proyectos eléctricos cumpliendo la normativa SEC vigente, ejecuta mantenimientos preventivos y correctivos en tableros y opera sistemas fotovoltaicos.',
-        'campo': [
-            'Empresas de montaje y mantenimiento eléctrico',
-            'Compañías generadoras y distribuidoras de energía',
-            'Proyectos de energías renovables (Solar/Eólica)',
-            'Ejercicio libre de la profesión (Certificación SEC)'
+            'Sistemas Electrónicos Análogos y Digitales',
+            'Automatización y Control Industrial',
+            'Instalación y Mantenimiento de Redes',
+            'Sistemas de Telecomunicaciones'
         ],
-        'modulos': [
-            'Instalaciones eléctricas domiciliarias e industriales',
-            'Sistemas fotovoltaicos y energías limpias',
-            'Automatización de comandos eléctricos',
-            'Normativa y seguridad eléctrica'
-        ]
+        'pdf_url': 'recursos/pdf/Programa_Electronica.pdf'
     },
     'programacion': {
         'nombre': 'Programación',
-        'badge': 'Técnico de Nivel Medio',
+        'slug': 'programacion',
+        'badge': 'Informática',
         'icon': 'fa-laptop-code',
-        'descripcion': 'Formación práctica en el ciclo de desarrollo de software, creación de aplicaciones web, administración de bases de datos y soporte técnico en TIC.',
-        'coordinador': 'Prof. Juan Carlos Díaz',
-        'perfil': 'Capaz de construir aplicaciones funcionales orientadas a objetos, estructurar bases de datos relacionales y diseñar interfaces de usuario responsivas para entornos web y móviles.',
+        'descripcion': 'Desarrollo de software, aplicaciones web y móviles, bases de datos y fundamentos de computación.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'Diseña, codifica y prueba aplicaciones informáticas para entornos de escritorio, web y dispositivos móviles utilizando lenguajes y bases de datos actuales.',
         'campo': [
-            'Empresas de desarrollo de software e innovación digital',
-            'Departamentos de informática y TI institucional',
-            'Agencias de desarrollo web y aplicaciones móviles',
-            'Trabajo remoto y consultoría independiente (Freelance)'
+            'Empresas de desarrollo de software y tecnologías de la información.',
+            'Áreas de TI y soporte en organizaciones públicas y privadas.',
+            'Desarrollo freelance y consultoría tecnológica.'
         ],
         'modulos': [
-            'Lógica de programación y estructuras de datos',
-            'Desarrollo web Front-End y Back-End',
-            'Diseño y modelado de Bases de Datos',
-            'Soporte técnico y despliegue de sistemas'
-        ]
+            'Programación de Software',
+            'Diseño de Aplicaciones Web y Móviles',
+            'Gestión de Bases de Datos',
+            'Soporte y Mantenimiento de Sistemas'
+        ],
+        'pdf_url': 'recursos/pdf/Programa_Programacion.pdf'
+    },
+    'electricidad': {
+        'nombre': 'Electricidad',
+        'slug': 'electricidad',
+        'badge': 'Industrial',
+        'icon': 'fa-bolt',
+        'descripcion': 'Instalaciones eléctricas residenciales e industriales, mantenimiento y sistemas fotovoltaicos.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'Especialista en proyectar, ejecutar y mantener instalaciones eléctricas de baja tensión, sistemas de control automático y energías renovables.',
+        'campo': [
+            'Empresas constructoras y contratistas eléctricas.',
+            'Industrias con plantas de procesos y tableros de control.',
+            'Empresas de energías renovables (sistemas solares).'
+        ],
+        'modulos': [
+            'Instalaciones Eléctricas Domiciliarias e Industriales',
+            'Interpretación de Planos y Normativa Eléctrica',
+            'Mantenimiento de Máquinas Eléctricas',
+            'Sistemas de Energías Renovables'
+        ],
+        'pdf_url': 'recursos/pdf/Programa_Electricidad.pdf'
     },
     'gastronomia': {
         'nombre': 'Gastronomía',
-        'badge': 'Técnico de Nivel Medio',
+        'slug': 'gastronomia',
+        'badge': 'Servicios',
         'icon': 'fa-utensils',
-        'descripcion': 'La especialidad de Gastronomía forma técnicos con dominio de técnicas culinarias nacionales e internacionales, pastelería profesional y gestión de cocina. Con énfasis en la gastronomía nortina y andina.',
-        'coordinador': 'Prof. Alejandra Tello',
-        'perfil': 'El egresado administra cocinas profesionales, ejecuta técnicas de corte y cocción nacionales e internacionales y planifica menús equilibrados y rentables.',
+        'descripcion': 'Técnicas culinarias nacionales e internacionales, pastelería y gestión de cocina profesional.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'Competente en la preparación de alimentos, técnicas culinarias, repostería y en la administración básica de servicios de cocina y restaurantes.',
         'campo': [
-            'Restaurantes, hoteles y cruceros',
-            'Empresas de catering y banquetería',
-            'Pastelerías y panaderías artesanales',
-            'Servicios de alimentación institucional y colectiva'
+            'Hoteles, restaurantes, casinos y centros de eventos.',
+            'Cruceros y empresas de turismo y servicios de alimentación.',
+            'Emprendimientos gastronómicos propios.'
         ],
         'modulos': [
-            'Técnicas culinarias básicas y avanzadas',
-            'Pastelería, repostería y panadería',
-            'Higiene, inocuidad alimentaria y prevención de riesgos',
-            'Costos y montaje de servicios gastronómicos'
-        ]
+            'Preparación Culinaria Básica y Avanzada',
+            'Pastelería y Repostería',
+            'Higiene y Seguridad en la Manipulación de Alimentos',
+            'Gestión y Costos de Producción Culinaria'
+        ],
+        'pdf_url': 'recursos/pdf/Programa_Gastronomia.pdf'
     },
     'turismo': {
         'nombre': 'Turismo',
-        'badge': 'Técnico de Nivel Medio',
+        'slug': 'turismo',
+        'badge': 'Hospitalidad',
         'icon': 'fa-plane-departure',
-        'descripcion': 'La especialidad de Turismo prepara técnicos con sólida formación en gestión de servicios turísticos, hospitalidad y valoración del patrimonio cultural y natural del norte de Chile.',
-        'coordinador': 'Prof. Claudia Sandrock',
-        'perfil': 'Capacitado para diseñar itinerarios turísticos, coordinar servicios de alojamiento y traslados, comunicar atributos patrimoniales y brindar atención directa a turistas en múltiples idiomas.',
+        'descripcion': 'Gestión turística, hospitalidad, patrimonio cultural y natural del norte de Chile y el altiplano.',
+        'coordinador': 'Por confirmar',
+        'perfil': 'Capacitado para informar, guiar y asistir en servicios turísticos, recepción hotelera, diseño de rutas y revalorización del patrimonio local.',
         'campo': [
-            'Agencias de viajes y touroperadores regionales',
-            'Hoteles, resorts y complejos turísticos',
-            'Centros de información turística y museos',
-            'Proyectos de turismo comunitario y sustentable'
+            'Agencias de viajes y operadores turísticos.',
+            'Hoteles, hostales y centros de hospitalidad.',
+            'Corporaciones municipales de turismo y centros de información.'
         ],
         'modulos': [
-            'Diseño y conducción de tours patrimoniales',
-            'Hospitalidad y recepción hotelera',
-            'Geografía y patrimonio del Norte Grande de Chile',
-            'Inglés aplicado al turismo'
-        ]
+            'Operaciones de Información y Guía Turística',
+            'Gestión de Alojamientos y Hospitalidad',
+            'Patrimonio Cultural y Natural de Chile',
+            'Diseño de Productos y Circuitos Turísticos'
+        ],
+        'pdf_url': 'recursos/pdf/Programa_Turismo.pdf'
     }
 }
+
+equipo_data = [
+        {'nombre': 'Pablo Cadiz Chacon', 'cargo': 'Director', 'area': 'Dirección', 'icon': 'fa-user-tie'},
+        {'nombre': 'Omar Garcia Maya', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
+        {'nombre': 'Freddy Rojas Olivares', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
+        {'nombre': 'Andrea Godoy Sáez', 'cargo': 'Jefe UTP', 'area': 'UTP', 'icon': 'fa-chalkboard-user'},
+        {'nombre': 'M. Alejandra Letelier S.', 'cargo': 'Jefe UTP', 'area': 'UTP', 'icon': 'fa-chalkboard-user'},
+        {'nombre': 'Nicole Aguilera V.', 'cargo': 'Coordinadora TP', 'area': 'Técnico', 'icon': 'fa-screwdriver-wrench'},
+        {'nombre': 'Yasna Caqueo Araya', 'cargo': 'Convivencia Escolar', 'area': 'Convivencia', 'icon': 'fa-heart'},
+        {'nombre': 'Guillermo Miranda', 'cargo': 'Orientador', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
+        {'nombre': 'Marysol Mondaca R.', 'cargo': 'Orientadora', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
+        {'nombre': 'Paulina Aguirre', 'cargo': 'Orientadora', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
+        {'nombre': 'Carmen Robledo R.', 'cargo': 'Coordinadora PIE', 'area': 'PIE', 'icon': 'fa-puzzle-piece'},
+        {'nombre': 'Santos Rementeria P.', 'cargo': 'Coord. Biblioteca', 'area': 'Biblioteca', 'icon': 'fa-book'},
+        {'nombre': 'José Guiñez Oyarce', 'cargo': 'Coord. Enlaces TI', 'area': 'Tecnología', 'icon': 'fa-laptop'},
+        {'nombre': 'Gerardo López M.', 'cargo': 'Coord. Extraescolar', 'area': 'Extraescolar', 'icon': 'fa-person-running'},
+    ]
+
+NOTICIAS_DATA = [
+        {
+            'id': 1,
+            'titulo': 'Ceremonia de Certificación de Especialidades Técnicas',
+            'categoria': 'Académico',
+            'fecha': '12 Nov, 2026',
+            'autor': 'Dirección Académica',
+            'descripcion': 'Nuestros estudiantes de cuarto medio culminaron con éxito sus procesos prácticos en las distintas especialidades.',
+            'contenido': 'Durante la jornada de este miércoles, los alumnos de las carreras técnico-profesionales recibieron sus constancias de culminación de prácticas en una emotiva ceremonia junto a sus familias y docentes directivos.',
+            'icon': 'fa-graduation-cap'
+        },
+        {
+            'id': 2,
+            'titulo': 'Destacada participación en Feria de Innovación Tecnológica',
+            'categoria': 'Actividades',
+            'fecha': '05 Nov, 2026',
+            'autor': 'Departamento de Informática',
+            'descripcion': 'Alumnos del área de tecnología presentaron proyectos de automatización e IoT desarrollados en los talleres del liceo.',
+            'contenido': 'Con prototipos basados en Arduino, sensores y control móvil, los estudiantes demostraron el alto nivel de desarrollo técnico alcanzado en las especialidades de Programación y Electrónica.',
+            'icon': 'fa-trophy'
+        },
+        {
+            'id': 3,
+            'titulo': 'Proceso de Admisión y Matrículas para el Próximo Año',
+            'categoria': 'Institucional',
+            'fecha': '28 Oct, 2026',
+            'autor': 'Inspectoría General',
+            'descripcion': 'Conoce los plazos, requisitos y modalidades para postular a nuestras especialidades técnico profesionales acreditadas.',
+            'contenido': 'Se informa a toda la comunidad los periodos oficiales habilitados por el sistema de admisión escolar y las fechas de atención presencial en secretaría para consultas sobre vacantes disponibles.',
+            'icon': 'fa-bullhorn'
+        }
+    ]

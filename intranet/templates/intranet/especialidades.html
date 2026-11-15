@@ -13,15 +13,11 @@
   <!-- FICHA PRINCIPAL -->
   <div class="liceo-hero-card">
     
-    <!-- Banner Superior -->
-    <div class="liceo-hero-banner">
-      {% if esp.imagen %}
-        <img src="{% static esp.imagen %}" alt="{{ esp.nombre }}">
-      {% else %}
-        <div class="liceo-banner-fallback">
-          <i class="fa-solid {{ esp.icon }}"></i>
-        </div>
-      {% endif %}
+    <!-- Banner Superior Reemplazado por Icono Institucional -->
+    <div class="liceo-hero-banner" style="display: flex; justify-content: center; align-items: center; background: #0f172a; padding: 2.5rem 0; border-radius: 8px 8px 0 0;">
+      <div class="liceo-banner-fallback" style="font-size: 3rem; color: #f5a800;">
+        <i class="fa-solid {{ esp.icon }}"></i>
+      </div>
     </div>
 
     <!-- Etiquetas (Badges) -->
@@ -41,7 +37,7 @@
 
     <hr class="liceo-divider">
 
-    <!-- Metadatos en 2 columnas (Incluyendo Coordinador) -->
+    <!-- Metadatos en 2 columnas -->
     <div class="liceo-meta-grid">
       
       <!-- Título / Certificación -->
@@ -100,6 +96,18 @@
       </div>
 
     </div>
+
+    <!-- BOTÓN DE DESCARGA DE MALLA / PLAN DE ESTUDIO -->
+    <div style="margin-top: 2rem; text-align: center; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px dashed #cbd5e1;">
+      <p style="margin-bottom: 0.75rem; font-size: 0.95rem; color: #334155; font-weight: 500;">
+        ¿Deseas conocer en detalle las asignaturas y la malla curricular de esta carrera?
+      </p>
+      <a href="{% static esp.pdf_url %}" download class="btn-descargar-malla" style="display: inline-flex; align-items: center; gap: 0.5rem; background-color: #070d17; color: #ffffff; padding: 0.65rem 1.4rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: background 0.2s;">
+        <i class="fa-solid fa-file-pdf" style="color: #ef4444; font-size: 1.2rem;"></i> 
+        Descargar Plan de Estudio Oficial (PDF)
+      </a>
+    </div>
+
   </div>
 
   <!-- RUTA DE NAVEGACIÓN (Breadcrumb) -->

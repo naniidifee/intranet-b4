@@ -1,0 +1,42 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}Equipo de Gestión - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/equipo.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- CABECERA DE LA SECCIÓN -->
+  <header class="equipo-hero">
+    <div class="equipo-hero-inner">
+      <span class="equipo-kicker"><i class="fa-solid fa-star"></i> Liderazgo Institucional</span>
+      <h1>Equipo de Gestión</h1>
+      <p>Profesionales comprometidos con la excelencia educativa, la formación técnico-profesional y el bienestar de nuestra comunidad.</p>
+    </div>
+  </header>
+
+  <!-- GRILLA DINÁMICA DE DIRECTIVOS -->
+  <section class="equipo-section">
+    <div class="equipo-container">
+      <div class="equipo-grid">
+        
+        {% for miembro in equipo %}
+        <div class="equipo-card">
+          <div class="equipo-card-accent"></div>
+          <div class="equipo-avatar">
+            <i class="fa-solid {{ miembro.icon }}"></i>
+          </div>
+          <h3 class="equipo-name">{{ miembro.nombre }}</h3>
+          <p class="equipo-role">{{ miembro.cargo }}</p>
+          <span class="equipo-badge">{{ miembro.area }}</span>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </section>
+
+  {% include 'intranet/footer.html' %}
+{% endblock %}
