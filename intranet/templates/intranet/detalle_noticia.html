@@ -1,0 +1,56 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}{{ noticia.titulo }} - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/noticias.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div style="background-color: #f8fafc; padding: 4rem 1.5rem 6rem;">
+    <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+      
+      <!-- Navegación interna -->
+      <div style="margin-bottom: 1.5rem;">
+        <a href="{% url 'portal_noticias' %}" style="color: #64748b; text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+          <i class="fa-solid fa-arrow-left me-1"></i> Volver al Portal de Noticias
+        </a>
+      </div>
+
+      <!-- Categoría y Fecha -->
+      <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+        <span class="badge bg-warning text-dark px-3 py-1" style="font-weight: 600; font-size: 0.85rem;">{{ noticia.categoria }}</span>
+        <span style="color: #64748b; font-size: 0.9rem;"><i class="fa-regular fa-calendar me-1"></i> {{ noticia.fecha }}</span>
+        <span style="color: #64748b; font-size: 0.9rem;"><i class="fa-regular fa-user me-1"></i> {{ noticia.autor }}</span>
+      </div>
+
+      <!-- Título Principal -->
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #0f172a; margin-bottom: 1.5rem; line-height: 1.2;">
+        {{ noticia.titulo }}
+      </h1>
+
+      <hr style="border-color: #e2e8f0; margin-bottom: 2rem;">
+
+      <!-- Contenido de la Noticia -->
+      <div style="font-size: 1.05rem; color: #334155; line-height: 1.8;">
+        <p style="font-size: 1.15rem; font-weight: 500; color: #1e293b; margin-bottom: 1.5rem;">
+          {{ noticia.descripcion }}
+        </p>
+        <p>
+          {{ noticia.contenido }}
+        </p>
+      </div>
+
+      <!-- Botón inferior -->
+      <div style="margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 2rem; text-align: center;">
+        <a href="{% url 'portal_noticias' %}" class="btn btn-dark px-4 py-2" style="background-color: #0b192c; font-weight: 600; border-radius: 8px;">
+          Ver más noticias
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  {% include 'intranet/footer.html' %}
+{% endblock %}

@@ -76,8 +76,10 @@
         <div>
           <span class="section-label">Sobre Nosotros</span>
           <h2 class="section-title">Una institución orientada al desarrollo técnico y humano</h2>
-          <p class="section-desc">El Liceo Bicentenario de Excelencia Antonio Varas de la Barra, es un establecimiento dependiente del Servicio Local de Educación Pública "Chinchorro" y tiene la oportunidad de llevar a la realidad y ofrecer la oportunidad, a nuestros alumnos y alumnas de entregar una educación de calidad, gracias al esfuerzo y trabajo visionario de los docentes y a su espíritu creativo para entregar una educación de excelencia.
-                                    Actualmente el Liceo es dirigido por el director don David Delgado Meza y es secundado en sus funciones por 2 Directivos Docentes y 4 Directivos Técnicos Pedagógicos. Cuenta con una planta de 80 Docentes, 60 Asistentes de la Educación y una matrícula de 1101 estudiantes.</p>
+          <p class="section-desc">
+            El Liceo Bicentenario de Excelencia Antonio Varas de la Barra, es un establecimiento dependiente del Servicio Local de Educación Pública "Chinchorro" y tiene la oportunidad de llevar a la realidad y ofrecer la oportunidad, a nuestros alumnos y alumnas de entregar una educación de calidad, gracias al esfuerzo y trabajo visionario de los docentes y a su espíritu creativo para entregar una educación de excelencia.
+            Actualmente el Liceo es dirigido por el director don David Delgado Meza y es secundado en sus funciones por 2 Directivos Docentes y 4 Directivos Técnicos Pedagógicos. Cuenta con una planta de 80 Docentes, 60 Asistentes de la Educación y una matrícula de 1101 estudiantes.
+          </p>
           <div class="about-cards">
             <div class="about-card">
               <h4>Nuestra Misión</h4>
@@ -90,9 +92,9 @@
           </div>
         </div>
         <div>
-          <div class="about-card" style="background: var(--navy); color: var(--white);">
-            <h4 style="color: var(--gold);">Proyecto Educativo</h4>
-            <p style="color: rgba(255,255,255,0.8);">Enfocados en el aprendizaje significativo, valores éticos y desarrollo de competencias profesionales de nivel medio.</p>
+          <div class="about-card about-project-card">
+            <h4>Proyecto Educativo</h4>
+            <p>Enfocados en el aprendizaje significativo, valores éticos y desarrollo de competencias profesionales de nivel medio.</p>
           </div>
         </div>
       </div>
@@ -100,12 +102,12 @@
   </section>
 
   <!-- SPECIALTIES -->
-  <section id="especialidades" style="padding: 5rem 0; background: #f8fafc;">
+  <section id="especialidades" class="home-specs-section">
     <div class="liceo-specs-wrapper">
-      <div style="text-align: center; margin-bottom: 2.5rem;">
+      <div class="home-specs-heading">
         <span class="section-label">Formación Académica</span>
-        <h2 class="section-title" style="margin-bottom: 0.5rem;">Nuestras Especialidades</h2>
-        <p class="section-desc" style="margin: 0 auto;">Explora las carreras técnicas de nivel medio orientadas al desarrollo profesional y productivo de nuestra región.</p>
+        <h2 class="section-title">Nuestras Especialidades</h2>
+        <p class="section-desc">Explora las carreras técnicas de nivel medio orientadas al desarrollo profesional y productivo de nuestra región.</p>
       </div>
 
       <div class="liceo-specs-grid-box">
@@ -124,8 +126,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='administracion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='administracion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -143,8 +145,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='electronica' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='electronica' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -162,8 +164,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='programacion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='programacion' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -181,8 +183,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='electricidad' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='electricidad' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -200,8 +202,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='gastronomia' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='gastronomia' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -219,8 +221,8 @@
             <span class="liceo-tag-nivel">Técnico de Nivel Medio</span>
           </div>
           <div class="liceo-card-footer">
-            <span class="liceo-jornada"><i class="fa-solid fa-sun" style="color: #f5a800;"></i> Diurna</span>
-            <a href="{% url 'especialidad_detail' slug='turismo' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+            <span class="liceo-jornada"><i class="fa-solid fa-sun"></i> Diurna</span>
+            <a href="{% url 'especialidad_detail' slug='turismo' %}" class="liceo-ver-mas">Ver detalles <i class="fa-solid fa-chevron-right"></i></a>
           </div>
         </div>
 
@@ -228,50 +230,83 @@
     </div>
   </section>
 
-<!-- NOTICIAS Y NOVEDADES -->
-  <section id="noticias" class="liceo-news-section">
-    <div class="liceo-news-container">
+  <!-- NOTICIAS Y NOVEDADES -->
+  <section id="noticias" class="home-news-section">
+    <div class="home-news-wrapper">
       
-      <div class="liceo-news-header">
-        <span class="news-accent-bar"></span>
-        <h2>Noticias</h2>
+      <div class="home-news-header-box">
+        <div>
+          <span class="home-news-kicker">Actualidad Institucional</span>
+          <h2 class="home-news-title">Noticias y Novedades</h2>
+        </div>
+        <p class="home-news-subtitle">
+          Mantente al día con los eventos, hitos académicos y actividades de nuestra comunidad educativa del Liceo Antonio Varas de la Barra.
+        </p>
       </div>
 
-      <div class="liceo-news-grid" id="liceo-news-grid"></div>
+      <!-- Grilla de 3 Columnas -->
+      <div class="home-news-grid">
+        
+        <!-- Noticia 1 -->
+        <article class="home-news-card">
+          <div class="home-news-img-holder">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="home-news-body">
+            <span class="home-news-badge academico">Académico</span>
+            <h3 class="home-news-card-title">Ceremonia de Certificación de Especialidades Técnicas</h3>
+            <p class="home-news-card-desc">Nuestros estudiantes de cuarto medio culminaron con éxito sus procesos prácticos.</p>
+            <a href="{% url 'detalle_noticia' '1' %}" class="home-news-link">
+              Ver más <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+        </article>
 
-      <div class="liceo-news-footer">
-        <a href="#noticias" class="btn-portal-noticias">
-          Ir a portal noticias <i class="fa-solid fa-chevron-right"></i>
+        <!-- Noticia 2 -->
+        <article class="home-news-card">
+          <div class="home-news-img-holder">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div class="home-news-body">
+            <span class="home-news-badge actividades">Actividades</span>
+            <h3 class="home-news-card-title">Participación en Feria de Innovación Tecnológica</h3>
+            <p class="home-news-card-desc">Alumnos presentaron proyectos de automatización e IoT desarrollados en talleres.</p>
+            <a href="{% url 'detalle_noticia' '2' %}" class="home-news-link">
+              Ver más <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- Noticia 3 -->
+        <article class="home-news-card">
+          <div class="home-news-img-holder">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+          <div class="home-news-body">
+            <span class="home-news-badge institucional">Institucional</span>
+            <h3 class="home-news-card-title">Proceso de Admisión y Matrículas</h3>
+            <p class="home-news-card-desc">Conoce los plazos, requisitos y modalidades para postular a nuestras carreras.</p>
+            <a href="{% url 'detalle_noticia' '3' %}" class="home-news-link">
+              Ver más <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Banner inferior de Portal Completo -->
+      <div class="home-news-footer-banner">
+        <div>
+          <h3>¿Buscas comunicados anteriores?</h3>
+          <p>Explora el archivo histórico completo de noticias de nuestro establecimiento.</p>
+        </div>
+        <a href="{% url 'portal_noticias' %}" class="home-portal-btn">
+          Ir a portal de noticias <i class="fa-solid fa-arrow-right"></i>
         </a>
       </div>
 
     </div>
   </section>
-
-  <!-- MODAL PARA LEER NOTICIA COMPLETA -->
-  <div id="newsModal" class="news-modal-backdrop">
-    <div class="news-modal-card">
-      <button id="closeNewsModal" class="news-modal-close" type="button">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <div class="news-modal-img-wrap">
-        <img id="modalNewsImg" src="" alt="Noticia">
-      </div>
-      <div class="news-modal-body">
-        <div class="news-modal-meta">
-          <span id="modalNewsCat" class="news-modal-badge">Categoría</span>
-          <span id="modalNewsDate"><i class="fa-regular fa-calendar"></i> Fecha</span>
-          <span id="modalNewsAuthor"><i class="fa-regular fa-user"></i> Autor</span>
-        </div>
-        <h2 id="modalNewsTitle">Título de la noticia</h2>
-        <p id="modalNewsDesc" class="news-modal-lead"></p>
-        <div id="modalNewsContent" class="news-modal-text"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ENLACE AL ARCHIVO JS EXTERNO -->
-  <script src="{% static 'recursos/js/noticias.js' %}"></script>
 
   {% include 'intranet/footer.html' %}
   
