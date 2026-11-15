@@ -1,0 +1,36 @@
+{% extends "intranet/base.html" %}
+
+{% block title %}Editar usuario{% endblock %}
+
+{% block content %}
+<section class="admin-formulario">
+    <h1>Editar usuario</h1>
+    <p>Actualiza los datos del perfil.</p>
+
+    <p><strong>RUT:</strong> {{ perfil.rut }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="errores-formulario">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="campo-formulario">
+                {{ field.label_tag }}
+                {{ field }}
+
+                {% for error in field.errors %}
+                    <p class="error-formulario">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Guardar cambios</button>
+        <a href="{% url 'listar_usuarios' %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

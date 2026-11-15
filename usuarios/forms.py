@@ -83,3 +83,18 @@ class CrearUsuarioForm(UserCreationForm):
             )
 
         return usuario
+
+class EditarPerfilUsuarioForm(forms.ModelForm):
+    curso = forms.CharField(
+        max_length=25,
+        required=False,
+        label="Curso",
+    )
+
+    class Meta:
+        model = perfil
+        fields = ("nombre_completo", "rol", "curso")
+        labels = {
+            "nombre_completo": "Nombre completo",
+            "rol": "Rol",
+        }

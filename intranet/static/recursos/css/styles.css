@@ -2914,3 +2914,78 @@ body:has(#mapa-liceo:target) .portal-menu a[href="#mapa-liceo"] {
 .bloque-vacio {
     color: #8a94a3;
 }
+/* Panel de usuarios registrados */
+.admin-listado {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px rgb(16 43 78 / 8%);
+}
+
+.admin-listado h1 {
+    color: #102b4e;
+}
+
+.tabla-usuarios-scroll {
+    overflow-x: auto;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #dbe2ea;
+    text-align: left;
+}
+
+.tabla-usuarios th {
+    background: #102b4e;
+    color: #ffffff;
+}
+
+.tabla-usuarios tbody tr:nth-child(even) {
+    background: #f5f7fa;
+}
+
+.admin-listado a {
+    display: inline-block;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    background: #c99a2e;
+    color: #102b4e;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-listado a:hover {
+    background: #b58925;
+}
+
+.form-estado {
+    display: inline-block;
+    margin-left: 0.4rem;
+}
+
+.form-estado button {
+    padding: 0.65rem 0.85rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #173b63;
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.form-estado button:hover,
+.form-estado button:focus {
+    background: #c99a2e;
+    color: #102b4e;
+}
