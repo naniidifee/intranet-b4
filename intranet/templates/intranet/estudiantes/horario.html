@@ -52,6 +52,7 @@
                 <table class="horario-semanal">
                     <thead>
                         <tr>
+                            <th>Bloque</th>
                             <th>Lunes</th>
                             <th>Martes</th>
                             <th>Miércoles</th>
@@ -61,47 +62,54 @@
                     </thead>
                     <tbody>
                         {% for bloque in bloques %}
-                            <tr>
-                                <th class="horario-bloque">
-                                    Bloque {{ bloque.numero }}
-                                    <small>
-                                        {{ bloque.hora_inicio }}–{{ bloque.hora_fin }}
-                                    </small>
-                                </th>
+                            {% if bloque.tipo == "clase" %}
+                                <tr>
+                                    <th class="horario-bloque">
+                                        Bloque {{ bloque.numero }}
+                                        <small>
+                                            {{ bloque.hora_inicio|time:"H:i" }}–{{ bloque.hora_fin|time:"H:i" }}
+                                        </small>
+                                    </th>
 
-                                {% for dia in bloque.dias %}
-                                    <td>
-                                        {% for clase in dia.clases %}
-                                            <article class="clase-card tipo-{{ clase.tipo }}">
-                                                <strong>{{ clase.asignatura }}</strong>
-                                                <span>
-                                                    {{ clase.hora_inicio }}–{{ clase.hora_fin }}
-                                                </span>
-                                                <span>{{ clase.docente }}</span>
-                                                <span>{{ clase.sala }}</span>
-                                                <small class="clase-tipo">
-                                                    {{ clase.tipo_etiqueta }}
-                                                </small>
-                                            </article>
-                                        {% empty %}
-                                            <span class="bloque-vacio">—</span>
-                                        {% endfor %}
-                                    </td>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="6">
-                                            <p class="mensaje-vacio">
-                                                Aún no hay bloques de horario disponibles.
-                                            </p>
+                                    {% for dia in bloque.dias %}
+                                        <td>
+                                            {% for clase in dia.clases %}
+                                                <article class="clase-card modalidad-{{ clase.modalidad_css }} tipo-{{ clase.tipo }}">
+                                                    <strong>{{ clase.asignatura }}</strong>
+                                                    <span>
+                                                        {{ clase.hora_inicio|time:"H:i" }}–{{ clase.hora_fin|time:"H:i" }}
+                                                    </span>
+                                                    <span>{{ clase.docente }}</span>
+                                                    {% if clase.sala %}
+                                                        <span>{{ clase.sala }}</span>
+                                                    {% endif %}
+                                                    {% if clase.grupo_etiqueta %}
+                                                        <small class="clase-tipo">{{ clase.grupo_etiqueta }}</small>
+                                                    {% endif %}
+                                                    {% if clase.segmento_etiqueta %}
+                                                        <small class="clase-tipo">{{ clase.segmento_etiqueta }}</small>
+                                                    {% endif %}
+                                                    <small class="clase-tipo">{{ clase.tipo_etiqueta }}</small>
+                                                </article>
+                                            {% empty %}
+                                                <span class="bloque-vacio">—</span>
+                                            {% endfor %}
                                         </td>
-                                    </tr>
-                                {% endfor %}
-                            </tr>
+                                    {% endfor %}
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="horario-pausa">
+                                        <strong>{{ bloque.tipo_etiqueta }}</strong>
+                                        · {{ bloque.hora_inicio|time:"H:i" }}–{{ bloque.hora_fin|time:"H:i" }}
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% empty %}
                             <tr>
                                 <td colspan="6">
                                     <p class="mensaje-vacio">
-                                        Aún no hay horarios disponibles para esta semana.
+                                        Aún no hay horarios disponibles para tu curso.
                                     </p>
                                 </td>
                             </tr>
