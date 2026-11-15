@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import BloqueHorario, ClaseHorario
+from intranet.models import BloqueHorario, ClaseHorario
 
 
 class BloqueHorarioForm(forms.ModelForm):
