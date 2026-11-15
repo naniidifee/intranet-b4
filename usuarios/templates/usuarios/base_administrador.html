@@ -1,0 +1,44 @@
+{% extends "intranet/base.html" %}
+
+{% block content %}
+<div class="portal-admin">
+    <aside class="portal-admin-menu">
+        <h2>Administración</h2>
+        <p class="portal-admin-usuario">
+            Bienvenido/a, {{ request.user.username }}
+        </p>
+
+        <span class="portal-admin-etiqueta">PANEL</span>
+        <a href="{% url 'intranet_dashboard' %}">
+            <i class="fa-solid fa-house"></i>
+            Inicio
+        </a>
+
+        <span class="portal-admin-etiqueta">GESTIÓN DE USUARIOS</span>
+        <a href="{% url 'crear_usuario' %}">
+            <i class="fa-solid fa-user-plus"></i>
+            Registrar usuario
+        </a>
+        <a href="{% url 'listar_usuarios' %}">
+            <i class="fa-solid fa-users"></i>
+            Usuarios registrados
+        </a>
+
+        <span class="portal-admin-etiqueta">GESTIÓN ACADÉMICA</span>
+        <a href="{% url 'gestionar_horarios' %}">
+            <i class="fa-solid fa-calendar-days"></i>
+            Gestión de horarios
+        </a>
+
+        <span class="portal-admin-etiqueta">SEGURIDAD</span>
+        <a href="{% url 'listar_solicitudes_recuperacion' %}">
+            <i class="fa-solid fa-key"></i>
+            Solicitudes de recuperación
+        </a>
+    </aside>
+
+    <main class="portal-admin-contenido">
+        {% block contenido_admin %}{% endblock %}
+    </main>
+</div>
+{% endblock %}
