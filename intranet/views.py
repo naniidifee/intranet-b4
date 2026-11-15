@@ -36,8 +36,13 @@ def inicio(request):
     return render(request, 'intranet/index.html')
 
 def especialidad_detail(request, slug):
-    """Vista dinámica que carga los datos según la especialidad seleccionada."""
+    # Busca la especialidad en el diccionario o lanza un error 404 si no existe
     esp = ESPECIALIDADES_DATA.get(slug)
     if not esp:
-        return render(request, '404.html', status=404)
-    return render(request, 'intranet/especialidades.html', {'esp': esp})
+        from django.http import Http404
+        raise Http404("Especialidad no encontrada")
+        
+    context = {
+        'esp': esp
+    }
+    return render(request, 'intranet/especialidades.html', context)
