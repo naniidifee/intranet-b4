@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from .models import Rol, perfil
+from .models import Rol, perfil, SolicitudRecuperacion
 
 
 ROLES = [
@@ -47,6 +47,9 @@ class CrearUsuarioForm(UserCreationForm):
     def clean_username(self):
         username = super().clean_username()
 
+        if not username:
+            raise ValidationError("Ingresa el RUT del usuario.")
+
         if len(username) > 10:
             raise ValidationError("El RUT no debe superar los 10 caracteres.")
 
@@ -83,6 +86,46 @@ class CrearUsuarioForm(UserCreationForm):
             )
 
         return usuario
+
+class SolicitudRecuperacionForm(forms.ModelForm):
+    class Meta:
+        model = SolicitudRecuperacion
+        fields = (
+            "rut",
+            "nombre_completo",
+            "curso",
+            "correo",
+        )
+        labels = {
+            "rut": "RUT",
+            "nombre_completo": "Nombre completo",
+            "curso": "Curso (si corresponde)",
+            "correo": "Correo para recibir instrucciones",
+        }
+        widgets = {
+            "rut": forms.TextInput(attrs={
+                "placeholder": "12345678-K",
+                "maxlength": "10",
+            }),
+            "nombre_completo": forms.TextInput(attrs={
+                "placeholder": "Nombre y apellidos",
+            }),
+            "curso": forms.TextInput(attrs={
+                "placeholder": "Por ejemplo: 4°A",
+            }),
+            "correo": forms.EmailInput(attrs={
+                "placeholder": "nombre@correo.com",
+            }),
+        }
+
+    def clean_rut(self):
+        return self.cleaned_data["rut"].strip().upper()
+
+    def clean_nombre_completo(self):
+        return self.cleaned_data["nombre_completo"].strip()
+
+    def clean_curso(self):
+        return self.cleaned_data["curso"].strip()
 
 class EditarPerfilUsuarioForm(forms.ModelForm):
     curso = forms.CharField(

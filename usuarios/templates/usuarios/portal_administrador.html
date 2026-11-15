@@ -1,0 +1,44 @@
+{% extends "intranet/base.html" %}
+
+{% block title %}Panel de administración{% endblock %}
+
+{% block content %}
+<div class="portal-admin">
+    <aside class="portal-admin-menu">
+        <h2>Administración</h2>
+        <p class="portal-admin-usuario">Bienvenido/a, {{ request.user.username }}</p>
+
+        <span class="portal-admin-etiqueta">GESTIÓN DE USUARIOS</span>
+
+        <a href="{% url 'crear_usuario' %}">
+            <i class="fa-solid fa-user-plus"></i>
+            Registrar usuario
+        </a>
+
+        <a href="{% url 'listar_usuarios' %}">
+            <i class="fa-solid fa-users"></i>
+            Usuarios registrados
+        </a>
+        
+        <span class="portal-admin-etiqueta">SEGURIDAD</span>
+
+        <a href="{% url 'listar_solicitudes_recuperacion' %}">
+            <i class="fa-solid fa-key"></i>
+            Solicitudes de recuperación
+        </a>
+    </aside>
+
+    <main class="portal-admin-contenido">
+        <h1>¡Bienvenido/a al portal de administracion!</h1>
+        <p>Selecciona una opción del menú para comenzar.</p>
+
+        <div class="portal-admin-tarjeta">
+            <i class="fa-solid fa-user-gear"></i>
+            <div>
+                <h2>Gestión de usuarios</h2>
+                <p>Registra cuentas y consulta los usuarios del sistema.</p>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

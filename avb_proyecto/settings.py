@@ -134,3 +134,6 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# En desarrollo, muestra los correos en la consola del servidor.
+DEFAULT_FROM_EMAIL = "intranet@liceoavb.local"

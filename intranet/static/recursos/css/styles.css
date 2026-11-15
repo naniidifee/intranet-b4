@@ -3087,3 +3087,118 @@ body:has(#mapa-liceo:target) .portal-menu a[href="#mapa-liceo"] {
         padding: 1.25rem;
     }
 }
+/* Portal del administrador */
+.portal-admin {
+    max-width: 1400px;
+    min-height: 65vh;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.portal-admin-menu {
+    padding: 1.4rem;
+    border-radius: 0.85rem;
+    background: #102b4e;
+    color: #ffffff;
+}
+
+.portal-admin-menu h2 {
+    margin-bottom: 0.4rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.portal-admin-usuario {
+    margin-bottom: 1.5rem;
+    color: #d6deea;
+    font-size: 0.9rem;
+}
+
+.portal-admin-etiqueta {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #d6deea;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+}
+
+.portal-admin-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 0.55rem;
+    background: #173b63;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.portal-admin-menu a:hover,
+.portal-admin-menu a:focus {
+    background: #c99a2e;
+    color: #102b4e;
+}
+
+.portal-admin-menu a i {
+    width: 1.2rem;
+    text-align: center;
+}
+
+.portal-admin-contenido {
+    min-width: 0;
+    padding: 1.5rem;
+}
+
+.portal-admin-contenido > h1 {
+    margin-bottom: 0.4rem;
+    color: #102b4e;
+}
+
+.portal-admin-contenido > p {
+    color: #5b6573;
+}
+
+.portal-admin-tarjeta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid #e1e7ef;
+    border-left: 5px solid #c99a2e;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgb(16 43 78 / 8%);
+}
+
+.portal-admin-tarjeta > i {
+    color: #102b4e;
+    font-size: 1.7rem;
+}
+
+.portal-admin-tarjeta h2 {
+    color: #102b4e;
+    font-size: 1.1rem;
+}
+
+.portal-admin-tarjeta p {
+    margin-top: 0.25rem;
+    color: #5b6573;
+}
+
+@media (max-width: 760px) {
+    .portal-admin {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .portal-admin-contenido {
+        padding: 1rem 0;
+    }
+}

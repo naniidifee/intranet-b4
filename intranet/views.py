@@ -53,7 +53,7 @@ def horario_estudiante(request):
 @login_required(login_url="login")
 def intranet_dashboard(request):
     if request.user.is_superuser:
-        return redirect("crear_usuario")
+        return render(request, "usuarios/portal_administrador.html")
     try:
         rol = request.user.perfil.rol.nombre
     except AttributeError:
@@ -61,7 +61,7 @@ def intranet_dashboard(request):
         return redirect("home")
 
     if rol == "Administrador":
-        return redirect("crear_usuario")
+        return render(request, "usuarios/portal_administrador.html")
 
     if rol == "Estudiante":
         return redirect("horario_estudiante")
