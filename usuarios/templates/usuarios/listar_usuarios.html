@@ -1,0 +1,71 @@
+{% extends "usuarios/base_administrador.html" %}
+
+{% block title %}Usuarios registrados{% endblock %}
+
+{% block contenido_admin %}
+<section class="admin-listado">
+    <h1>Usuarios registrados</h1>
+    <p>Consulta las cuentas y sus roles en el sistema.</p>
+
+    <p>
+        <a href="{% url 'crear_usuario' %}">Registrar otro usuario</a>
+    </p>
+
+    {% if perfiles %}
+        <div class="tabla-usuarios-scroll">
+            <table class="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>Nombre completo</th>
+                        <th>RUT</th>
+                        <th>Rol</th>
+                        <th>Curso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for perfil in perfiles %}
+                        <tr>
+                            <td>{{ perfil.nombre_completo }}</td>
+                            <td>{{ perfil.rut }}</td>
+                            <td>{{ perfil.rol.nombre }}</td>
+                            <td>
+                                {% if perfil.curso %}
+                                    {{ perfil.curso }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'editar_usuario' perfil.usuario.id %}">
+                                    Editar
+                                </a>
+                                {% if perfil.usuario_id == request.user.id %}
+                                    <span>Tu cuenta</span>
+                                {% else %}
+                                    <form
+                                        method="post"
+                                        action="{% url 'cambiar_estado_usuario' perfil.usuario.id %}" class="form-estado">
+                                        
+                                        {% csrf_token %}
+                                        <button type="submit">
+                                            {% if perfil.usuario.is_active %}
+                                                Desactivar
+                                            {% else %}
+                                                Reactivar
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Aún no hay usuarios registrados.</p>
+    {% endif %}
+</section>
+{% endblock %}

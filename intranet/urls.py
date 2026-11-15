@@ -8,7 +8,8 @@ urlpatterns = [
     # Módulo de Intranet
     path('intranet/', views.intranet_login, name='login'),
 
-     # Ruta dinámica para las especialidades
+
+    # Ruta dinámica para las especialidades
     path('especialidades/<slug:slug>/', views.especialidad_detail, name='especialidad_detail'),
 
     # Ruta para las noticias
@@ -18,4 +19,6 @@ urlpatterns = [
     # Ruta para el equipo de gestion
     path('equipo/', views.equipo_gestion, name='equipo_gestion'),
     
+    path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
+
 ]

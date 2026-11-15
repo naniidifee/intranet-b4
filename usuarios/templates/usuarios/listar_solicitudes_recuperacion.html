@@ -1,0 +1,77 @@
+{% extends "usuarios/base_administrador.html" %}
+
+{% block title %}Solicitudes de recuperación{% endblock %}
+
+{% block contenido_admin %}
+<section class="admin-listado">
+    <h1>Solicitudes de recuperación</h1>
+    <p>Revisa los datos antes de aprobar o rechazar cada solicitud.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="mensaje-exito">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if solicitudes %}
+        <div class="tabla-usuarios-scroll">
+            <table class="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>Curso</th>
+                        <th>Correo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitud in solicitudes %}
+                        <tr>
+                            <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                            <td>{{ solicitud.rut }}</td>
+                            <td>{{ solicitud.nombre_completo }}</td>
+                            <td>{{ solicitud.curso|default:"—" }}</td>
+                            <td>{{ solicitud.correo }}</td>
+                            <td>{{ solicitud.get_estado_display }}</td>
+                            <td>
+                                {% if solicitud.estado == "pendiente" %}
+                                    <form
+                                        method="post"
+                                        action="{% url 'resolver_solicitud_recuperacion' solicitud.id %}"
+                                    >
+                                        {% csrf_token %}
+                                        <label>
+                                            <input type="checkbox" name="confirmacion" value="si" required>
+                                            Verifiqué la identidad y el correo
+                                        </label>
+                                        <button type="submit" name="accion" value="aprobar">
+                                            Aprobar
+                                        </button>
+                                    </form>
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'resolver_solicitud_recuperacion' solicitud.id %}"
+                                    >
+                                        {% csrf_token %}
+                                        <button type="submit" name="accion" value="rechazar">
+                                            Rechazar
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    Revisada
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Aún no hay solicitudes de recuperación.</p>
+    {% endif %}
+</section>
+{% endblock %}

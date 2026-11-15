@@ -1,0 +1,33 @@
+{% extends "intranet/base.html" %}
+
+{% block title %}Solicitar recuperación de contraseña{% endblock %}
+
+{% block content %}
+<section class="formulario-recuperacion">
+    <h1>Recuperar contraseña</h1>
+    <p>Completa estos datos para que el administrador pueda revisar tu solicitud.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="mensaje-exito">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="campo-formulario">
+                {{ field.label_tag }}
+                {{ field }}
+
+                {% for error in field.errors %}
+                    <p class="error-formulario">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Enviar solicitud</button>
+    </form>
+</section>
+{% endblock %}
