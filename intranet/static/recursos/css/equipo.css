@@ -1,0 +1,145 @@
+/* CABECERA */
+.equipo-hero {
+  background: linear-gradient(135deg, #070d17 0%, #172554 100%);
+  color: #ffffff;
+  padding: 4.5rem 1.5rem 4rem;
+  text-align: center;
+  border-bottom: 4px solid #f5a800;
+}
+
+.equipo-hero-inner {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.equipo-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(245, 168, 0, 0.15);
+  color: #f5a800;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.equipo-hero h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin: 0.25rem 0 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.equipo-hero p {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* SECCIÓN Y GRILLA */
+.equipo-section {
+  background-color: #f8fafc;
+  padding: 4.5rem 1.5rem 5.5rem;
+}
+
+.equipo-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.equipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.75rem;
+}
+
+/* TARJETAS INDIVIDUALES */
+.equipo-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.25rem 1.25rem 1.75rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.equipo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09);
+  border-color: #cbd5e1;
+}
+
+/* Barra superior decorativa */
+.equipo-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0f172a, #f5a800);
+  opacity: 0.85;
+}
+
+/* Círculo del icono */
+.equipo-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #0b192c;
+  border: 3px solid #f5a800;
+  color: #f5a800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.65rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 14px rgba(11, 25, 44, 0.15);
+  transition: transform 0.25s ease;
+}
+
+.equipo-card:hover .equipo-avatar {
+  transform: scale(1.06);
+}
+
+/* Textos corregidos para ajustarse perfectamente */
+.equipo-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.35rem;
+  line-height: 1.4;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.equipo-role {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+
+/* Etiqueta / Badge de área */
+.equipo-badge {
+  margin-top: auto;
+  display: inline-block;
+  background-color: #fef3c7;
+  color: #b45309;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+}
