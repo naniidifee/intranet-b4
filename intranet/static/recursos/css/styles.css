@@ -3202,3 +3202,103 @@ body:has(#mapa-liceo:target) .portal-menu a[href="#mapa-liceo"] {
         padding: 1rem 0;
     }
 }
+
+/* Formularios de recuperación de contraseña */
+.formulario-recuperacion {
+    width: min(100% - 2rem, 700px);
+    margin: 3rem auto;
+    padding: 2rem;
+    border: 1px solid #e1e7ef;
+    border-top: 5px solid #c99a2e;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgb(16 43 78 / 10%);
+}
+
+.formulario-recuperacion h1 {
+    margin-bottom: 0.5rem;
+    color: #102b4e;
+    font-size: clamp(1.6rem, 4vw, 2rem);
+}
+
+.formulario-recuperacion > p {
+    margin-bottom: 1.5rem;
+    color: #5b6573;
+    line-height: 1.6;
+}
+
+.formulario-recuperacion form {
+    display: grid;
+    gap: 1.1rem;
+}
+
+.formulario-recuperacion .campo-formulario {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.formulario-recuperacion .campo-formulario label {
+    color: #102b4e;
+    font-weight: 600;
+}
+
+.formulario-recuperacion .campo-formulario input,
+.formulario-recuperacion .campo-formulario select {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.55rem;
+    background: #ffffff;
+    color: #243247;
+    font: inherit;
+}
+
+.formulario-recuperacion .campo-formulario input:focus,
+.formulario-recuperacion .campo-formulario select:focus {
+    border-color: #1a3a8f;
+    outline: 3px solid rgb(26 58 143 / 14%);
+}
+
+.formulario-recuperacion .error-formulario {
+    color: #a12626;
+    font-size: 0.9rem;
+}
+
+.formulario-recuperacion .mensaje-exito {
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    background: #eaf7ef;
+    color: #21633a;
+}
+
+.formulario-recuperacion button[type="submit"] {
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0.55rem;
+    background: #102b4e;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.formulario-recuperacion button[type="submit"]:hover {
+    background: #1a3a8f;
+}
+
+.formulario-recuperacion > a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #102b4e;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .formulario-recuperacion {
+        margin: 1.5rem auto;
+        padding: 1.25rem;
+    }
+}
