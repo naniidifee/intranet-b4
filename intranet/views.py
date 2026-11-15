@@ -74,7 +74,10 @@ def portal_noticias(request):
     return render(request, 'intranet/noticias.html', context)
 
 def detalle_noticia(request, noticia_id):
-    noticia = NOTICIAS_DATA.get(str(noticia_id))
+    noticia = next(
+        (item for item in NOTICIAS_DATA if item["id"] == int(noticia_id)),
+        None,
+    )
     if not noticia:
         raise Http404("Noticia no encontrada")
     context = {
@@ -84,3 +87,4 @@ def detalle_noticia(request, noticia_id):
 
 def equipo_gestion(request):
     return render(request, 'intranet/noticias.html', {'equipo': equipo_data})
+
