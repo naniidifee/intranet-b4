@@ -1,0 +1,122 @@
+/* Estilos en formato de lista moderna y limpia para la sección institucional */
+
+.page-header {
+  background: linear-gradient(135deg, #0f2557 0%, #0a1628 100%);
+  color: white;
+  padding: 3.5rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+.container-docs {
+  max-width: 950px;
+  margin: 0 auto 4rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Contenedor general en lista */
+.docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Cada fila/elemento de la lista */
+.doc-item {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.doc-item:hover {
+  border-color: #2a5298;
+  box-shadow: 0 5px 15px rgba(42, 82, 152, 0.08);
+  transform: translateX(4px);
+}
+
+.doc-info-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.doc-icon {
+  font-size: 1.8rem;
+  color: #2a5298;
+  background: #f0f4f8;
+  padding: 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 55px;
+  min-height: 55px;
+}
+
+.doc-item h3 {
+  font-size: 1.15rem;
+  color: #222;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.doc-item p {
+  color: #666;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Botón de acción lateral */
+.btn-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8fafc;
+  color: #2a5298;
+  border: 1px solid #d1d9e6;
+  padding: 0.6rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-doc:hover {
+  background-color: #2a5298;
+  color: white;
+  border-color: #2a5298;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  .doc-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-doc {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+}
