@@ -29,16 +29,47 @@
         <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
       </div>
 
-      <!-- Item 2: Actualización de Reglamento -->
+    <!-- Item 2: Reglamento Interno -->
+    <div class="doc-item">
+    <div class="doc-info-group">
+        <div class="doc-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div>
+        <h3>Reglamento Interno Institucional</h3>
+        <p>Documento oficial que regula las normativas, convivencia y protocolos del establecimiento.</p>
+        </div>
+    </div>
+    
+    <!-- Opciones de enlace para el PDF -->
+    <div class="doc-actions">
+        <!-- Ver en pestaña nueva -->
+        <a href="{% static 'recursos/pdf/Reglamento_LiceoAVB.pdf' %}" target="_blank" class="btn-doc">
+        <i class="fa-solid fa-eye"></i> Ver PDF
+        </a>
+        
+        <!-- Descargar directamente -->
+        <a href="{% static 'recursos/pdf/Reglamento_LiceoAVB.pdf' %}" download="Reglamento_LiceoAVB.pdf" class="btn-doc">
+        <i class="fa-solid fa-download"></i> Descargar
+        </a>
+    </div>
+    </div>
+
+    <!-- Item: Actualización de Reglamento PDF -->
       <div class="doc-item">
         <div class="doc-info-group">
           <div class="doc-icon"><i class="fa-solid fa-file-pen"></i></div>
           <div>
-            <h3>Actualización de Reglamento</h3>
-            <p>Modificaciones y normativas vigentes adaptadas a los lineamientos educacionales actuales.</p>
+            <h3>Actualización del Reglamento</h3>
+            <p>Modificaciones recientes enfocadas en la convivencia, buen trato, bienestar y regulación del uso de dispositivos móviles.</p>
           </div>
         </div>
-        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+        <div class="doc-actions">
+          <a href="{% static 'recursos/pdf/ActualizacionReglamento.pdf' %}" target="_blank" class="btn-doc">
+            <i class="fa-solid fa-eye"></i> Ver PDF
+          </a>
+          <a href="{% static 'recursos/pdf/ActualizacionReglamento.pdf' %}" download="ActualizacionReglamento.pdf" class="btn-doc">
+            <i class="fa-solid fa-download"></i> Descargar
+          </a>
+        </div>
       </div>
 
       <!-- Item 3: Manual de Convivencia -->
@@ -53,16 +84,23 @@
         <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
       </div>
 
-      <!-- Item 4: Reglamento de Evaluación -->
+      <!-- Item: Reglamento de Evaluación PDF -->
       <div class="doc-item">
         <div class="doc-info-group">
           <div class="doc-icon"><i class="fa-solid fa-clipboard-check"></i></div>
           <div>
-            <h3>Reglamento de Evaluación</h3>
-            <p>Criterios de calificación, promoción escolar y exigencias académicas para las distintas especialidades.</p>
+            <h3>Reglamento de Evaluación y Promoción Escolar (2025-2026)[cite: 128]</h3>
+            <p>Documento oficial que detalla los procesos de calificación, escalas de notas, tipos de evaluación (proceso, progreso y logro), y normativas de promoción[cite: 129, 134].</p>
           </div>
         </div>
-        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+        <div class="doc-actions">
+          <a href="{% static 'recursos/pdf/reglamentodeevaluacion.pdf' %}" target="_blank" class="btn-doc">
+            <i class="fa-solid fa-eye"></i> Ver PDF
+          </a>
+          <a href="{% static 'recursos/pdf/reglamentodeevaluacion.pdf' %}" download="reglamentodeevaluacion.pdf" class="btn-doc">
+            <i class="fa-solid fa-download"></i> Descargar
+          </a>
+        </div>
       </div>
 
     </div>

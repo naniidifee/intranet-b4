@@ -3424,3 +3424,116 @@ body:has(#mapa-liceo:target) .portal-menu a[href="#mapa-liceo"] {
         width: 100%;
     }
 }
+
+/* SECCIÓN UBICACIÓN Y CONTACTO */
+.contacto-section {
+  padding: 5rem 1.5rem;
+  background-color: #ffffff;
+}
+
+.contacto-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contacto-header {
+  margin-bottom: 2.5rem;
+}
+
+.contacto-header .section-label {
+  color: #f5a800; /* Color dorado característico */
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.contacto-header h2 {
+  font-size: 2.2rem;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .contacto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Columna de Tarjetas de Info */
+.info-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-card-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.info-icon-box {
+  width: 50px;
+  height: 50px;
+  background-color: #0f172a; /* Azul marino */
+  color: #f5a800; /* Icono dorado */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.info-content h4 {
+  font-size: 0.95rem;
+  color: #0f172a;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.info-content p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Columna del Mapa */
+.mapa-wrapper {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  min-height: 420px;
+  display: flex;
+}
+
+.mapa-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  min-height: 420px;
+}
