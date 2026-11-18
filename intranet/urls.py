@@ -5,10 +5,6 @@ urlpatterns = [
     # Página pública principal (Inicio, Nosotros, Especialidades)
     path('', views.home, name='home'),
     
-    # Módulo de Intranet
-    path('intranet/', views.intranet_login, name='login'),
-
-
     # Ruta dinámica para las especialidades
     path('especialidades/<slug:slug>/', views.especialidad_detail, name='especialidad_detail'),
 
@@ -18,7 +14,11 @@ urlpatterns = [
 
     # Ruta para el equipo de gestion
     path('equipo/', views.equipo_gestion, name='equipo_gestion'),
-    
-    path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
+
+    # Ruta para proyecto educativo
+    path('proyecto-educativo/', views.proyecto_educativo_view, name='proyecto_educativo'),
+
+    # Ruta para egresados
+    path('egresados/', views.egresados_view, name='egresados'),
 
 ]

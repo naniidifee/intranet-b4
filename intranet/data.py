@@ -128,7 +128,7 @@ ESPECIALIDADES_DATA = {
 }
 
 equipo_data = [
-        {'nombre': 'Pablo Cadiz Chacon', 'cargo': 'Director', 'area': 'Dirección', 'icon': 'fa-user-tie'},
+        {'nombre': 'David Delgado Meza', 'cargo': 'Director', 'area': 'Dirección', 'icon': 'fa-user-tie'},
         {'nombre': 'Omar Garcia Maya', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
         {'nombre': 'Freddy Rojas Olivares', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
         {'nombre': 'Andrea Godoy Sáez', 'cargo': 'Jefe UTP', 'area': 'UTP', 'icon': 'fa-chalkboard-user'},
