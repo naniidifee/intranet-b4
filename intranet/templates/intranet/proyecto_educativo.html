@@ -1,0 +1,70 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}Proyecto Educativo e Institución - Liceo AVB{% endblock %}
+
+{% block extra_css %}
+  <!-- Vinculación del CSS externo -->
+  <link rel="stylesheet" href="{% static 'recursos/css/proyecto_educativo.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Proyecto Educativo e Institución</h1>
+    <p>Conoce nuestros reglamentos, normativas y lineamientos institucionales oficiales.</p>
+  </div>
+
+  <div class="container-docs">
+    <div class="docs-list">
+      
+      <!-- Item 1: PEI -->
+      <div class="doc-item">
+        <div class="doc-info-group">
+          <div class="doc-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <h3>Proyecto Educativo Institucional (PEI)</h3>
+            <p>Documento fundamental que orienta los procesos de enseñanza y define la identidad de nuestro liceo técnico profesional.</p>
+          </div>
+        </div>
+        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <!-- Item 2: Actualización de Reglamento -->
+      <div class="doc-item">
+        <div class="doc-info-group">
+          <div class="doc-icon"><i class="fa-solid fa-file-pen"></i></div>
+          <div>
+            <h3>Actualización de Reglamento</h3>
+            <p>Modificaciones y normativas vigentes adaptadas a los lineamientos educacionales actuales.</p>
+          </div>
+        </div>
+        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <!-- Item 3: Manual de Convivencia -->
+      <div class="doc-item">
+        <div class="doc-info-group">
+          <div class="doc-icon"><i class="fa-solid fa-users-rectangle"></i></div>
+          <div>
+            <h3>Manual de Convivencia Escolar</h3>
+            <p>Lineamientos para promover un clima armónico, respetuoso y seguro para toda la comunidad educativa del establecimiento.</p>
+          </div>
+        </div>
+        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <!-- Item 4: Reglamento de Evaluación -->
+      <div class="doc-item">
+        <div class="doc-info-group">
+          <div class="doc-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+          <div>
+            <h3>Reglamento de Evaluación</h3>
+            <p>Criterios de calificación, promoción escolar y exigencias académicas para las distintas especialidades.</p>
+          </div>
+        </div>
+        <a href="#" class="btn-doc"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
