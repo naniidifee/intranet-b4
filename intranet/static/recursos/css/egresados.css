@@ -1,0 +1,153 @@
+/* Contenedor y cabecera */
+.egresados-container {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  padding: 0 1.5rem;
+}
+
+/* Banner institucional */
+.egresados-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+}
+
+.banner-icon {
+  font-size: 2.2rem;
+  color: #f5a800;
+  background: rgba(255, 255, 255, 0.1);
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.egresados-banner h3 {
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.egresados-banner p {
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Cuadrícula de tarjetas */
+.egresados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 28px;
+}
+
+/* Tarjeta individual con imagen */
+.egresado-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.egresado-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor de la fotografía */
+.egresado-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.egresado-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Evita que la foto se deforme */
+  object-position: center top; /* Prioriza enfocar los rostros */
+  transition: transform 0.4s ease;
+}
+
+.egresado-card:hover .egresado-img-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Etiqueta flotante de generación sobre la foto */
+.egresado-promocion {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #f5a800;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Cuerpo de texto de la tarjeta */
+.egresado-body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.egresado-body h3 {
+  font-size: 1.2rem;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.egresado-especialidad {
+  font-size: 0.85rem;
+  color: #d97706;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.egresado-testimonio {
+  font-size: 0.92rem;
+  color: #475569;
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.egresado-actualidad {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+  font-size: 0.82rem;
+  color: #334155;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.egresado-actualidad i {
+  color: #0284c7;
+}
