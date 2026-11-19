@@ -138,12 +138,57 @@ def _verificar_administrador(request):
         raise PermissionDenied
 
 def _nivel_de_curso(nombre):
-    coincidencia = re.match(r"\s*([1-4])\s*°", nombre)
+    coincidencia = re.match(r"^\s*([1-4])", nombre)
     return coincidencia.group(1) if coincidencia else ""
+
+ESPECIALIDADES_TP = {
+    "A": "Administración",
+    "B": "Turismo",
+    "C": "Electricidad",
+    "D": "Gastronomía",
+    "E": "Electrónica",
+    "F": "Programación",
+    "G": "Administración",
+    "H": "Turismo",
+    "I": "Electricidad",
+    "J": "Gastronomía",
+}
+
+
+def _etiqueta_curso(codigo):
+    coincidencia = re.match(
+        r"^\s*([1-4])\s*([A-J])\s*(.*)$",
+        codigo,
+        re.IGNORECASE,
+    )
+
+    if not coincidencia:
+        return codigo
+
+    nivel, paralelo, identificador = coincidencia.groups()
+    paralelo = paralelo.upper()
+
+    if nivel in {"1", "2"}:
+        especialidad = "Formación General"
+    else:
+        especialidad = ESPECIALIDADES_TP.get(
+            paralelo,
+            "Especialidad técnica",
+        )
+
+    etiqueta = f"{paralelo} — {especialidad}"
+
+    if identificador.strip():
+        etiqueta += f" ({identificador.strip()})"
+
+    return etiqueta
 
 @login_required(login_url="login")
 def gestionar_horarios(request):
     _verificar_administrador(request)
+    vista = request.GET.get("vista", "horarios")
+    if vista not in {"horarios", "cursos", "salas"}:
+        vista = "horarios"
 
     cursos = list(
         ClaseHorario.objects
@@ -151,11 +196,36 @@ def gestionar_horarios(request):
         .values_list("curso", flat=True)
         .distinct()
     )
+    cursos = list(
+        ClaseHorario.objects
+        .order_by("curso")
+        .values_list("curso", flat=True)
+        .distinct()
+    )
+
+    cursos_catalogo = [
+        "1A 410", "1B 410", "1C 410",
+        "1A 510", "1B 510", "1C 510", "1D 510",
+        "1A 610", "1B 610", "1C 610",
+
+        "2A 410", "2B 410", "2C 410",
+        "2A 510", "2B 510", "2C 510", "2D 510",
+        "2A 610", "2B 610", "2C 610",
+
+        "3A 410", "3B 410",
+        "3A 510", "3B 510", "3C 510", "3D 510", "3E 510",
+        "3A 610", "3B 610", "3C 610",
+
+        "4A 410", "4B 410",
+        "4A 510", "4B 510", "4C 510", "4D 510", "4E 510",
+        "4A 610", "4B 610", "4C 610",
+    ]
 
     niveles = [
-        (numero, f"{numero}° Medio")
-        for numero in ("1", "2", "3", "4")
-        if any(_nivel_de_curso(curso) == numero for curso in cursos)
+        ("1", "1° Medio"),
+        ("2", "2° Medio"),
+        ("3", "3° Medio"),
+        ("4", "4° Medio"),
     ]
 
     nivel_solicitado = request.GET.get("nivel", "")
@@ -167,9 +237,17 @@ def gestionar_horarios(request):
     )
 
     cursos_nivel = [
-        curso for curso in cursos
+        curso for curso in cursos_catalogo
         if not nivel_seleccionado
         or _nivel_de_curso(curso) == nivel_seleccionado
+    ]
+    
+    cursos_opciones = [
+        {
+            "codigo": curso,
+            "etiqueta": _etiqueta_curso(curso),
+        }
+        for curso in cursos_nivel
     ]
 
     curso_solicitado = request.GET.get("curso", "").strip()
@@ -200,10 +278,40 @@ def gestionar_horarios(request):
         .order_by("dia", "grupo", "segmento")
     ) if curso_seleccionado else []
 
+    cursos_tarjetas = []
+
+    for nombre_curso in cursos:
+        clases_curso = list(
+            ClaseHorario.objects
+            .filter(curso__iexact=nombre_curso)
+            .select_related("bloque")
+            .order_by("bloque__jornada", "bloque__orden")
+        )
+
+        if not clases_curso:
+            continue
+
+        primer_bloque = clases_curso[0].bloque
+        docentes_curso = sorted({
+            clase.docente.strip()
+            for clase in clases_curso
+            if clase.docente and clase.docente.strip()
+        })
+
+        cursos_tarjetas.append({
+            "nombre": nombre_curso,
+            "nivel": _nivel_de_curso(nombre_curso),
+            "jornada": primer_bloque.jornada,
+            "jornada_nombre": primer_bloque.get_jornada_display(),
+            "bloques": len({clase.bloque_id for clase in clases_curso}),
+            "docentes": docentes_curso,
+        })
+
     matriz = []
 
     for bloque in bloques:
         fila = {
+            "id": bloque.id,
             "tipo": bloque.tipo,
             "tipo_etiqueta": bloque.get_tipo_display(),
             "numero": bloque.numero,
@@ -259,6 +367,7 @@ def gestionar_horarios(request):
                     })
 
                 fila["dias"].append({
+                    "numero": numero_dia,
                     "nombre": nombre_dia,
                     "clases": tarjetas,
                 })
@@ -273,11 +382,14 @@ def gestionar_horarios(request):
             "clases": clases,
             "matriz": matriz,
             "cursos": cursos_nivel,
+            "cursos_tarjetas": cursos_tarjetas,
             "curso_seleccionado": curso_seleccionado,
             "jornadas": jornadas,
             "jornada_seleccionada": jornada_seleccionada,
             "niveles": niveles,
             "nivel_seleccionado": nivel_seleccionado,
+            "vista": vista,
+            "cursos_opciones": cursos_opciones,
         },
     )
 
@@ -302,7 +414,14 @@ def crear_bloque_horario(request):
 @login_required(login_url="login")
 def crear_clase_horario(request):
     _verificar_administrador(request)
-    form = ClaseHorarioForm(request.POST or None)
+    form = ClaseHorarioForm(
+        request.POST or None,
+        initial={
+            "curso": request.GET.get("curso", ""),
+            "dia": request.GET.get("dia", ""),
+            "bloque": request.GET.get("bloque", ""),
+        },
+    )
 
     if request.method == "POST" and form.is_valid():
         form.save()
@@ -377,3 +496,4 @@ def eliminar_clase_horario(request, clase_id):
     clase.delete()
     messages.success(request, "La clase fue eliminada del horario.")
     return redirect("gestionar_horarios")
+

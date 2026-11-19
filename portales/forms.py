@@ -87,3 +87,23 @@ class ClaseHorarioForm(forms.ModelForm):
 
     def clean_curso(self):
         return self.cleaned_data["curso"].strip()
+
+class ImportarHorarioPDFForm(forms.Form):
+    archivo = forms.FileField(label="Selecciona el horario en PDF")
+
+    def clean_archivo(self):
+        archivo = self.cleaned_data["archivo"]
+
+        if not archivo.name.lower().endswith(".pdf"):
+            raise forms.ValidationError("El archivo debe tener formato PDF.")
+
+        if archivo.size > 20 * 1024 * 1024:
+            raise forms.ValidationError("El PDF no puede superar los 20 MB.")
+
+        encabezado = archivo.read(5)
+        archivo.seek(0)
+
+        if encabezado != b"%PDF-":
+            raise forms.ValidationError("El archivo seleccionado no parece ser un PDF válido.")
+
+        return archivo

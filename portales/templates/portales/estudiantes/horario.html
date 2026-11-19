@@ -1,5 +1,12 @@
 {% extends "intranet/base.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'recursos/css/horarios.css' %}">
+{% endblock %}
+
 {% block title %}Horario del estudiante{% endblock %}
 
 {% block content %}
