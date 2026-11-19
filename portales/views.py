@@ -26,6 +26,8 @@ def horario_estudiante(request):
 
     curso = (perfil_estudiante.curso or "").strip()
     bloques = []
+    electividades = []
+    talleres = []
 
     if curso:
         clases_qs = (
@@ -39,6 +41,17 @@ def horario_estudiante(request):
             clases_qs.values_list("bloque__jornada", flat=True).distinct()
         )
         clases = list(clases_qs)
+
+        for clase in clases:
+            if clase.tipo == "electiva":
+                electividades.append(clase)
+
+            if clase.tipo == "taller":
+                talleres.append(clase)
+
+        for clase in clases:
+            if clase.tipo == "electiva":
+                electividades.append(clase)
 
         franjas = (
             BloqueHorario.objects
@@ -120,7 +133,11 @@ def horario_estudiante(request):
     return render(
         request,
         "portales/estudiantes/horario.html",
-        {"bloques": bloques},
+        {
+            "bloques": bloques,
+            "electividades": electividades,
+            "talleres": talleres,
+        },
     )
 
 def _es_administrador(user):
