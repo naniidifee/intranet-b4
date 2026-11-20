@@ -9,8 +9,10 @@ function cargarNoticiasLiceo() {
     noticias = [];
   }
 
+  // Filtrar solo las publicadas (ignora borradores)
   const publicadas = noticias.filter(n => n.estado === 'publicada');
 
+  // Si aún no hay noticias guardadas, cargamos unas por defecto del Liceo
   if (publicadas.length === 0) {
     publicadas.push(
       {
@@ -60,10 +62,12 @@ function cargarNoticiasLiceo() {
     );
   }
 
+  // Buscar la marcada como destacada ('si'), o tomar la más reciente
   const destacada = publicadas.find(n => n.destacada === 'si') || publicadas[0];
+  // Tomar hasta 3 noticias secundarias distintas a la destacada
   const secundarias = publicadas.filter(n => n.id !== destacada.id).slice(0, 3);
 
-  // Renderizar la principal a la izquierda y las desplegables a la derecha
+  // Renderizar columna izquierda (Destacada) + columna derecha (3 tarjetas)
   grid.innerHTML = `
     <article class="news-featured-card" data-id="${destacada.id}">
       <img src="${destacada.img}" alt="${destacada.titulo}" class="news-featured-img">
@@ -73,51 +77,65 @@ function cargarNoticiasLiceo() {
 
     <div class="news-side-list">
       ${secundarias.map(n => `
-        <article class="news-side-card" id="side-card-${n.id}">
-          <div class="news-side-preview" onclick="toggleExpandirNoticia(${n.id})">
-            <img src="${n.img}" alt="${n.titulo}" class="news-side-img">
-            <div class="news-side-body">
-              <h4 class="news-side-title">${n.titulo}</h4>
-              <span class="news-ver-mas">Ver más &rsaquo;</span>
-            </div>
-          </div>
-          <div class="news-side-expanded">
-            <div class="expanded-meta">
-              <span><i class="fa-regular fa-calendar"></i> ${n.fecha}</span>
-              <span><i class="fa-regular fa-user"></i> ${n.autor || 'Comunicaciones AVB'}</span>
-            </div>
-            <p class="expanded-text">${n.contenido || n.descripcion}</p>
-            <div class="expanded-controls">
-              <button class="btn-collapse" onclick="toggleExpandirNoticia(${n.id})" title="Contraer">
-                <i class="fa-solid fa-chevron-up"></i>
-              </button>
-            </div>
+        <article class="news-side-card" data-id="${n.id}">
+          <img src="${n.img}" alt="${n.titulo}" class="news-side-img">
+          <div class="news-side-body">
+            <h4 class="news-side-title">${n.titulo}</h4>
+            <span class="news-ver-mas">Ver más &rsaquo;</span>
           </div>
         </article>
       `).join('')}
     </div>
   `;
+
+  // Asignar eventos de clic sin usar onclick en el HTML
+  grid.querySelectorAll('[data-id]').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = Number(card.getAttribute('data-id'));
+      abrirDetalleNoticia(id, publicadas);
+    });
+  });
 }
 
-// Función para abrir o cerrar el acordeón suavemente
-function toggleExpandirNoticia(id) {
-  const card = document.getElementById(`side-card-${id}`);
-  if (!card) return;
+function abrirDetalleNoticia(id, lista) {
+  const n = lista.find(item => item.id === id);
+  if (!n) return;
 
-  // Si ya está abierta, la cerramos; si está cerrada, cerramos las otras y abrimos esta
-  const isOpen = card.classList.contains('expanded');
-  
-  document.querySelectorAll('.news-side-card').forEach(c => c.classList.remove('expanded'));
+  document.getElementById('modalNewsImg').src = n.img;
+  document.getElementById('modalNewsCat').textContent = n.categoria || 'Noticias AVB';
+  document.getElementById('modalNewsDate').innerHTML = `<i class="fa-regular fa-calendar"></i> ${n.fecha}`;
+  document.getElementById('modalNewsAuthor').innerHTML = `<i class="fa-regular fa-user"></i> ${n.autor || 'Comunicaciones AVB'}`;
+  document.getElementById('modalNewsTitle').textContent = n.titulo;
+  document.getElementById('modalNewsDesc').textContent = n.descripcion;
+  document.getElementById('modalNewsContent').textContent = n.contenido || n.descripcion;
 
-  if (!isOpen) {
-    card.classList.add('expanded');
-  }
+  document.getElementById('newsModal').classList.add('open');
 }
 
+function cerrarModalNoticia() {
+  const modal = document.getElementById('newsModal');
+  if (modal) modal.classList.remove('open');
+}
+
+// Inicializar eventos al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
   cargarNoticiasLiceo();
+
+  // Cerrar modal al hacer clic en el fondo oscuro o en la X
+  const modal = document.getElementById('newsModal');
+  const btnClose = document.getElementById('closeNewsModal');
+  
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) cerrarModalNoticia();
+    });
+  }
+  if (btnClose) {
+    btnClose.addEventListener('click', cerrarModalNoticia);
+  }
 });
 
+// Actualizar en vivo si se publica desde comunicaciones.html en otra pestaña
 window.addEventListener('storage', (e) => {
   if (e.key === 'avb_news') cargarNoticiasLiceo();
 });

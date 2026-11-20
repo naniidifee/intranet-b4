@@ -1,6 +1,4 @@
 from datetime import date, datetime
-import re
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -8,7 +6,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from intranet.models import BloqueHorario, ClaseHorario
+from .models import BloqueHorario, ClaseHorario
 from .forms import BloqueHorarioForm, ClaseHorarioForm
 from django.contrib.auth import logout
 

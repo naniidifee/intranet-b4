@@ -1,156 +1,29 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
-
-class Comunicado(models.Model):
-  titulo = models.CharField(max_length=200, verbose_name='Título')
-  contenido = models.TextField(verbose_name='Contenido')
-  fecha_creacion = models.DateTimeField(
-      auto_now_add=True, verbose_name='Fecha de Creación'
-  )
-  autor = models.ForeignKey(
-      User, on_delete=models.CASCADE, verbose_name='Autor'
-  )
-
-  class Meta:
-    verbose_name = 'Comunicado'
-    verbose_name_plural = 'Comunicados'
-    ordering = ['-fecha_creacion']
-
-  def __str__(self):
-    return self.titulo
-
-class BloqueHorario(models.Model):
-    TIPOS = [
-        ("clase", "Bloque de clases"),
-        ("recreo", "Recreo"),
-        ("almuerzo", "Almuerzo"),
+class Noticia(models.Model):
+    CATEGORIAS = [
+        ('Académico', 'Académico'),
+        ('Institucional', 'Institucional'),
+        ('Actividades', 'Actividades'),
+        ('Comunidad', 'Comunidad'),
     ]
 
-    JORNADAS = [
-        ("manana", "Mañana"),
-        ("tarde", "Tarde"),
-    ]
-
-    numero = models.PositiveSmallIntegerField(
-        unique=True,
-        null=True,
-        blank=True,
-    )
-    orden = models.PositiveSmallIntegerField(default=1)
-    tipo = models.CharField(
-        max_length=10,
-        choices=TIPOS,
-        default="clase",
-    )
-    jornada = models.CharField(
-        max_length=10,
-        choices=JORNADAS,
-        default="manana",
-    )
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
+    titulo = models.CharField(max_length=200, verbose_name="Título")
+    slug = models.SlugField(unique=True, max_length=200)
+    categoria = models.CharField(max_length=50, choices=CATEGORIAS, default='Institucional')
+    descripcion = models.TextField(verbose_name="Bajada / Resumen corto")
+    contenido = models.TextField(verbose_name="Contenido completo")
+    imagen = models.ImageField(upload_to='noticias/', blank=True, null=True, verbose_name="Imagen Principal")
+    autor = models.CharField(max_length=100, default="Comunicaciones AVB")
+    fecha = models.DateField(default=timezone.now, verbose_name="Fecha de publicación")
+    destacado = models.BooleanField(default=False, verbose_name="Marcar como destacado")
 
     class Meta:
-        ordering = ["jornada", "orden", "hora_inicio"]
-        verbose_name = "bloque horario"
-        verbose_name_plural = "bloques horarios"
-
-    def clean(self):
-        from django.core.exceptions import ValidationError
-
-        if self.hora_inicio and self.hora_fin and self.hora_fin <= self.hora_inicio:
-            raise ValidationError(
-                "La hora de término debe ser posterior a la de inicio."
-            )
-
-        if self.tipo == "clase" and not self.numero:
-            raise ValidationError("Los bloques de clase deben tener un número.")
+        verbose_name = "Noticia"
+        verbose_name_plural = "Noticias"
+        ordering = ['-fecha']
 
     def __str__(self):
-        if self.numero:
-            etiqueta = f"Bloque {self.numero}"
-        else:
-            etiqueta = self.get_tipo_display()
-
-        return (
-            f"{etiqueta} "
-            f"({self.hora_inicio:%H:%M}–{self.hora_fin:%H:%M})"
-        )
-
-
-class ClaseHorario(models.Model):
-    DIAS = [
-        (1, "Lunes"),
-        (2, "Martes"),
-        (3, "Miércoles"),
-        (4, "Jueves"),
-        (5, "Viernes"),
-    ]
-
-    TIPOS = [
-        ("normal", "Clase normal"),
-        ("electiva", "Electiva"),
-        ("especialidad", "Especialidad"),
-        ("taller", "Taller"),
-    ]
-
-    GRUPOS = [
-        ("todos", "Curso completo"),
-        ("A", "Grupo A"),
-        ("B", "Grupo B"),
-    ]
-
-    SEGMENTOS = [
-        ("completo", "Bloque completo"),
-        ("primera_mitad", "Primera mitad"),
-        ("segunda_mitad", "Segunda mitad"),
-    ]
-
-    curso = models.CharField(max_length=25)
-    dia = models.PositiveSmallIntegerField(choices=DIAS)
-    bloque = models.ForeignKey(
-        BloqueHorario,
-        on_delete=models.PROTECT,
-        related_name="clases",
-    )
-    asignatura = models.CharField(max_length=100)
-    docente = models.CharField(max_length=100)
-    sala = models.CharField(max_length=50, blank=True)
-    tipo = models.CharField(
-        max_length=20,
-        choices=TIPOS,
-        default="normal",
-    )
-    grupo = models.CharField(
-        max_length=10,
-        choices=GRUPOS,
-        default="todos",
-    )
-    segmento = models.CharField(
-        max_length=20,
-        choices=SEGMENTOS,
-        default="completo",
-    )
-
-    class Meta:
-        ordering = [
-            "curso",
-            "dia",
-            "bloque__jornada",
-            "bloque__orden",
-            "segmento",
-            "grupo",
-        ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["curso", "dia", "bloque", "grupo", "segmento"],
-                name="horario_unico_por_grupo_y_segmento",
-            ),
-        ]
-        verbose_name = "clase de horario"
-        verbose_name_plural = "clases de horario"
-
-    def __str__(self):
-        return f"{self.curso} - {self.get_dia_display()} - {self.asignatura}"
+        return self.titulo
