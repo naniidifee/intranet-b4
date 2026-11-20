@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.http import Http404
@@ -29,6 +29,10 @@ def intranet_login(request):
             messages.error(request, 'Credenciales incorrectas. Verifique su usuario y contraseña.')
 
     return render(request, 'usuarios/login.html')
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect("login")
 
 
 # Diccionario centralizado con la información de cada especialidad

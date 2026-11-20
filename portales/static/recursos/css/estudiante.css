@@ -356,3 +356,131 @@
 .pagina-estudiante.activa {
     display: block;
 }
+.salir-estudiante {
+    margin-top: 1rem;
+}
+
+.salir-estudiante button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem;
+    border: 0;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 8%);
+    color: #cbd5e1;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.salir-estudiante button:hover {
+    background: rgb(255 255 255 / 15%);
+    color: #fff;
+}
+.portal-menu {
+    border-radius: 0 18px 18px 0;
+}
+
+@media (max-width: 760px) {
+    .portal-menu {
+        margin: 0;
+        border-radius: 0 0 18px 18px;
+    }
+}
+/* Menú estudiante: opciones en una línea en computador */
+.portal-menu {
+    width: 250px;
+}
+
+.portal-menu nav a {
+    white-space: nowrap;
+}
+
+.portal-contenido {
+    margin-left: 266px;
+}
+
+/* Barra superior con margen y borde */
+.estudiante-topbar {
+    top: 8px;
+    border: 1px solid #e1e7ef;
+}
+
+@media (max-width: 760px) {
+    .portal-menu {
+        width: auto;
+    }
+
+    .portal-menu nav a {
+        white-space: normal;
+    }
+
+    .portal-contenido {
+        margin-left: 0;
+    }
+}
+.portal-menu .estudiante-identidad .estudiante-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portal-menu .estudiante-identidad .estudiante-avatar i {
+    color: #0a1628;
+    font-size: 1rem;
+    line-height: 1;
+}
+.avisos-estudiante-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.avisos-estudiante-cabecera h2 {
+    margin: 0;
+    color: #102b5c;
+}
+
+.avisos-estudiante-cabecera h2 i {
+    color: #f5a800;
+}
+
+.avisos-estudiante-cabecera p {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+}
+
+.avisos-estudiante-contador {
+    padding: 0.4rem 0.75rem;
+    border-radius: 50px;
+    background: #fff3d6;
+    color: #92540a;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.avisos-estudiante-vacio {
+    padding: 2.5rem 1rem;
+    border-radius: 14px;
+    background: #f3f6fa;
+    color: #64748b;
+    text-align: center;
+}
+
+.avisos-estudiante-vacio > i {
+    color: #c99a2e;
+    font-size: 1.8rem;
+}
+
+.avisos-estudiante-vacio h3 {
+    margin: 0.75rem 0 0.35rem;
+    color: #102b5c;
+}
+
+.avisos-estudiante-vacio p {
+    margin: 0;
+}

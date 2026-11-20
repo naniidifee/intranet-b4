@@ -29,7 +29,7 @@
             </span>
             <div>
                 <strong>
-                    {{ request.user.perfil.nombre_completo|default:request.user.username }}
+                    Estudiante AVB
                 </strong>
                 <span>
                     {{ request.user.perfil.curso|default:"Curso pendiente" }}
@@ -44,23 +44,39 @@
                 <i class="fa-regular fa-calendar"></i>
                 <span>Mi horario</span>
             </a>
+
             <a href="#" data-seccion="mi-electividad">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Mi electividad</span>
             </a>
+            
             <a href="#" data-seccion="mi-curso">
                 <i class="fa-solid fa-users"></i>
                 <span>Mi curso</span>
             </a>
+
             <a href="#" data-seccion="talleres">
                 <i class="fa-solid fa-palette"></i>
                 <span>Talleres</span>
             </a>
+
             <a href="#" data-seccion="mapa-liceo">
                 <i class="fa-solid fa-map-location-dot"></i>
                 <span>Mapa del liceo</span>
             </a>
+
+            <a href="#" data-seccion="avisos">
+                <i class="fa-solid fa-bell"></i>
+                <span>Mis avisos</span>
+            </a>
         </nav>
+            <form method="post" action="{% url 'cerrar_sesion_estudiante' %}" class="salir-estudiante">
+                {% csrf_token %}
+                <button type="submit">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
+            </form>
     </aside>
 
     <div class="portal-contenido">
@@ -175,6 +191,22 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </section>
+        
+        <section class="horario-estudiante pagina-estudiante" id="avisos">
+            <div class="avisos-estudiante-cabecera">
+                <div>
+                    <h2><i class="fa-solid fa-bell"></i> Mis avisos</h2>
+                    <p>Comunicaciones importantes del liceo.</p>
+                </div>
+                <span class="avisos-estudiante-contador">0 avisos</span>
+            </div>
+
+            <div class="avisos-estudiante-vacio">
+                <i class="fa-regular fa-bell-slash"></i>
+                <h3>No tienes avisos nuevos</h3>
+                <p>Cuando Administración envíe una comunicación, aparecerá aquí.</p>
             </div>
         </section>
 

@@ -1274,3 +1274,104 @@
 .portal-admin-utp .utp-cursos {
     margin-top: 0.5rem;
 }
+.portal-admin-utp .portal-admin-menu {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 0 18px 18px 0;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-utp .portal-admin-menu {
+        margin: 0;
+        border-radius: 0 0 18px 18px;
+    }
+}
+/* Identificación del rol UTP */
+.portal-admin-utp .utp-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 8%);
+}
+
+.portal-admin-utp .utp-identidad strong,
+.portal-admin-utp .utp-identidad span {
+    display: block;
+    color: #fff;
+}
+
+.portal-admin-utp .utp-identidad strong {
+    font-size: 0.78rem;
+}
+
+.portal-admin-utp .utp-identidad span {
+    margin-top: 0.2rem;
+    color: #cbd5e1;
+    font-size: 0.7rem;
+}
+
+.portal-admin-utp .utp-avatar {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 50%;
+    background: #f5a800;
+    color: #0a1628;
+}
+
+/* Menú UTP: más ancho para evitar saltos de línea */
+.portal-admin-utp .portal-admin-menu {
+    width: 260px;
+}
+
+.portal-admin-utp .portal-admin-contenido {
+    margin-left: 284px;
+}
+
+.portal-admin-utp .portal-admin-menu > a:not(.utp-menu-marca) {
+    white-space: nowrap;
+}
+
+/* Barra UTP con espacio y borde */
+.utp-topbar {
+    left: 284px;
+    top: 10px;
+    border: 1px solid #e1e7ef;
+    border-radius: 16px;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-utp .portal-admin-menu {
+        width: auto;
+        margin: 0;
+    }
+
+    .portal-admin-utp .portal-admin-contenido {
+        margin-left: 0;
+    }
+
+    .portal-admin-utp .portal-admin-menu > a:not(.utp-menu-marca) {
+        white-space: normal;
+    }
+
+    .utp-topbar {
+        left: 10px;
+    }
+}
+.portal-admin-utp .utp-identidad .utp-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portal-admin-utp .utp-identidad .utp-avatar i {
+    color: #0a1628;
+    font-size: 1rem;
+    line-height: 1;
+}

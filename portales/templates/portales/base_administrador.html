@@ -17,12 +17,10 @@
                 </span>
             </div>
         </header>
-    {% else %}
-        {{ block.super }}
     {% endif %}
 {% endblock encabezado_publico %}
 {% block content %}
-<div class="portal-admin {% if request.resolver_match.url_name == 'gestionar_horarios' %}portal-admin-utp{% endif %}">
+<div class="portal-admin {% if request.resolver_match.url_name == 'gestionar_horarios' %}portal-admin-utp{% else %}portal-admin-general{% endif %}">
     <aside class="portal-admin-menu">
         {% if request.resolver_match.url_name == "gestionar_horarios" %}
                 <a class="utp-menu-marca" href="{% url 'home' %}">
@@ -30,7 +28,15 @@
                         alt="Logo del Liceo Antonio Varas de la Barra">
                     <span>Liceo Antonio<br>Varas de la Barra</span>
                 </a>
-                <p class="portal-admin-usuario">Bienvenido/a, {{ request.user.username }}</p>
+                <div class="utp-identidad">
+                    <span class="utp-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </span>
+                    <div>
+                        <strong>Jefatura UTP</strong>
+                        <span>Gestión Curricular</span>
+                    </div>
+                </div>
 
                 <span class="portal-admin-etiqueta">HORARIOS</span>
                 <a href="{% url 'gestionar_horarios' %}?vista=horarios"
@@ -61,10 +67,21 @@
                 </a>
 
             {% else %}
-                <h2>Administración</h2>
-            <p class="portal-admin-usuario">
-                Bienvenido/a, {{ request.user.username }}
-            </p>
+            <a class="admin-menu-marca" href="{% url 'home' %}">
+                <img src="{% static 'recursos/img/avb-logo.jpg' %}"
+                     alt="Logo del Liceo Antonio Varas de la Barra">
+                <span>Liceo Antonio<br>Varas de la Barra</span>
+            </a>
+
+            <div class="admin-identidad">
+                <span class="admin-avatar">
+                    <i class="fa-solid fa-user-gear"></i>
+                </span>
+                <div>
+                    <strong>Administración</strong>
+                    <span>{{ request.user.username }}</span>
+                </div>
+            </div>
 
             <span class="portal-admin-etiqueta">PANEL</span>
             <a href="{% url 'intranet_dashboard' %}">
@@ -88,15 +105,46 @@
                 Horarios
             </a>
 
+            <span class="portal-admin-etiqueta">COMUNICACIONES</span>
+            <a href="{% url 'gestion_noticias' %}">
+                <i class="fa-solid fa-newspaper"></i>
+                Gestión de noticias
+            </a>
+            <a href="{% url 'gestionar_avisos' %}">
+                <i class="fa-solid fa-bell"></i>
+                Avisos a usuarios
+            </a>
+
+            <span class="portal-admin-etiqueta">ESPACIOS</span>
+            <a href="{% url 'gestionar_reservas' %}">
+                <i class="fa-solid fa-door-open"></i>
+                Solicitudes de reserva
+            </a>
+
             <span class="portal-admin-etiqueta">SEGURIDAD</span>
             <a href="{% url 'listar_solicitudes_recuperacion' %}">
                 <i class="fa-solid fa-key"></i>
                 Solicitudes de recuperación
             </a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="portal-cerrar-sesion">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
+            </form>
+            
         {% endif %}
     </aside>
 
     <main class="portal-admin-contenido">
+        {% if request.resolver_match.url_name != "gestionar_horarios" %}
+            <header class="admin-topbar">
+                <h1>Portal de Administración</h1>
+                <span><i class="fa-solid fa-circle"></i> Administrador</span>
+            </header>
+        {% endif %}
         {% block contenido_admin %}{% endblock %}
     </main>
 </div>

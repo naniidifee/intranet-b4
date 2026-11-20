@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 
 from intranet.models import BloqueHorario, ClaseHorario
 from .forms import BloqueHorarioForm, ClaseHorarioForm
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -514,3 +515,40 @@ def eliminar_clase_horario(request, clase_id):
     messages.success(request, "La clase fue eliminada del horario.")
     return redirect("gestionar_horarios")
 
+@login_required(login_url="logear")
+@require_POST
+def cerrar_sesion_estudiante(request):
+    logout(request)
+    return redirect("logear")
+
+@login_required(login_url="logear")
+def gestion_noticias(request):
+    _verificar_administrador(request)
+    return render(
+        request,
+        "portales/administracion/gestionar_noticias.html",
+    )
+
+@login_required(login_url="logear")
+def crear_noticia(request):
+    _verificar_administrador(request)
+    return render(
+        request,
+        "portales/administracion/crear_noticia.html",
+    )
+
+@login_required(login_url="logear")
+def gestionar_reservas(request):
+    _verificar_administrador(request)
+    return render(
+        request,
+        "portales/administracion/solicitudes_reserva.html",
+    )
+
+@login_required(login_url="logear")
+def gestionar_avisos(request):
+    _verificar_administrador(request)
+    return render(
+        request,
+        "portales/administracion/gestionar_avisos.html",
+    )

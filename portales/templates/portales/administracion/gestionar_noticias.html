@@ -1,0 +1,121 @@
+{% extends "portales/base_comunicaciones.html" %}
+
+{% block title %}Gestionar Noticias{% endblock %}
+
+{% block contenido_comunicaciones %}
+<section class="noticias-admin">
+    <div class="noticias-resumen">
+        <article>
+            <strong>2</strong>
+            <span>Publicadas</span>
+        </article>
+        <article>
+            <strong>1</strong>
+            <span>Borradores</span>
+        </article>
+        <article>
+            <strong>3</strong>
+            <span>Total</span>
+        </article>
+        <article>
+            <strong>3</strong>
+            <span>Este mes</span>
+        </article>
+    </div>
+
+    <section class="noticias-listado">
+        <header class="noticias-listado-cabecera">
+            <h2>
+                <i class="fa-solid fa-newspaper"></i>
+                Publicaciones
+            </h2>
+
+            <div class="noticias-filtros">
+                <button class="seleccionado" type="button">Todas</button>
+                <button type="button">Publicadas</button>
+                <button type="button">Borradores</button>
+            </div>
+        </header>
+
+        <div class="noticias-admin-lista">
+            <article class="noticia-admin">
+                <div class="noticia-admin-imagen">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div class="noticia-admin-texto">
+                    <h3>Liceo AVB obtiene reconocimiento regional</h3>
+                    <p>Nuestra institución fue distinguida por su excelencia técnica.</p>
+                    <div class="noticia-admin-datos">
+                        <span class="estado-publicada">Publicada</span>
+                        <span>12/03/2025</span>
+                        <span>Logros institucionales</span>
+                    </div>
+                </div>
+                <div class="noticia-admin-acciones">
+                    <button type="button" disabled aria-label="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Ocultar">
+                        <i class="fa-solid fa-eye-slash"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </article>
+
+            <article class="noticia-admin">
+                <div class="noticia-admin-imagen">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="noticia-admin-texto">
+                    <h3>Estudiantes de Gastronomía representan a Arica</h3>
+                    <p>Cuatro alumnos participaron en un concurso nacional.</p>
+                    <div class="noticia-admin-datos">
+                        <span class="estado-publicada">Publicada</span>
+                        <span>05/03/2025</span>
+                        <span>Gastronomía</span>
+                    </div>
+                </div>
+                <div class="noticia-admin-acciones">
+                    <button type="button" disabled aria-label="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Ocultar">
+                        <i class="fa-solid fa-eye-slash"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </article>
+
+            <article class="noticia-admin borrador">
+                <div class="noticia-admin-imagen">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <div class="noticia-admin-texto">
+                    <h3>Nuevo laboratorio de Programación próximamente</h3>
+                    <p>Se están instalando nuevos equipos para la especialidad.</p>
+                    <div class="noticia-admin-datos">
+                        <span class="estado-borrador">Borrador</span>
+                        <span>01/03/2025</span>
+                        <span>Programación</span>
+                    </div>
+                </div>
+                <div class="noticia-admin-acciones">
+                    <button type="button" disabled aria-label="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Publicar">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                    <button type="button" disabled aria-label="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </article>
+        </div>
+    </section>
+</section>
+{% endblock %}
