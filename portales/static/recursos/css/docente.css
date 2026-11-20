@@ -1,0 +1,516 @@
+.portal-docente {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    min-height: 100vh;
+    background: #eef3f8;
+    color: #102b5c;
+}
+
+.docente-menu {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 1rem;
+    border-right: 1px solid #dbe3ed;
+    border-radius: 0 18px 18px 0;
+    background: linear-gradient(180deg, #0b192c, #102b5c);
+    color: #fff;
+}
+
+.docente-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.25rem 0 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.docente-marca img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.docente-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 1rem 0.25rem;
+    padding: 0.7rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.docente-avatar {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    place-items: center;
+    border-radius: 50%;
+    background: #f5a800;
+    color: #102b5c;
+}
+
+.docente-identidad strong,
+.docente-identidad span {
+    display: block;
+}
+
+.docente-identidad strong {
+    font-size: 0.75rem;
+}
+
+.docente-identidad div > span {
+    margin-top: 0.2rem;
+    color: #cbd5e1;
+    font-size: 0.68rem;
+}
+
+.docente-etiqueta {
+    margin: 0.5rem 0;
+    color: #aab8ce;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.docente-menu > a:not(.docente-marca) {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.4rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+
+.docente-menu > a:not(.docente-marca):hover,
+.docente-menu > a.activo {
+    background: #203650;
+    color: #f5a800;
+}
+
+.docente-salir {
+    margin-top: auto;
+}
+
+.docente-salir button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    background: transparent;
+    color: #cbd5e1;
+    font: inherit;
+    cursor: pointer;
+}
+
+.docente-salir button:hover {
+    background: #203650;
+    color: #fff;
+}
+
+.docente-principal {
+    min-width: 0;
+}
+
+.docente-topbar {
+    position: sticky;
+    z-index: 5;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0 0 14px 14px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
+}
+
+.docente-topbar h1 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.docente-topbar > span {
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: #fff2d6;
+    color: #9a5a00;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.docente-topbar > span i {
+    color: #22c55e;
+    font-size: 0.6rem;
+}
+
+.docente-contenido {
+    padding: 1.4rem;
+}
+
+@media (max-width: 760px) {
+    .portal-docente {
+        grid-template-columns: 1fr;
+    }
+
+    .docente-menu {
+        position: static;
+        min-height: auto;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .docente-topbar {
+        position: static;
+    }
+
+    .docente-contenido {
+        padding: 1rem;
+    }
+}
+.docente-reservas {
+    padding: 1.3rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.reservas-controles,
+.reservas-fecha,
+.reservas-sala {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.reservas-controles {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+}
+
+.reservas-fecha > i,
+.reservas-sala > i {
+    color: #f5a800;
+}
+
+.reservas-fecha > span,
+.reservas-semana {
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: #f1f4f8;
+    color: #52647e;
+    font-size: 0.8rem;
+}
+
+.reservas-sala select,
+.reservas-sala button {
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #dbe2ea;
+    border-radius: 999px;
+    background: #fff;
+    color: #102b5c;
+    font: inherit;
+}
+
+.reservas-sala button {
+    min-width: 36px;
+    cursor: pointer;
+}
+
+.reservas-sala button:hover {
+    background: #f1f4f8;
+}
+
+.reservas-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #52647e;
+    font-size: 0.75rem;
+}
+
+.reservas-leyenda span {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.reservas-leyenda i {
+    width: 11px;
+    height: 11px;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.reservas-leyenda .disponible {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.reservas-leyenda .reservado {
+    border-color: #fda4af;
+    background: #fff1f2;
+}
+
+.reservas-leyenda .mi-reserva {
+    border-color: #93c5fd;
+    background: #eff6ff;
+}
+
+.reservas-leyenda .no-disponible {
+    border-color: #d1d5db;
+    background: #f3f4f6;
+}
+
+.reservas-tabla-contenedor {
+    overflow-x: auto;
+    border: 1px solid #dbe2ea;
+    border-radius: 12px;
+}
+
+.reservas-tabla {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.75rem;
+}
+
+.reservas-tabla thead th {
+    padding: 0.75rem 0.55rem;
+    background: #0b192c;
+    color: #fff;
+    text-align: center;
+}
+
+.reservas-tabla thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+.reservas-tabla thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.reservas-tabla thead small {
+    display: block;
+    margin-top: 0.2rem;
+    color: #b9c8dc;
+    font-size: 0.65rem;
+    font-weight: 400;
+}
+
+.reservas-tabla tbody th,
+.reservas-tabla tbody td {
+    padding: 0.35rem;
+    border-bottom: 1px solid #e5e9ef;
+    text-align: center;
+}
+
+.reservas-tabla tbody th {
+    width: 100px;
+    background: #fafbfc;
+    white-space: nowrap;
+}
+
+.reserva-pasado,
+.reserva-disponible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    border-radius: 9px;
+    font-size: 0.68rem;
+}
+
+.reserva-pasado {
+    border: 1px solid #e0e4e9;
+    background: #f3f4f6;
+    color: #94a3b8;
+}
+
+button.reserva-disponible {
+    border: 1px dashed #86efac;
+    background: #f0fdf4;
+    color: #168044;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button.reserva-disponible small {
+    font-size: 0.65rem;
+}
+
+button.reserva-disponible:hover {
+    background: #dcfce7;
+}
+
+.reserva-pausa th {
+    padding: 0.45rem 0.8rem !important;
+    background: #fafafa !important;
+    color: #102b5c;
+    font-size: 0.68rem;
+    font-style: italic;
+    text-align: left !important;
+}
+
+@media (max-width: 700px) {
+    .docente-reservas {
+        padding: 0.8rem;
+    }
+
+    .reservas-controles {
+        align-items: flex-start;
+    }
+
+    .reservas-sala {
+        flex-wrap: wrap;
+    }
+}
+.docente-lista-curso {
+    padding: 1.3rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.docente-lista-curso h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 1rem;
+    color: #102b5c;
+    font-size: 1rem;
+}
+
+.docente-lista-curso h2 i {
+    color: #f5a800;
+}
+
+.lista-curso-controles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.lista-curso-controles select,
+.lista-curso-controles button {
+    min-height: 38px;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    font: inherit;
+}
+
+.lista-curso-controles select {
+    min-width: 220px;
+    background: #fff;
+    color: #102b5c;
+}
+
+.lista-curso-controles button {
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lista-btn-imprimir {
+    background: #0b192c;
+}
+
+.lista-btn-excel {
+    background: #16a34a;
+}
+
+.lista-curso-controles button:hover {
+    filter: brightness(1.08);
+}
+
+.lista-curso-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.6rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 10px;
+    background: #f1f3f6;
+    color: #52647e;
+    font-size: 0.78rem;
+}
+
+.lista-curso-datos strong {
+    color: #102b5c;
+}
+
+.lista-curso-tabla-contenedor {
+    overflow-x: auto;
+}
+
+.lista-curso-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    color: #102b5c;
+    font-size: 0.78rem;
+}
+
+.lista-curso-tabla th {
+    padding: 0.7rem;
+    background: #0b192c;
+    color: #fff;
+    font-size: 0.7rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.lista-curso-tabla th:first-child {
+    width: 45px;
+}
+
+.lista-curso-tabla td {
+    height: 42px;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid #e1e7ef;
+}
+
+.lista-curso-tabla tbody tr:nth-child(even) {
+    background: #f5f7fa;
+}
+
+.lista-curso-tabla td:last-child {
+    width: 150px;
+}
+
+@media (max-width: 700px) {
+    .docente-lista-curso {
+        padding: 0.8rem;
+    }
+
+    .lista-curso-datos {
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+}

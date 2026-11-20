@@ -66,6 +66,9 @@ def intranet_dashboard(request):
 
     if rol == "Estudiante":
         return redirect("horario_estudiante")
+    
+    if rol == "Docente":
+        return redirect("reservar_espacios")
 
     messages.info(request, "La pantalla de tu rol aún está en preparación.")
     return redirect("home")

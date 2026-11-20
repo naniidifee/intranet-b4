@@ -67,4 +67,14 @@ urlpatterns = [
         views.gestionar_avisos,
         name="gestionar_avisos",
     ),
+    path(
+        "docente/reservar-espacios/",
+        views.reservar_espacios,
+        name="reservar_espacios",
+    ),
+    path(
+        "docente/lista-curso/",
+        views.lista_curso_docente,
+        name="lista_curso_docente",
+    ),
 ]

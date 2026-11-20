@@ -155,6 +155,27 @@ def _verificar_administrador(request):
     if not _es_administrador(request.user):
         raise PermissionDenied
 
+def _verificar_docente(request):
+    try:
+        es_docente = request.user.perfil.rol.nombre == "Docente"
+    except AttributeError:
+        es_docente = False
+
+    if not es_docente:
+        raise PermissionDenied
+
+
+@login_required(login_url="login")
+def reservar_espacios(request):
+    _verificar_docente(request)
+    return render(request, "portales/docente/reservar_espacios.html")
+
+
+@login_required(login_url="login")
+def lista_curso_docente(request):
+    _verificar_docente(request)
+    return render(request, "portales/docente/lista_curso.html")
+
 def _nivel_de_curso(nombre):
     coincidencia = re.match(r"^\s*([1-4])", nombre)
     return coincidencia.group(1) if coincidencia else ""
