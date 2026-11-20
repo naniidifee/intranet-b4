@@ -77,4 +77,9 @@ urlpatterns = [
         views.lista_curso_docente,
         name="lista_curso_docente",
     ),
+    path(
+        "administrador/horarios/limpiar/",
+        views.limpiar_horario_curso,
+        name="limpiar_horario_curso",
+    ),
 ]

@@ -26,8 +26,9 @@
             <form method="get" class="utp-toolbar-filtros">
                 <input type="hidden" name="vista" value="horarios">
                 <input type="hidden" name="nivel" value="{{ nivel_seleccionado }}">
+                <input type="hidden" name="jornada" value="{{ jornada_seleccionada }}">
 
-                <select id="filtro-curso" name="curso">
+                <select id="filtro-curso" name="curso" onchange="this.form.submit()">
                     {% for opcion in cursos_opciones %}
                         <option value="{{ opcion.codigo }}"
                             {% if curso_seleccionado == opcion.codigo %}selected{% endif %}>
@@ -53,13 +54,17 @@
                     <i class="fa-solid fa-cloud-sun"></i>
                     Tarde
                 </button>
+
+                <button type="submit"
+                        name="jornada"
+                        value="completa"
+                        class="utp-jornada {% if jornada_seleccionada == 'completa' %}activo{% endif %}">
+                    <i class="fa-solid fa-calendar-week"></i>
+                    Completa
+                </button>
             </form>
 
             <div class="utp-toolbar-acciones">
-                <button type="button" class="utp-importar-pendiente" disabled>
-                    <i class="fa-solid fa-file-pdf"></i>
-                    Importar PDF
-                </button>
 
                 <button type="button" class="utp-guardar-pendiente" disabled>
                     <i class="fa-solid fa-floppy-disk"></i>
@@ -71,10 +76,17 @@
                     Imprimir
                 </button>
 
-                <button type="button" class="utp-limpiar-pendiente" disabled>
-                    <i class="fa-solid fa-trash"></i>
-                    Limpiar
-                </button>
+                <form method="post" action="{% url 'limpiar_horario_curso' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="curso" value="{{ curso_seleccionado }}">
+
+                    <button type="submit"
+                            class="utp-limpiar-pendiente"
+                            onclick="return confirm('¿Eliminar todas las clases de este curso? Los bloques y pausas se conservarán.')">
+                        <i class="fa-solid fa-trash"></i>
+                        Limpiar
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -343,12 +355,8 @@
 
                     <div class="utp-salas-resumen">
                         <article>
-                            <span>Salas ocupadas</span>
-                            <strong>—</strong>
-                        </article>
-                        <article>
-                            <span>Salas disponibles</span>
-                            <strong>—</strong>
+                            <span>Espacios ocupados durante la semana</span>
+                            <strong>{{ salas_ocupadas_count }}</strong>
                         </article>
                     </div>
 
@@ -365,11 +373,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="6">
-                                        La disponibilidad se mostrará cuando conectemos los horarios registrados.
-                                    </td>
-                                </tr>
+                                {% for clase in clases_con_sala %}
+                                    <tr>
+                                        <td>{{ clase.sala }}</td>
+                                        <td>{{ clase.get_dia_display }}</td>
+                                        <td>
+                                            {{ clase.bloque.hora_inicio|time:"H:i" }}–
+                                            {{ clase.bloque.hora_fin|time:"H:i" }}
+                                        </td>
+                                        <td>{{ clase.curso }}</td>
+                                        <td>{{ clase.asignatura }}</td>
+                                        <td>Ocupada</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6">
+                                            Aún no hay clases con una sala asignada en los horarios.
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

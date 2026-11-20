@@ -7,6 +7,8 @@ urlpatterns = [
     
     # Módulo de Intranet
     path('intranet/', views.intranet_login, name='login'),
+
+    path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
     
     path('cerrar-sesion/', views.cerrar_sesion, name='logout'),
 

@@ -1375,3 +1375,6 @@
     font-size: 1rem;
     line-height: 1;
 }
+.utp-salas-resumen {
+    grid-template-columns: 1fr;
+}

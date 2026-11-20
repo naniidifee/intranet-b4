@@ -48,6 +48,20 @@ class BloqueHorarioForm(forms.ModelForm):
 
         return datos
 
+ESPACIOS = [("", "Selecciona una sala o espacio")]
+
+for numero in range(1, 41):
+    nombre = f"Sala {numero:02}"
+    ESPACIOS.append((nombre, nombre))
+
+ESPACIOS += [
+    ("Biblioteca", "Biblioteca"),
+    ("Laboratorio", "Laboratorio"),
+    ("Gimnasio", "Gimnasio"),
+    ("Cancha", "Cancha"),
+    ("Patio central", "Patio central"),
+]
+
 
 class ClaseHorarioForm(forms.ModelForm):
     class Meta:
@@ -78,12 +92,29 @@ class ClaseHorarioForm(forms.ModelForm):
             "curso": forms.TextInput(attrs={"placeholder": "Ejemplo: 1° Medio A"}),
             "asignatura": forms.TextInput(attrs={"placeholder": "Asignatura"}),
             "docente": forms.TextInput(attrs={"placeholder": "Nombre del docente"}),
-            "sala": forms.TextInput(attrs={"placeholder": "Ejemplo: Sala 1"}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["bloque"].queryset = BloqueHorario.objects.filter(tipo="clase")
+
+        self.fields["bloque"].queryset = BloqueHorario.objects.filter(
+            tipo="clase"
+        )
+
+        opciones_sala = ESPACIOS.copy()
+        sala_actual = self.instance.sala
+
+        if sala_actual and sala_actual not in dict(opciones_sala):
+            opciones_sala.insert(
+                1,
+                (sala_actual, f"{sala_actual} (nombre actual)"),
+            )
+
+        self.fields["sala"] = forms.ChoiceField(
+            choices=opciones_sala,
+            required=False,
+            label="Sala o espacio",
+        )
 
     def clean_curso(self):
         return self.cleaned_data["curso"].strip()

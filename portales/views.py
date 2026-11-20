@@ -5,10 +5,10 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-
 from .models import BloqueHorario, ClaseHorario
 from .forms import BloqueHorarioForm, ClaseHorarioForm
 from django.contrib.auth import logout
+import re
 
 # Create your views here.
 
@@ -191,6 +191,29 @@ ESPECIALIDADES_TP = {
     "J": "Gastronomía",
 }
 
+@login_required(login_url="login")
+@require_POST
+def limpiar_horario_curso(request):
+    _verificar_administrador(request)
+
+    curso = request.POST.get("curso", "").strip()
+
+    if not curso:
+        messages.error(request, "Selecciona un curso antes de limpiar.")
+    else:
+        cantidad = ClaseHorario.objects.filter(
+            curso__iexact=curso
+        ).count()
+
+        ClaseHorario.objects.filter(curso__iexact=curso).delete()
+
+        messages.success(
+            request,
+            f"Se eliminaron {cantidad} clases de {curso}. "
+            "Los bloques y pausas se conservaron."
+        )
+
+    return redirect("gestionar_horarios")
 
 def _etiqueta_curso(codigo):
     coincidencia = re.match(
@@ -296,24 +319,39 @@ def gestionar_horarios(request):
 
     jornadas = BloqueHorario.JORNADAS
     jornada_seleccionada = request.GET.get("jornada", "manana")
-    if jornada_seleccionada not in dict(jornadas):
+
+    if jornada_seleccionada not in ("manana", "tarde", "completa"):
         jornada_seleccionada = "manana"
 
-    bloques = list(
-        BloqueHorario.objects
-        .filter(jornada=jornada_seleccionada)
-        .order_by("orden", "hora_inicio")
-    )
-
-    clases = list(
-        ClaseHorario.objects
-        .filter(
-            curso__iexact=curso_seleccionado,
-            bloque__jornada=jornada_seleccionada,
+    if jornada_seleccionada == "completa":
+        bloques = list(
+            BloqueHorario.objects.order_by(
+                "jornada", "orden", "hora_inicio"
+            )
         )
-        .select_related("bloque")
-        .order_by("dia", "grupo", "segmento")
-    ) if curso_seleccionado else []
+
+        clases = list(
+            ClaseHorario.objects
+            .filter(curso__iexact=curso_seleccionado)
+            .select_related("bloque")
+            .order_by("bloque__jornada", "dia", "grupo", "segmento")
+        ) if curso_seleccionado else []
+    else:
+        bloques = list(
+            BloqueHorario.objects
+            .filter(jornada=jornada_seleccionada)
+            .order_by("orden", "hora_inicio")
+        )
+
+        clases = list(
+            ClaseHorario.objects
+            .filter(
+                curso__iexact=curso_seleccionado,
+                bloque__jornada=jornada_seleccionada,
+            )
+            .select_related("bloque")
+            .order_by("dia", "grupo", "segmento")
+        ) if curso_seleccionado else []
 
     cursos_tarjetas = []
 
@@ -411,6 +449,19 @@ def gestionar_horarios(request):
 
         matriz.append(fila)
 
+    clases_con_sala = list(
+        ClaseHorario.objects
+        .exclude(sala__isnull=True)
+        .exclude(sala__exact="")
+        .select_related("bloque")
+        .order_by("sala", "dia", "bloque__orden")
+    )
+
+    salas_ocupadas_count = len({
+        clase.sala.strip().casefold()
+        for clase in clases_con_sala
+    })
+
     return render(
         request,
         "portales/horarios/gestionar.html",
@@ -427,6 +478,8 @@ def gestionar_horarios(request):
             "nivel_seleccionado": nivel_seleccionado,
             "vista": vista,
             "cursos_opciones": cursos_opciones,
+            "clases_con_sala": clases_con_sala,
+            "salas_ocupadas_count": salas_ocupadas_count,
         },
     )
 
