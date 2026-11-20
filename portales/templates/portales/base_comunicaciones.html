@@ -1,0 +1,71 @@
+{% extends "intranet/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'recursos/css/comunicaciones.css' %}">
+{% endblock %}
+
+{% block encabezado_publico %}{% endblock %}
+
+{% block content %}
+<div class="portal-comunicaciones">
+    <aside class="comunicaciones-menu">
+        <a class="comunicaciones-marca" href="{% url 'home' %}">
+            <img src="{% static 'recursos/img/avb-logo.jpg' %}"
+                 alt="Logo del Liceo Antonio Varas de la Barra">
+            <strong>Liceo Antonio<br>Varas de la Barra</strong>
+        </a>
+
+        <div class="comunicaciones-identidad">
+            <span class="comunicaciones-avatar">
+                <i class="fa-solid fa-bullhorn"></i>
+            </span>
+            <div>
+                <strong>{{ request.user.perfil.nombre_completo|default:request.user.username }}</strong>
+                <span>Comunicaciones · AVB</span>
+            </div>
+        </div>
+
+        <span class="comunicaciones-etiqueta">COMUNICACIONES</span>
+
+        <a href="{% url 'crear_noticia' %}"
+           class="{% if request.resolver_match.url_name == 'crear_noticia' %}activo{% endif %}">
+            <i class="fa-solid fa-circle-plus"></i>
+            Nueva Noticia
+        </a>
+
+        <a href="{% url 'gestion_noticias' %}"
+           class="{% if request.resolver_match.url_name == 'gestion_noticias' %}activo{% endif %}">
+            <i class="fa-solid fa-newspaper"></i>
+            Gestionar Noticias
+        </a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="portal-cerrar-sesion">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Cerrar sesión
+            </button>
+        </form>
+        
+    </aside>
+
+    <main class="comunicaciones-contenido">
+        <header class="comunicaciones-topbar">
+            <h1>
+                {% if request.resolver_match.url_name == "crear_noticia" %}
+                    Nueva Noticia
+                {% else %}
+                    Gestionar Noticias
+                {% endif %}
+            </h1>
+            <span><i class="fa-solid fa-circle"></i> Comunicaciones</span>
+        </header>
+
+        <div class="comunicaciones-pagina">
+            {% block contenido_comunicaciones %}{% endblock %}
+        </div>
+    </main>
+</div>
+{% endblock %}

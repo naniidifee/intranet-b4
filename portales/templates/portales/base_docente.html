@@ -1,0 +1,68 @@
+{% extends "intranet/base.html" %}
+{% load static %}
+
+{% block title %}Portal Docente{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'recursos/css/docente.css' %}">
+{% endblock %}
+
+{% block encabezado_publico %}{% endblock %}
+
+{% block content %}
+<div class="portal-docente">
+
+    <aside class="docente-menu">
+        <a class="docente-marca" href="{% url 'home' %}">
+            <img src="{% static 'recursos/img/avb-logo.jpg' %}"
+                 alt="Logo del Liceo Antonio Varas de la Barra">
+            <span>Liceo Antonio<br>Varas de la Barra</span>
+        </a>
+
+        <div class="docente-identidad">
+            <span class="docente-avatar">
+                <i class="fa-solid fa-user-tie"></i>
+            </span>
+            <div>
+                <strong>{{ request.user.perfil.nombre_completo|default:request.user.username }}</strong>
+                <span>Docente</span>
+            </div>
+        </div>
+
+        <span class="docente-etiqueta">GESTIÓN DOCENTE</span>
+
+        <a href="{% url 'reservar_espacios' %}"
+            class="{% if request.resolver_match.url_name == 'reservar_espacios' %}activo{% endif %}">
+            <i class="fa-solid fa-calendar-check"></i>
+            Reservar espacios
+        </a>
+
+        <a href="{% url 'lista_curso_docente' %}"
+            class="{% if request.resolver_match.url_name == 'lista_curso_docente' %}activo{% endif %}">
+            <i class="fa-solid fa-list-ol"></i>
+            Lista de curso
+        </a>
+
+        <form method="post" action="{% url 'logout' %}" class="docente-salir">
+            {% csrf_token %}
+            <button type="submit">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Cerrar sesión
+            </button>
+        </form>
+    </aside>
+
+    <div class="docente-principal">
+        <header class="docente-topbar">
+            <h1>{% block titulo_docente %}Reservar Espacios{% endblock %}</h1>
+            <span><i class="fa-solid fa-circle"></i> Docente</span>
+        </header>
+
+        <main class="docente-contenido">
+            {% block contenido_docente %}{% endblock %}
+        </main>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "portales/base_administrador.html" %}
+
+{% block title %}Solicitudes de reserva{% endblock %}
+
+{% block contenido_admin %}
+<section class="admin-reservas">
+    <header class="admin-reservas-cabecera">
+        <div>
+            <span>ESPACIOS DEL LICEO</span>
+            <h1>Solicitudes de reserva</h1>
+            <p>Revisa las solicitudes para utilizar salas y espacios del establecimiento.</p>
+        </div>
+    </header>
+
+    <div class="admin-reservas-resumen">
+        <article><strong>0</strong><span>Pendientes</span></article>
+        <article><strong>0</strong><span>Aprobadas</span></article>
+        <article><strong>0</strong><span>Rechazadas</span></article>
+    </div>
+
+    <section class="admin-reservas-panel">
+        <div class="admin-reservas-filtros">
+            <h2>Solicitudes recibidas</h2>
+            <select aria-label="Filtrar solicitudes">
+                <option>Todas</option>
+                <option>Pendientes</option>
+                <option>Aprobadas</option>
+                <option>Rechazadas</option>
+            </select>
+        </div>
+
+        <div class="admin-reservas-vacio">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <h3>Aún no hay solicitudes</h3>
+            <p>Aquí aparecerán las reservas enviadas para revisión.</p>
+        </div>
+    </section>
+</section>
+{% endblock %}

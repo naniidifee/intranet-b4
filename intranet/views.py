@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.http import Http404
@@ -13,12 +13,40 @@ from .models import Noticia
 # -------------------------------------------------------------------
 
 def home(request):
+
     ultimas_noticias = Noticia.objects.all()[:3] 
     
     context = {
         'ultimas_noticias': ultimas_noticias,
     }
     return render(request, 'intranet/index.html', context)
+
+
+
+def intranet_login(request):
+    if request.method == "POST":
+        usuario = request.POST.get('username')
+        contrasena = request.POST.get('password')
+        user = authenticate(request, username=usuario, password=contrasena)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Bienvenido/a {user.username}')
+            return redirect('intranet_dashboard')
+        else:
+            messages.error(request, 'Credenciales incorrectas. Verifique su usuario y contraseña.')
+
+    return render(request, 'usuarios/login.html')
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect("login")
+
+
+# Diccionario centralizado con la información de cada especialidad
+
+def inicio(request):
+    return render(request, 'intranet/index.html')
 
 def especialidad_detail(request, slug):
     # Busca la especialidad en el diccionario o lanza un error 404 si no existe
@@ -30,6 +58,28 @@ def especialidad_detail(request, slug):
     }
     return render(request, 'intranet/especialidades.html', context)
 
+
+@login_required(login_url="login")
+def intranet_dashboard(request):
+    if request.user.is_superuser:
+        return render(request, "portales/portal_administrador.html")
+    try:
+        rol = request.user.perfil.rol.nombre
+    except AttributeError:
+        messages.error(request, "Tu cuenta aún no tiene un rol asignado.")
+        return redirect("home")
+
+    if rol == "Administrador":
+        return render(request, "portales/portal_administrador.html")
+
+    if rol == "Estudiante":
+        return redirect("horario_estudiante")
+    
+    if rol == "Docente":
+        return redirect("reservar_espacios")
+
+    messages.info(request, "La pantalla de tu rol aún está en preparación.")
+    return redirect("home")
 
 
 def portal_noticias(request):

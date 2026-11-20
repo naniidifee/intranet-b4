@@ -1,49 +1,124 @@
 {% extends "intranet/base.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'recursos/css/horarios.css' %}">
+<link rel="stylesheet" href="{% static 'recursos/css/estudiante.css' %}">
+{% endblock %}
+{% block encabezado_publico %}{% endblock %}
+
 {% block title %}Horario del estudiante{% endblock %}
 
 {% block content %}
 
 <div class="portal-estudiante">
-    <aside class="portal-menu">
-        <h2>Accesos directos</h2>
-        <nav aria-label="Accesos directos">
-            <a href="#mi-horario">
+        <aside class="portal-menu">
+        <div class="estudiante-marca">
+            <img
+                src="{% static 'recursos/img/avb-logo.jpg' %}"
+                alt="Logo del Liceo Antonio Varas de la Barra"
+            >
+            <strong>Liceo Antonio<br>Varas de la Barra</strong>
+        </div>
+
+        <div class="estudiante-identidad">
+            <span class="estudiante-avatar">
+                <i class="fa-solid fa-user-graduate"></i>
+            </span>
+            <div>
+                <strong>
+                    Estudiante AVB
+                </strong>
+                <span>
+                    {{ request.user.perfil.curso|default:"Curso pendiente" }}
+                </span>
+            </div>
+        </div>
+
+        <p class="portal-menu-label">MI PORTAL</p>
+
+        <nav aria-label="Mi portal">
+            <a href="#" class="activo" data-seccion="mi-horario">
                 <i class="fa-regular fa-calendar"></i>
                 <span>Mi horario</span>
             </a>
 
-            <a href="#mi-electividad">
+            <a href="#" data-seccion="mi-electividad">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Mi electividad</span>
             </a>
-        </nav>
-        <p class="portal-menu-label">VIDA ESCOLAR</p>
-        <nav aria-label="Vida escolar">
-            <a href="#mi-curso">
+            
+            <a href="#" data-seccion="mi-curso">
                 <i class="fa-solid fa-users"></i>
                 <span>Mi curso</span>
             </a>
 
-            <a href="#talleres">
+            <a href="#" data-seccion="talleres">
                 <i class="fa-solid fa-palette"></i>
                 <span>Talleres</span>
             </a>
 
-            <a href="#mapa-liceo">
+            <a href="#" data-seccion="mapa-liceo">
                 <i class="fa-solid fa-map-location-dot"></i>
                 <span>Mapa del liceo</span>
             </a>
+
+            <a href="#" data-seccion="avisos">
+                <i class="fa-solid fa-bell"></i>
+                <span>Mis avisos</span>
+            </a>
         </nav>
+            <form method="post" action="{% url 'cerrar_sesion_estudiante' %}" class="salir-estudiante">
+                {% csrf_token %}
+                <button type="submit">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
+            </form>
     </aside>
 
     <div class="portal-contenido">
+            <header class="estudiante-topbar">
+                <h1>Mi horario</h1>
+                <span class="estudiante-estado">
+                    <i class="fa-solid fa-circle"></i> Activo
+                </span>
+            </header>
 
-        <section class="horario-estudiante" id="mi-horario">
+            <section class="estudiante-resumen" aria-label="Resumen del estudiante">
+                <article class="estudiante-resumen-tarjeta">
+                    <span>Curso</span>
+                    <strong>{{ request.user.perfil.curso|default:"Por asignar" }}</strong>
+                </article>
+
+                <article class="estudiante-resumen-tarjeta">
+                    <span>Jornada</span>
+                    <strong>
+                        {% if bloques %}
+                            {{ bloques.0.jornada }}
+                        {% else %}
+                            Sin horario asignado
+                        {% endif %}
+                    </strong>
+                </article>
+
+                <article class="estudiante-resumen-tarjeta">
+                    <span>Horario</span>
+                    <strong>{% if bloques %}Disponible{% else %}Pendiente{% endif %}</strong>
+                </article>
+            </section>
+        <section class="horario-estudiante pagina-estudiante activa" id="mi-horario">
             <div class="horario-cabecera">
                 <div>
-                    <h2>Mi horario</h2>
-                    <p>Vista semanal de tus clases</p>
+                    <h2>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        Horario semanal
+                    </h2>
+                    <p>
+                        {{ request.user.perfil.curso|default:"Curso pendiente" }}
+                    </p>
                 </div>
                 <span class="horario-etiqueta">Lunes a viernes</span>
             </div>
@@ -118,52 +193,83 @@
                 </table>
             </div>
         </section>
+        
+        <section class="horario-estudiante pagina-estudiante" id="avisos">
+            <div class="avisos-estudiante-cabecera">
+                <div>
+                    <h2><i class="fa-solid fa-bell"></i> Mis avisos</h2>
+                    <p>Comunicaciones importantes del liceo.</p>
+                </div>
+                <span class="avisos-estudiante-contador">0 avisos</span>
+            </div>
 
-        <section class="electividad-estudiante" id="mi-electividad">
+            <div class="avisos-estudiante-vacio">
+                <i class="fa-regular fa-bell-slash"></i>
+                <h3>No tienes avisos nuevos</h3>
+                <p>Cuando Administración envíe una comunicación, aparecerá aquí.</p>
+            </div>
+        </section>
+
+        <section class="electividad-estudiante pagina-estudiante" id="mi-electividad">
             <h2>Mi electividad</h2>
 
-            {% if electividad %}
-                <p><strong>Asignatura:</strong> {{ electividad.asignatura }}</p>
-                <p><strong>Docente:</strong> {{ electividad.docente }}</p>
-                <p><strong>Día:</strong> {{ electividad.dia }}</p>
-                <p><strong>Bloques:</strong> {{ electividad.bloques }}</p>
-                <p><strong>Sala:</strong> {{ electividad.sala }}</p>
+            {% if electividades %}
+                {% for clase in electividades %}
+                    <div class="datos-curso">
+                        <p><strong>Asignatura:</strong> {{ clase.asignatura }}</p>
+                        <p><strong>Docente:</strong> {{ clase.docente }}</p>
+                        <p><strong>Día:</strong> {{ clase.get_dia_display }}</p>
+                        <p>
+                            <strong>Bloque:</strong>
+                            {{ clase.bloque.numero }},
+                            {{ clase.bloque.hora_inicio|time:"H:i" }}–{{ clase.bloque.hora_fin|time:"H:i" }}
+                        </p>
+                        <p><strong>Sala:</strong> {{ clase.sala|default:"Por asignar" }}</p>
+                    </div>
+                {% endfor %}
             {% else %}
-                <p>Aún no hay una electividad asignada.</p>
+                <p class="mensaje-vacio">Aún no hay una electividad asignada.</p>
             {% endif %}
         </section>
 
-        <section class="horario-estudiante" id="mi-curso">
+        <section class="horario-estudiante pagina-estudiante" id="mi-curso">
             <h2>Mi curso</h2>
 
-            {% if curso_estudiante %}
-                <p><strong>Curso:</strong> {{ curso_estudiante.nombre }}</p>
-                <p><strong>Profesor/a jefe:</strong> {{ curso_estudiante.profesor_jefe }}</p>
-            {% else %}
-                <p class="mensaje-vacio">Aún no hay información de tu curso.</p>
-            {% endif %}
+            <div class="datos-curso">
+                <p>
+                    <strong>Estudiante:</strong>
+                    {{ request.user.perfil.nombre_completo|default:request.user.username }}
+                </p>
+                <p>
+                    <strong>Curso:</strong>
+                    {{ request.user.perfil.curso|default:"Por asignar" }}
+                </p>
+            </div>
         </section>
 
-        <section class="horario-estudiante" id="talleres">
+        <section class="horario-estudiante pagina-estudiante" id="talleres">
             <h2>Mis talleres</h2>
 
             {% if talleres %}
-                <ul>
-                    {% for taller in talleres %}
-                        <li>
-                            <strong>{{ taller.nombre }}</strong>
-                            {% if taller.dia %} — {{ taller.dia }}{% endif %}
-                            {% if taller.horario %}, {{ taller.horario }}{% endif %}
-                            {% if taller.lugar %}, {{ taller.lugar }}{% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% for taller in talleres %}
+                    <div class="datos-curso">
+                        <p><strong>Taller:</strong> {{ taller.asignatura }}</p>
+                        <p><strong>Docente:</strong> {{ taller.docente }}</p>
+                        <p><strong>Día:</strong> {{ taller.get_dia_display }}</p>
+                        <p>
+                            <strong>Bloque:</strong>
+                            {{ taller.bloque.numero }},
+                            {{ taller.bloque.hora_inicio|time:"H:i" }}–{{ taller.bloque.hora_fin|time:"H:i" }}
+                        </p>
+                        <p><strong>Sala:</strong> {{ taller.sala|default:"Por asignar" }}</p>
+                    </div>
+                {% endfor %}
             {% else %}
                 <p class="mensaje-vacio">Aún no tienes talleres asignados para mostrar.</p>
             {% endif %}
         </section>
 
-        <section class="horario-estudiante" id="mapa-liceo">
+        <section class="horario-estudiante pagina-estudiante" id="mapa-liceo">
             <h2>Mapa del liceo</h2>
 
             {% if mapa_liceo_url %}
@@ -174,4 +280,29 @@
         </section>
     </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    const enlacesMenu = document.querySelectorAll("[data-seccion]");
+    const paneles = document.querySelectorAll(".pagina-estudiante");
+
+    enlacesMenu.forEach(function (enlace) {
+        enlace.addEventListener("click", function (evento) {
+            evento.preventDefault();
+
+            const idSeccion = enlace.dataset.seccion;
+
+            paneles.forEach(function (panel) {
+                panel.classList.remove("activa");
+            });
+
+            enlacesMenu.forEach(function (item) {
+                item.classList.remove("activo");
+            });
+
+            document.getElementById(idSeccion).classList.add("activa");
+            enlace.classList.add("activo");
+        });
+    });
+</script>
 {% endblock %}

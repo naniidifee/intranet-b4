@@ -1,0 +1,680 @@
+/* Portal del administrador */
+.portal-admin {
+    max-width: 1400px;
+    min-height: 65vh;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.portal-admin-menu {
+    padding: 1.4rem;
+    border-radius: 0.85rem;
+    background: #102b4e;
+    color: #ffffff;
+}
+
+.portal-admin-menu h2 {
+    margin-bottom: 0.4rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.portal-admin-usuario {
+    margin-bottom: 1.5rem;
+    color: #d6deea;
+    font-size: 0.9rem;
+}
+
+.portal-admin-etiqueta {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #d6deea;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+}
+
+.portal-admin-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 0.55rem;
+    background: #173b63;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.portal-admin-menu a:hover,
+.portal-admin-menu a:focus {
+    background: #c99a2e;
+    color: #102b4e;
+}
+
+.portal-admin-menu a i {
+    width: 1.2rem;
+    text-align: center;
+}
+
+.portal-admin-contenido {
+    min-width: 0;
+    padding: 1.5rem;
+}
+
+.portal-admin-contenido > h1 {
+    margin-bottom: 0.4rem;
+    color: #102b4e;
+}
+
+.portal-admin-contenido > p {
+    color: #5b6573;
+}
+
+.portal-admin-tarjeta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid #e1e7ef;
+    border-left: 5px solid #c99a2e;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgb(16 43 78 / 8%);
+}
+
+.portal-admin-tarjeta > i {
+    color: #102b4e;
+    font-size: 1.7rem;
+}
+
+.portal-admin-tarjeta h2 {
+    color: #102b4e;
+    font-size: 1.1rem;
+}
+
+.portal-admin-tarjeta p {
+    margin-top: 0.25rem;
+    color: #5b6573;
+}
+
+@media (max-width: 760px) {
+    .portal-admin {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .portal-admin-contenido {
+        padding: 1rem 0;
+    }
+}
+.portal-admin-menu a.activo {
+    background: #c99a2e;
+    color: #102b4e;
+}
+/* Diseño general del portal de Administración */
+.portal-admin-general {
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: block;
+    background: #f0f4f8;
+}
+
+.portal-admin-general .portal-admin-menu {
+    position: fixed;
+    top: 8px;
+    bottom: 8px;
+    left: 8px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    width: 222px;
+    overflow-y: auto;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #0a1628, #102b5c);
+}
+
+.portal-admin-general .admin-menu-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1rem;
+    padding: 0 0 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+    background: transparent;
+    color: #fff;
+    font-size: 0.78rem;
+    line-height: 1.3;
+}
+
+.portal-admin-general .admin-menu-marca:hover {
+    background: transparent;
+    color: #fff;
+}
+
+.portal-admin-general .admin-menu-marca img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.portal-admin-general .admin-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 8%);
+}
+
+.portal-admin-general .admin-identidad strong,
+.portal-admin-general .admin-identidad span {
+    display: block;
+    color: #fff;
+}
+
+.portal-admin-general .admin-identidad strong {
+    font-size: 0.78rem;
+}
+
+.portal-admin-general .admin-identidad span {
+    margin-top: 0.2rem;
+    color: #cbd5e1;
+    font-size: 0.7rem;
+}
+
+.portal-admin-general .admin-avatar {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 50%;
+    background: #f5a800;
+    color: #0a1628;
+}
+
+.portal-admin-general .portal-admin-contenido {
+    min-height: 100vh;
+    margin-left: 238px;
+    padding: 0;
+    background: #f0f4f8;
+}
+
+.portal-admin-general .admin-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 16px 16px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgb(10 22 40 / 8%);
+}
+
+.portal-admin-general .admin-topbar h1 {
+    margin: 0;
+    color: #102b5c;
+    font-size: 1rem;
+}
+
+.portal-admin-general .admin-topbar span {
+    color: #92540a;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.portal-admin-general .admin-topbar span i {
+    color: #22c55e;
+    font-size: 0.55rem;
+}
+
+.portal-admin-general .portal-admin-contenido > :not(.admin-topbar) {
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-general .portal-admin-menu {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 8px;
+    }
+
+    .portal-admin-general .portal-admin-contenido {
+        margin-left: 0;
+    }
+
+    .portal-admin-general .portal-admin-contenido > :not(.admin-topbar) {
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+}
+.portal-admin-general .admin-listado {
+    max-width: none;
+    width: auto;
+}
+.portal-admin-general .portal-admin-contenido > .admin-formulario--registro {
+    margin: 2rem auto;
+}
+.portal-admin-general .portal-admin-menu {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 0 18px 18px 0;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-general .portal-admin-menu {
+        margin: 0;
+        border-radius: 0 0 18px 18px;
+    }
+}
+/* Menú general más ancho y opciones en una línea */
+.portal-admin-general .portal-admin-menu {
+    width: 260px;
+    padding: 1rem;
+}
+
+.portal-admin-general .portal-admin-menu a:not(.admin-menu-marca) {
+    gap: 0.5rem;
+    padding: 0.7rem 0.45rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.portal-admin-general .portal-admin-contenido {
+    margin-left: 276px;
+}
+
+/* Barra superior con margen y borde */
+.portal-admin-general .admin-topbar {
+    top: 8px;
+    margin: 8px 10px 0;
+    border: 1px solid #e1e7ef;
+    border-radius: 16px;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-general .portal-admin-menu {
+        width: auto;
+    }
+
+    .portal-admin-general .portal-admin-contenido {
+        margin-left: 0;
+    }
+
+    .portal-admin-general .portal-admin-menu a:not(.admin-menu-marca) {
+        white-space: normal;
+    }
+}
+.portal-admin-general .admin-identidad .admin-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portal-admin-general .admin-identidad .admin-avatar i {
+    color: #0a1628;
+    font-size: 1rem;
+    line-height: 1;
+}
+.admin-modulo-noticias {
+    padding: 1.5rem;
+}
+
+.admin-modulo-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgb(10 22 40 / 8%);
+}
+
+.admin-modulo-etiqueta {
+    color: #a36b00;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.admin-modulo-cabecera h1 {
+    margin: 0.35rem 0;
+    color: #102b5c;
+}
+
+.admin-modulo-cabecera p {
+    margin: 0;
+    color: #64748b;
+}
+
+.admin-modulo-boton {
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 12px;
+    background: #102b5c;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+}
+
+.admin-noticias-panel {
+    padding: 1.5rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgb(10 22 40 / 8%);
+}
+
+.admin-noticias-panel h2 {
+    margin: 0 0 1rem;
+    color: #102b5c;
+}
+
+.admin-noticias-vacio {
+    padding: 3rem 1rem;
+    border-radius: 14px;
+    background: #f3f6fa;
+    color: #64748b;
+    text-align: center;
+}
+
+.admin-noticias-vacio i {
+    color: #c99a2e;
+    font-size: 2rem;
+}
+
+.admin-noticias-vacio h3 {
+    margin: 0.75rem 0 0.35rem;
+    color: #102b5c;
+}
+
+.admin-noticias-vacio p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .admin-modulo-noticias {
+        padding: 1rem;
+    }
+
+    .admin-modulo-cabecera {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+.admin-reservas {
+    padding: 1.5rem;
+}
+
+.admin-reservas-cabecera,
+.admin-reservas-panel {
+    padding: 1.4rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgb(10 22 40 / 8%);
+}
+
+.admin-reservas-cabecera > div > span {
+    color: #a36b00;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.admin-reservas-cabecera h1 {
+    margin: 0.35rem 0;
+    color: #102b5c;
+}
+
+.admin-reservas-cabecera p {
+    margin: 0;
+    color: #64748b;
+}
+
+.admin-reservas-resumen {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.admin-reservas-resumen article {
+    display: grid;
+    min-height: 90px;
+    place-content: center;
+    justify-items: center;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgb(10 22 40 / 8%);
+}
+
+.admin-reservas-resumen strong {
+    color: #102b5c;
+    font-size: 1.6rem;
+}
+
+.admin-reservas-resumen span {
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.admin-reservas-filtros {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-reservas-filtros h2 {
+    margin: 0;
+    color: #102b5c;
+    font-size: 1rem;
+}
+
+.admin-reservas-filtros select {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #fff;
+    font: inherit;
+}
+
+.admin-reservas-vacio {
+    padding: 3rem 1rem;
+    border-radius: 14px;
+    background: #f3f6fa;
+    color: #64748b;
+    text-align: center;
+}
+
+.admin-reservas-vacio i {
+    color: #c99a2e;
+    font-size: 2rem;
+}
+
+.admin-reservas-vacio h3 {
+    margin: 0.75rem 0 0.35rem;
+    color: #102b5c;
+}
+
+.admin-reservas-vacio p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .admin-reservas {
+        padding: 1rem;
+    }
+
+    .admin-reservas-resumen {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-reservas-filtros {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+.admin-avisos {
+    padding: 1.5rem;
+}
+
+.admin-avisos-cabecera {
+    margin-bottom: 1rem;
+}
+
+.admin-avisos-cabecera > span {
+    color: #a36b00;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.admin-avisos-cabecera h1 {
+    margin: 0.35rem 0;
+    color: #102b5c;
+}
+
+.admin-avisos-cabecera p {
+    margin: 0;
+    color: #64748b;
+}
+
+.admin-avisos-panel {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1.4rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgb(10 22 40 / 8%);
+}
+
+.admin-avisos-panel h2 {
+    margin: 0;
+    color: #102b5c;
+    font-size: 1rem;
+}
+
+.admin-avisos-panel h2 i {
+    color: #c99a2e;
+}
+
+.admin-aviso-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.admin-aviso-campo {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.admin-aviso-campo label {
+    color: #102b5c;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.admin-aviso-campo input,
+.admin-aviso-campo select,
+.admin-aviso-campo textarea {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #fff;
+    color: #243247;
+    font: inherit;
+}
+
+.admin-aviso-campo textarea {
+    resize: vertical;
+}
+
+.admin-aviso-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.admin-aviso-acciones button {
+    padding: 0.7rem 1rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 50px;
+    background: #f3f6fa;
+    color: #102b5c;
+    font: inherit;
+    font-weight: 700;
+}
+
+.admin-aviso-acciones .admin-aviso-enviar {
+    border-color: #f5a800;
+    background: #f5a800;
+}
+
+.admin-avisos-vacio {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #f3f6fa;
+    color: #64748b;
+    text-align: center;
+}
+
+@media (max-width: 650px) {
+    .admin-avisos {
+        padding: 1rem;
+    }
+
+    .admin-aviso-fila {
+        grid-template-columns: 1fr;
+    }
+}
+.portal-cerrar-sesion {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    margin-top: auto;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.portal-cerrar-sesion:hover {
+    background: #c9972c;
+    color: #0b192c;
+}
+.portal-admin-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.portal-admin-menu form {
+    margin-top: auto;
+}

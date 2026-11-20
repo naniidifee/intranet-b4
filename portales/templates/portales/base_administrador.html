@@ -1,43 +1,150 @@
 {% extends "intranet/base.html" %}
 
+{% load static %}
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'recursos/css/administrador.css' %}">
+{% endblock %}
+{% block encabezado_publico %}
+    {% if request.resolver_match.url_name == "gestionar_horarios" %}
+        <header class="utp-topbar">
+            <h1>Gestión de Horarios</h1>
+
+            <div class="utp-topbar-estados">
+                <span class="utp-topbar-badge">
+                    <i class="fa-solid fa-circle"></i>
+                    UTP
+                </span>
+            </div>
+        </header>
+    {% endif %}
+{% endblock encabezado_publico %}
 {% block content %}
-<div class="portal-admin">
+<div class="portal-admin {% if request.resolver_match.url_name == 'gestionar_horarios' %}portal-admin-utp{% else %}portal-admin-general{% endif %}">
     <aside class="portal-admin-menu">
-        <h2>Administración</h2>
-        <p class="portal-admin-usuario">
-            Bienvenido/a, {{ request.user.username }}
-        </p>
+        {% if request.resolver_match.url_name == "gestionar_horarios" %}
+                <a class="utp-menu-marca" href="{% url 'home' %}">
+                    <img src="{% static 'recursos/img/avb-logo.jpg' %}"
+                        alt="Logo del Liceo Antonio Varas de la Barra">
+                    <span>Liceo Antonio<br>Varas de la Barra</span>
+                </a>
+                <div class="utp-identidad">
+                    <span class="utp-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </span>
+                    <div>
+                        <strong>Jefatura UTP</strong>
+                        <span>Gestión Curricular</span>
+                    </div>
+                </div>
 
-        <span class="portal-admin-etiqueta">PANEL</span>
-        <a href="{% url 'intranet_dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            Inicio
-        </a>
+                <span class="portal-admin-etiqueta">HORARIOS</span>
+                <a href="{% url 'gestionar_horarios' %}?vista=horarios"
+                    class="{% if vista == 'horarios' %}activo{% endif %}">
+                    <i class="fa-solid fa-calendar-week"></i>
+                    Gestionar horarios
+                </a>
 
-        <span class="portal-admin-etiqueta">GESTIÓN DE USUARIOS</span>
-        <a href="{% url 'crear_usuario' %}">
-            <i class="fa-solid fa-user-plus"></i>
-            Registrar usuario
-        </a>
-        <a href="{% url 'listar_usuarios' %}">
-            <i class="fa-solid fa-users"></i>
-            Usuarios registrados
-        </a>
+                <a href="{% url 'gestionar_horarios' %}?vista=cursos"
+                    class="{% if vista == 'cursos' %}activo{% endif %}">
+                    <i class="fa-solid fa-users"></i>
+                    Cursos y docentes
+                </a>
+                <a href="{% url 'gestionar_horarios' %}?vista=salas"
+                    class="{% if vista == 'salas' %}activo{% endif %}">
+                    <i class="fa-solid fa-door-open"></i>
+                    Disponibilidad de salas
+                </a>
 
-        <span class="portal-admin-etiqueta">GESTIÓN ACADÉMICA</span>
-        <a href="{% url 'gestionar_horarios' %}">
-            <i class="fa-solid fa-calendar-days"></i>
-            Gestión de horarios
-        </a>
+                <span class="portal-admin-etiqueta">HERRAMIENTAS</span>
+                <a href="#" onclick="window.print(); return false;">
+                    <i class="fa-solid fa-print"></i>
+                    Imprimir horario
+                </a>
+                <a href="{% url 'intranet_dashboard' %}">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver a Administración
+                </a>
 
-        <span class="portal-admin-etiqueta">SEGURIDAD</span>
-        <a href="{% url 'listar_solicitudes_recuperacion' %}">
-            <i class="fa-solid fa-key"></i>
-            Solicitudes de recuperación
-        </a>
+            {% else %}
+            <a class="admin-menu-marca" href="{% url 'home' %}">
+                <img src="{% static 'recursos/img/avb-logo.jpg' %}"
+                     alt="Logo del Liceo Antonio Varas de la Barra">
+                <span>Liceo Antonio<br>Varas de la Barra</span>
+            </a>
+
+            <div class="admin-identidad">
+                <span class="admin-avatar">
+                    <i class="fa-solid fa-user-gear"></i>
+                </span>
+                <div>
+                    <strong>Administración</strong>
+                    <span>{{ request.user.username }}</span>
+                </div>
+            </div>
+
+            <span class="portal-admin-etiqueta">PANEL</span>
+            <a href="{% url 'intranet_dashboard' %}">
+                <i class="fa-solid fa-house"></i>
+                Inicio
+            </a>
+
+            <span class="portal-admin-etiqueta">GESTIÓN DE USUARIOS</span>
+            <a href="{% url 'crear_usuario' %}">
+                <i class="fa-solid fa-user-plus"></i>
+                Registrar usuario
+            </a>
+            <a href="{% url 'listar_usuarios' %}">
+                <i class="fa-solid fa-users"></i>
+                Usuarios registrados
+            </a>
+
+            <span class="portal-admin-etiqueta">GESTIÓN ACADÉMICA</span>
+            <a href="{% url 'gestionar_horarios' %}">
+                <i class="fa-solid fa-calendar-days"></i>
+                Horarios
+            </a>
+
+            <span class="portal-admin-etiqueta">COMUNICACIONES</span>
+            <a href="{% url 'gestion_noticias' %}">
+                <i class="fa-solid fa-newspaper"></i>
+                Gestión de noticias
+            </a>
+            <a href="{% url 'gestionar_avisos' %}">
+                <i class="fa-solid fa-bell"></i>
+                Avisos a usuarios
+            </a>
+
+            <span class="portal-admin-etiqueta">ESPACIOS</span>
+            <a href="{% url 'gestionar_reservas' %}">
+                <i class="fa-solid fa-door-open"></i>
+                Solicitudes de reserva
+            </a>
+
+            <span class="portal-admin-etiqueta">SEGURIDAD</span>
+            <a href="{% url 'listar_solicitudes_recuperacion' %}">
+                <i class="fa-solid fa-key"></i>
+                Solicitudes de recuperación
+            </a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="portal-cerrar-sesion">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
+            </form>
+            
+        {% endif %}
     </aside>
 
     <main class="portal-admin-contenido">
+        {% if request.resolver_match.url_name != "gestionar_horarios" %}
+            <header class="admin-topbar">
+                <h1>Portal de Administración</h1>
+                <span><i class="fa-solid fa-circle"></i> Administrador</span>
+            </header>
+        {% endif %}
         {% block contenido_admin %}{% endblock %}
     </main>
 </div>

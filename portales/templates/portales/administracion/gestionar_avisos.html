@@ -1,0 +1,66 @@
+{% extends "portales/base_administrador.html" %}
+
+{% block title %}Avisos a usuarios{% endblock %}
+
+{% block contenido_admin %}
+<section class="admin-avisos">
+    <header class="admin-avisos-cabecera">
+        <span>COMUNICACIONES</span>
+        <h1>Avisos a usuarios</h1>
+        <p>Prepara comunicaciones sobre cambios, actividades e información importante.</p>
+    </header>
+
+    <section class="admin-avisos-panel">
+        <h2><i class="fa-solid fa-pen-to-square"></i> Nuevo aviso</h2>
+
+        <div class="admin-aviso-campo">
+            <label for="aviso-titulo">Asunto</label>
+            <input id="aviso-titulo" type="text"
+                   placeholder="Ej: Cambio de sala para 3° medio">
+        </div>
+
+        <div class="admin-aviso-fila">
+            <div class="admin-aviso-campo">
+                <label for="aviso-tipo">Tipo de aviso</label>
+                <select id="aviso-tipo">
+                    <option>Cambio de sala</option>
+                    <option>Actividad</option>
+                    <option>Información general</option>
+                </select>
+            </div>
+
+            <div class="admin-aviso-campo">
+                <label for="aviso-destinatarios">Destinatarios</label>
+                <select id="aviso-destinatarios">
+                    <option>Todos los usuarios</option>
+                    <option>Estudiantes</option>
+                    <option>Docentes</option>
+                    <option>Un curso</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin-aviso-campo">
+            <label for="aviso-mensaje">Mensaje</label>
+            <textarea id="aviso-mensaje" rows="6"
+                      placeholder="Escribe el aviso que recibirán los usuarios..."></textarea>
+        </div>
+
+        <div class="admin-aviso-acciones">
+            <button type="button" disabled class="admin-aviso-enviar">
+                <i class="fa-solid fa-paper-plane"></i> Enviar aviso
+            </button>
+            <button type="button" disabled>
+                Guardar borrador
+            </button>
+        </div>
+    </section>
+
+    <section class="admin-avisos-panel">
+        <h2><i class="fa-regular fa-clock"></i> Avisos recientes</h2>
+        <div class="admin-avisos-vacio">
+            Aún no hay avisos enviados.
+        </div>
+    </section>
+</section>
+{% endblock %}

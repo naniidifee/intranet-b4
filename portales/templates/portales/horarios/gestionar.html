@@ -1,239 +1,379 @@
 {% extends "portales/base_administrador.html" %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'recursos/css/horarios.css' %}">
+{% endblock %}
 
 {% block title %}Gestión de horarios{% endblock %}
 
 {% block contenido_admin %}
 <section class="admin-listado gestion-horarios">
-    <h1>Gestión de horarios</h1>
-    <p>Administra bloques de clase, recreos, almuerzos y asignaturas.</p>
+    {% if vista == "horarios" %}
+        <div class="utp-panel-filtros utp-toolbar">
+            <div class="horario-niveles" aria-label="Nivel del curso">
+                {% for valor, nombre in niveles %}
+                    <a href="?vista=horarios&nivel={{ valor }}&jornada={{ jornada_seleccionada }}"
+                    class="{% if nivel_seleccionado == valor %}activo{% endif %}">
+                        {{ nombre }}
+                    </a>
+                {% empty %}
+                    <span>No hay cursos con horarios registrados.</span>
+                {% endfor %}
+            </div>
 
-    <div class="horario-niveles" aria-label="Nivel del curso">
-        {% for valor, nombre in niveles %}
-            <a href="?nivel={{ valor }}&jornada={{ jornada_seleccionada }}"
-            class="{% if nivel_seleccionado == valor %}activo{% endif %}">
-                {{ nombre }}
-            </a>
-        {% empty %}
-            <span>Aún no hay cursos con clases registradas.</span>
-        {% endfor %}
-    </div>
+            <form method="get" class="utp-toolbar-filtros">
+                <input type="hidden" name="vista" value="horarios">
+                <input type="hidden" name="nivel" value="{{ nivel_seleccionado }}">
 
-    <form method="get" class="filtros-horario">
-        <input type="hidden" name="nivel" value="{{ nivel_seleccionado }}">
+                <select id="filtro-curso" name="curso">
+                    {% for opcion in cursos_opciones %}
+                        <option value="{{ opcion.codigo }}"
+                            {% if curso_seleccionado == opcion.codigo %}selected{% endif %}>
+                            {{ opcion.etiqueta }}
+                        </option>
+                    {% empty %}
+                        <option value="">No hay paralelos registrados en este nivel</option>
+                    {% endfor %}
+                </select>
 
-        <label for="filtro-curso">Curso</label>
-        <select id="filtro-curso" name="curso">
-            {% for curso in cursos %}
-                <option value="{{ curso }}"
-                    {% if curso_seleccionado == curso %}selected{% endif %}>
-                    {{ curso }}
-                </option>
-            {% empty %}
-                <option value="">No hay cursos en este nivel</option>
+                <button type="submit"
+                        name="jornada"
+                        value="manana"
+                        class="utp-jornada {% if jornada_seleccionada == 'manana' %}activo{% endif %}">
+                    <i class="fa-solid fa-sun"></i>
+                    Mañana
+                </button>
+
+                <button type="submit"
+                        name="jornada"
+                        value="tarde"
+                        class="utp-jornada {% if jornada_seleccionada == 'tarde' %}activo{% endif %}">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    Tarde
+                </button>
+            </form>
+
+            <div class="utp-toolbar-acciones">
+                <button type="button" class="utp-importar-pendiente" disabled>
+                    <i class="fa-solid fa-file-pdf"></i>
+                    Importar PDF
+                </button>
+
+                <button type="button" class="utp-guardar-pendiente" disabled>
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar
+                </button>
+
+                <button type="button" class="utp-imprimir" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i>
+                    Imprimir
+                </button>
+
+                <button type="button" class="utp-limpiar-pendiente" disabled>
+                    <i class="fa-solid fa-trash"></i>
+                    Limpiar
+                </button>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="mensaje-exito">{{ message }}</p>
             {% endfor %}
-        </select>
+        {% endif %}
 
-        <label for="filtro-jornada">Jornada</label>
-        <select id="filtro-jornada" name="jornada">
-            {% for valor, nombre in jornadas %}
-                <option value="{{ valor }}"
-                    {% if jornada_seleccionada == valor %}selected{% endif %}>
-                    {{ nombre }}
-                </option>
-            {% endfor %}
-        </select>
+        {% if curso_seleccionado %}
+            <header class="horario-titulo-utp" id="horario-utp">
+                <h2>Horario — {{ curso_seleccionado }}</h2>
+                <p>Liceo Técnico Profesional Antonio Varas de la Barra</p>
+            </header>
 
-        <button type="submit">Filtrar</button>
-        <button type="button" disabled title="Disponible más adelante">
-            Importación Excel
-        </button>
-    </form>
+            <div class="leyenda-utp" aria-label="Tipos de bloque">
+                <span><i class="leyenda-color normal"></i> Bloque normal</span>
+                <span><i class="leyenda-color tiempo"></i> Partido por tiempo</span>
+                <span><i class="leyenda-color grupo"></i> Partido por grupo (A/B)</span>
+            </div>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p class="mensaje-exito">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+            <div class="tabla-horario-scroll">
+                <table class="horario-semanal">
+                    <thead>
+                        <tr>
+                            <th>Bloque</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fila in matriz %}
+                            {% if fila.tipo == "clase" %}
+                                <tr>
+                                    <th class="horario-bloque">
+                                        Bloque {{ fila.numero }}
+                                        <small>
+                                            {{ fila.hora_inicio|time:"H:i" }}–{{ fila.hora_fin|time:"H:i" }}
+                                        </small>
+                                    </th>
 
-    <h2>Franjas de la jornada</h2>
-    <p>
-        <a href="{% url 'crear_bloque_horario' %}">Agregar bloque, recreo o almuerzo</a>
-    </p>
+                                    {% for dia in fila.dias %}
+                                        <td>
+                                            {% for clase in dia.clases %}
+                                                <a href="{% url 'editar_clase_horario' clase.id %}"
+                                                   class="clase-editar"
+                                                   title="Editar {{ clase.asignatura }}">
+                                                    <article class="clase-card modalidad-{{ clase.modalidad_css }}">
+                                                        <strong>{{ clase.asignatura }}</strong>
+                                                        <span>
+                                                            {{ clase.hora_inicio|time:"H:i" }}–{{ clase.hora_fin|time:"H:i" }}
+                                                        </span>
+                                                        {% if clase.sala %}
+                                                            <span>{{ clase.sala }}</span>
+                                                        {% endif %}
+                                                        <span>{{ clase.docente }}</span>
 
-    {% if curso_seleccionado %}
-        <h2>Horario — {{ curso_seleccionado }}</h2>
+                                                        {% if clase.grupo_etiqueta %}
+                                                            <small class="clase-tipo">
+                                                                {{ clase.grupo_etiqueta }}
+                                                            </small>
+                                                        {% endif %}
 
-        <div class="tabla-horario-scroll">
-            <table class="horario-semanal">
-                <thead>
-                    <tr>
-                        <th>Bloque</th>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for fila in matriz %}
-                        {% if fila.tipo == "clase" %}
-                            <tr>
-                                <th class="horario-bloque">
-                                    Bloque {{ fila.numero }}
-                                    <small>
+                                                        {% if clase.segmento_etiqueta %}
+                                                            <small class="clase-tipo">
+                                                                {{ clase.segmento_etiqueta }}
+                                                            </small>
+                                                        {% endif %}
+
+                                                        <small class="clase-tipo">
+                                                            {{ clase.tipo_etiqueta }}
+                                                        </small>
+                                                    </article>
+                                                </a>
+                                            {% empty %}
+                                                <a class="celda-agregar-clase"
+                                                   href="{% url 'crear_clase_horario' %}?curso={{ curso_seleccionado|urlencode }}&dia={{ dia.numero }}&bloque={{ fila.id }}"
+                                                   aria-label="Agregar clase el {{ dia.nombre }} en el bloque {{ fila.numero }}">
+                                                    <span class="celda-vacia">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                        Agregar clase
+                                                    </span>
+                                                </a>
+                                            {% endfor %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="horario-pausa">
+                                        {{ fila.tipo_etiqueta }} ·
                                         {{ fila.hora_inicio|time:"H:i" }}–{{ fila.hora_fin|time:"H:i" }}
-                                    </small>
-                                </th>
-
-                                {% for dia in fila.dias %}
-                                    <td>
-                                        {% for clase in dia.clases %}
-                                            <article class="clase-card modalidad-{{ clase.modalidad_css }}">
-                                                <strong>{{ clase.asignatura }}</strong>
-                                                <span>
-                                                    {{ clase.hora_inicio|time:"H:i" }}–{{ clase.hora_fin|time:"H:i" }}
-                                                </span>
-                                                {% if clase.sala %}<span>{{ clase.sala }}</span>{% endif %}
-                                                <span>{{ clase.docente }}</span>
-
-                                                {% if clase.grupo_etiqueta %}
-                                                    <small class="clase-tipo">{{ clase.grupo_etiqueta }}</small>
-                                                {% endif %}
-                                                {% if clase.segmento_etiqueta %}
-                                                    <small class="clase-tipo">{{ clase.segmento_etiqueta }}</small>
-                                                {% endif %}
-                                                <small class="clase-tipo">{{ clase.tipo_etiqueta }}</small>
-                                            </article>
-                                        {% empty %}
-                                            <span class="bloque-vacio">—</span>
-                                        {% endfor %}
                                     </td>
-                                {% endfor %}
-                            </tr>
-                        {% else %}
+                                </tr>
+                            {% endif %}
+                        {% empty %}
                             <tr>
-                                <td colspan="6" class="horario-pausa">
-                                    {{ fila.tipo_etiqueta }} ·
-                                    {{ fila.hora_inicio|time:"H:i" }}–{{ fila.hora_fin|time:"H:i" }}
+                                <td colspan="6">
+                                    Todavía no hay franjas configuradas para esta jornada.
                                 </td>
                             </tr>
-                        {% endif %}
-                    {% empty %}
-                        <tr>
-                            <td colspan="6">Todavía no hay franjas configuradas para esta jornada.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>Agrega una clase para que el curso aparezca en el selector.</p>
-    {% endif %}
-    {% if bloques %}
-        <div class="tabla-usuarios-scroll">
-            <table class="tabla-usuarios">
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Jornada</th>
-                        <th>Número</th>
-                        <th>Orden</th>
-                        <th>Inicio</th>
-                        <th>Término</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for bloque in bloques %}
-                        <tr>
-                            <td>{{ bloque.get_tipo_display }}</td>
-                            <td>{{ bloque.get_jornada_display }}</td>
-                            <td>{{ bloque.numero|default:"—" }}</td>
-                            <td>{{ bloque.orden }}</td>
-                            <td>{{ bloque.hora_inicio|time:"H:i" }}</td>
-                            <td>{{ bloque.hora_fin|time:"H:i" }}</td>
-                            <td>
-                                <a href="{% url 'editar_bloque_horario' bloque.id %}">Editar</a>
-                                <form method="post"
-                                      action="{% url 'eliminar_bloque_horario' bloque.id %}"
-                                      class="form-estado">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            onclick="return confirm('¿Eliminar esta franja?')">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>Aún no hay franjas registradas.</p>
-    {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Agrega una clase para que el curso aparezca en el selector.</p>
+        {% endif %}
 
-    <h2>Clases registradas</h2>
-    <p>
-        <a href="{% url 'crear_clase_horario' %}">Agregar clase</a>
-    </p>
+        <div class="utp-seccion-cabecera">
+            <h2 id="lista-bloques">Bloques y pausas de la jornada</h2>
 
-    {% if clases %}
-        <div class="tabla-usuarios-scroll">
-            <table class="tabla-usuarios">
-                <thead>
-                    <tr>
-                        <th>Curso</th>
-                        <th>Día</th>
-                        <th>Jornada</th>
-                        <th>Bloque</th>
-                        <th>Horario</th>
-                        <th>Asignatura</th>
-                        <th>Docente</th>
-                        <th>Sala</th>
-                        <th>Tipo</th>
-                        <th>Grupo</th>
-                        <th>Parte</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for clase in clases %}
-                        <tr>
-                            <td>{{ clase.curso }}</td>
-                            <td>{{ clase.get_dia_display }}</td>
-                            <td>{{ clase.bloque.get_jornada_display }}</td>
-                            <td>{{ clase.bloque.numero }}</td>
-                            <td>
-                                {{ clase.bloque.hora_inicio|time:"H:i" }}–
-                                {{ clase.bloque.hora_fin|time:"H:i" }}
-                            </td>
-                            <td>{{ clase.asignatura }}</td>
-                            <td>{{ clase.docente }}</td>
-                            <td>{{ clase.sala|default:"—" }}</td>
-                            <td>{{ clase.get_tipo_display }}</td>
-                            <td>{{ clase.get_grupo_display }}</td>
-                            <td>{{ clase.get_segmento_display }}</td>
-                            <td>
-                                <a href="{% url 'editar_clase_horario' clase.id %}">Editar</a>
-                                <form method="post"
-                                      action="{% url 'eliminar_clase_horario' clase.id %}"
-                                      class="form-estado">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            onclick="return confirm('¿Eliminar esta clase?')">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <a href="{% url 'crear_bloque_horario' %}" class="utp-boton">
+                <i class="fa-solid fa-clock"></i>
+                Agregar bloque o pausa
+            </a>
         </div>
-    {% else %}
-        <p>Aún no hay clases registradas.</p>
+        {% if bloques %}
+            <div class="tabla-usuarios-scroll">
+                <table class="tabla-usuarios">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Jornada</th>
+                            <th>Número</th>
+                            <th>Orden</th>
+                            <th>Inicio</th>
+                            <th>Término</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bloque in bloques %}
+                            <tr>
+                                <td>{{ bloque.get_tipo_display }}</td>
+                                <td>{{ bloque.get_jornada_display }}</td>
+                                <td>{{ bloque.numero|default:"—" }}</td>
+                                <td>{{ bloque.orden }}</td>
+                                <td>{{ bloque.hora_inicio|time:"H:i" }}</td>
+                                <td>{{ bloque.hora_fin|time:"H:i" }}</td>
+                                <td>
+                                    <a href="{% url 'editar_bloque_horario' bloque.id %}">
+                                        Editar
+                                    </a>
+                                    <form method="post"
+                                          action="{% url 'eliminar_bloque_horario' bloque.id %}"
+                                          class="form-estado">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                onclick="return confirm('¿Eliminar esta franja?')">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Aún no hay franjas registradas.</p>
+        {% endif %}
+
+        <h2 id="lista-clases">Clases registradas</h2>
+        {% if clases %}
+            <div class="tabla-usuarios-scroll">
+                <table class="tabla-usuarios">
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Día</th>
+                            <th>Jornada</th>
+                            <th>Bloque</th>
+                            <th>Horario</th>
+                            <th>Asignatura</th>
+                            <th>Docente</th>
+                            <th>Sala</th>
+                            <th>Tipo</th>
+                            <th>Grupo</th>
+                            <th>Parte</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clase in clases %}
+                            <tr>
+                                <td>{{ clase.curso }}</td>
+                                <td>{{ clase.get_dia_display }}</td>
+                                <td>{{ clase.bloque.get_jornada_display }}</td>
+                                <td>{{ clase.bloque.numero }}</td>
+                                <td>
+                                    {{ clase.bloque.hora_inicio|time:"H:i" }}–
+                                    {{ clase.bloque.hora_fin|time:"H:i" }}
+                                </td>
+                                <td>{{ clase.asignatura }}</td>
+                                <td>{{ clase.docente }}</td>
+                                <td>{{ clase.sala|default:"—" }}</td>
+                                <td>{{ clase.get_tipo_display }}</td>
+                                <td>{{ clase.get_grupo_display }}</td>
+                                <td>{{ clase.get_segmento_display }}</td>
+                                <td>
+                                    <a href="{% url 'editar_clase_horario' clase.id %}">
+                                        Editar
+                                    </a>
+                                    <form method="post"
+                                          action="{% url 'eliminar_clase_horario' clase.id %}"
+                                          class="form-estado">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                onclick="return confirm('¿Eliminar esta clase?')">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Aún no hay clases registradas.</p>
+        {% endif %}
+
+    {% elif vista == "cursos" %}
+        <section class="utp-cursos" id="cursos-docentes">
+            <h2>Cursos del establecimiento</h2>
+            <p>Selecciona un curso para abrir su horario.</p>
+
+            {% for valor, nombre in niveles %}
+                <div class="utp-grupo-nivel">
+                    <h3>{{ nombre }}</h3>
+
+                    <div class="utp-cursos-grid">
+                        {% for curso in cursos_tarjetas %}
+                            {% if curso.nivel == valor %}
+                                <a class="utp-curso-card"
+                                   href="?vista=horarios&nivel={{ valor }}&curso={{ curso.nombre|urlencode }}&jornada={{ curso.jornada }}#horario-utp">
+                                    <i class="fa-solid fa-users"></i>
+                                    <strong>{{ curso.nombre }}</strong>
+                                    <span>{{ curso.jornada_nombre }}</span>
+                                    <span>{{ curso.bloques }} bloques programados</span>
+
+                                    {% if curso.docentes %}
+                                        <small>
+                                            Docentes: {{ curso.docentes|join:", " }}
+                                        </small>
+                                    {% else %}
+                                        <small>Sin docentes asignados</small>
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>Aún no hay cursos con horarios registrados.</p>
+            {% endfor %}
+        </section>
+            {% else %}
+                <section class="utp-salas" id="disponibilidad-salas">
+                    <h2>Disponibilidad de salas</h2>
+                    <p>Consulta qué salas están ocupadas o disponibles según el horario de clases.</p>
+
+                    <div class="utp-salas-resumen">
+                        <article>
+                            <span>Salas ocupadas</span>
+                            <strong>—</strong>
+                        </article>
+                        <article>
+                            <span>Salas disponibles</span>
+                            <strong>—</strong>
+                        </article>
+                    </div>
+
+                    <div class="tabla-usuarios-scroll">
+                        <table class="tabla-usuarios">
+                            <thead>
+                                <tr>
+                                    <th>Sala</th>
+                                    <th>Día</th>
+                                    <th>Horario</th>
+                                    <th>Curso</th>
+                                    <th>Asignatura</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        La disponibilidad se mostrará cuando conectemos los horarios registrados.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
     {% endif %}
 </section>
 {% endblock %}

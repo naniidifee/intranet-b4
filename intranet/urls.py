@@ -5,12 +5,17 @@ urlpatterns = [
     # Página pública principal (Inicio, Nosotros, Especialidades)
     path('', views.home, name='home'),
     
+    # Módulo de Intranet
+    path('intranet/', views.intranet_login, name='login'),
+    
+    path('cerrar-sesion/', views.cerrar_sesion, name='logout'),
+
     # Ruta dinámica para las especialidades
     path('especialidades/<slug:slug>/', views.especialidad_detail, name='especialidad_detail'),
 
     # Ruta para las noticias
     path('noticias/', views.portal_noticias, name='portal_noticias'),
-    path('noticias/<str:noticia_id>/', views.detalle_noticia, name='detalle_noticia'),
+    path('noticias/<slug:slug>/', views.detalle_noticia, name='detalle_noticia'),
 
     # Ruta para el equipo de gestion
     path('equipo/', views.equipo_gestion, name='equipo_gestion'),
@@ -20,5 +25,6 @@ urlpatterns = [
 
     # Ruta para egresados
     path('egresados/', views.egresados_view, name='egresados'),
+
 
 ]

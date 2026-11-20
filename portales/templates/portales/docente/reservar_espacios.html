@@ -1,0 +1,126 @@
+{% extends "portales/base_docente.html" %}
+
+{% block titulo_docente %}Reservar Espacios{% endblock %}
+
+{% block contenido_docente %}
+<section class="docente-reservas">
+
+    <div class="reservas-controles">
+        <div class="reservas-fecha">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>16 nov – 20 nov</span>
+            <span class="reservas-semana">Semana 47</span>
+        </div>
+
+        <div class="reservas-sala">
+            <i class="fa-solid fa-door-open"></i>
+            <select aria-label="Seleccionar espacio">
+                <option>Biblioteca</option>
+                <option>Laboratorio</option>
+                <option>Gimnasio</option>
+            </select>
+            <button type="button" aria-label="Semana anterior">‹</button>
+            <button type="button">Hoy</button>
+            <button type="button" aria-label="Semana siguiente">›</button>
+        </div>
+    </div>
+
+    <div class="reservas-leyenda">
+        <span><i class="disponible"></i> Disponible</span>
+        <span><i class="reservado"></i> Reservado por otro</span>
+        <span><i class="mi-reserva"></i> Mi reserva (clic para cancelar)</span>
+        <span><i class="no-disponible"></i> No disponible</span>
+    </div>
+
+    <div class="reservas-tabla-contenedor">
+        <table class="reservas-tabla">
+            <thead>
+                <tr>
+                    <th>Bloque</th>
+                    <th>Lunes <small>16 nov</small></th>
+                    <th>Martes <small>17 nov</small></th>
+                    <th>Miércoles <small>18 nov</small></th>
+                    <th>Jueves <small>19 nov</small></th>
+                    <th>Viernes <small>20 nov</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>07:45 – 08:30</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+                <tr>
+                    <th>08:30 – 09:15</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+
+                <tr class="reserva-pausa"><th colspan="6">— RECREO —</th></tr>
+
+                <tr>
+                    <th>09:30 – 10:15</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+                <tr>
+                    <th>10:15 – 11:00</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+
+                <tr class="reserva-pausa"><th colspan="6">— RECREO —</th></tr>
+
+                <tr>
+                    <th>11:15 – 12:00</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+                <tr>
+                    <th>12:00 – 12:45</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+
+                <tr class="reserva-pausa"><th colspan="6">— ALMUERZO —</th></tr>
+
+                <tr>
+                    <th>13:30 – 14:15</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+                <tr>
+                    <th>14:15 – 15:00</th>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><div class="reserva-pasado">Pasado</div></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+{% endblock %}

@@ -42,4 +42,39 @@ urlpatterns = [
         views.eliminar_clase_horario,
         name="eliminar_clase_horario",
     ),
+    path(
+        "estudiantes/cerrar-sesion/",
+        views.cerrar_sesion_estudiante,
+        name="cerrar_sesion_estudiante",
+    ),
+    path(
+        "administrador/noticias/",
+        views.gestion_noticias,
+        name="gestion_noticias",
+    ),
+    path(
+        "administrador/noticias/nueva/",
+        views.crear_noticia,
+        name="crear_noticia",
+    ),
+    path(
+        "administrador/reservas/",
+        views.gestionar_reservas,
+        name="gestionar_reservas",
+    ),
+    path(
+        "administrador/avisos/",
+        views.gestionar_avisos,
+        name="gestionar_avisos",
+    ),
+    path(
+        "docente/reservar-espacios/",
+        views.reservar_espacios,
+        name="reservar_espacios",
+    ),
+    path(
+        "docente/lista-curso/",
+        views.lista_curso_docente,
+        name="lista_curso_docente",
+    ),
 ]

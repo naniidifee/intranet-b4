@@ -1,0 +1,1377 @@
+/* Portal de estudiantes */
+.portal-estudiante {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.portal-menu {
+    position: sticky;
+    top: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    background: #102b4e;
+}
+
+.portal-menu h2 {
+    margin: 0 0 1rem;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.portal-menu-label {
+    margin: 1.25rem 0 0.5rem;
+    color: #d6deea;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.portal-menu nav {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.portal-menu nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.6rem;
+    background: #173b63;
+    color: #fff;
+    text-decoration: none;
+}
+
+.portal-menu nav a:hover,
+.portal-menu nav a:focus,
+.portal-menu nav a.activo {
+    background: #c99a2e;
+    color: #102b4e;
+}
+
+.portal-menu nav a i {
+    width: 1.2rem;
+    text-align: center;
+}
+
+.portal-contenido {
+    min-width: 0;
+}
+
+.portal-contenido .horario-estudiante,
+.portal-contenido .electividad-estudiante {
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 2px 10px rgb(16 43 78 / 8%);
+}
+
+/* Tabla semanal compartida por estudiantes y UTP */
+.horario-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.horario-cabecera h2,
+.gestion-horarios h1 {
+    color: #102b4e;
+}
+
+.horario-cabecera p {
+    margin: 0;
+    color: #5b6573;
+}
+
+.horario-etiqueta {
+    padding: 0.5rem 0.75rem;
+    border-radius: 999px;
+    background: #eef2f7;
+    color: #102b4e;
+    font-size: 0.85rem;
+}
+
+.tabla-horario-scroll {
+    overflow-x: auto;
+}
+
+.horario-semanal {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0.4rem;
+}
+
+.horario-semanal th,
+.horario-semanal td {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.horario-semanal thead th {
+    border-radius: 0.5rem;
+    background: #102b4e;
+    color: #fff;
+}
+
+.horario-semanal .horario-bloque {
+    min-width: 115px;
+    border-radius: 0.5rem;
+    background: #eef2f7;
+    color: #102b4e;
+}
+
+.horario-bloque small {
+    display: block;
+    margin-top: 0.35rem;
+    font-weight: 400;
+}
+
+.horario-semanal td {
+    min-width: 140px;
+    border-radius: 0.5rem;
+    background: #f5f7fa;
+}
+
+.clase-card {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    border: 1px solid #93c5fd;
+    border-left: 4px solid #3b82f6;
+    border-radius: 0.5rem;
+    background: #dbeafe;
+    color: #243247;
+    font-size: 0.88rem;
+}
+
+.clase-card + .clase-card {
+    margin-top: 0.5rem;
+}
+
+.clase-card.modalidad-partido-tiempo {
+    border-color: #86efac;
+    border-left-color: #22c55e;
+    background: #dcfce7;
+}
+
+.clase-card.modalidad-partido-grupo {
+    border-color: #fcd34d;
+    border-left-color: #f59e0b;
+    background: #fef3c7;
+}
+
+.clase-card.tipo-electiva {
+    border-left-color: #c99a2e;
+}
+
+.clase-card.tipo-especialidad {
+    border-left-color: #397a9b;
+}
+
+.clase-card .clase-tipo {
+    width: fit-content;
+    padding: 0.2rem 0.45rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 70%);
+    color: #102b4e;
+    font-size: 0.72rem;
+}
+
+.horario-semanal td.horario-pausa {
+    padding: 0.7rem 1rem;
+    background: #f1f5f9;
+    color: #102b4e;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.bloque-vacio,
+.mensaje-vacio {
+    color: #64748b;
+}
+
+/* Gestión de horarios UTP */
+.gestion-horarios > h2 {
+    margin: 2rem 0 0.8rem;
+    padding: 0.75rem 1rem;
+    border-left: 5px solid #c99a2e;
+    border-radius: 0.45rem;
+    background: #eef3f9;
+    color: #102b4e;
+    font-size: 1.15rem;
+}
+
+.gestion-horarios > p {
+    color: #5b6573;
+    line-height: 1.6;
+}
+
+.gestion-horarios > p > a {
+    display: inline-block;
+    padding: 0.65rem 1rem;
+    border-radius: 0.55rem;
+    background: #102b4e;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.gestion-horarios > p > a:hover {
+    background: #1a3a8f;
+}
+
+.horario-niveles,
+.filtros-horario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 0.75rem;
+    background: #f8fafc;
+}
+
+.horario-niveles a {
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    background: #fff;
+    color: #102b4e;
+    text-decoration: none;
+}
+
+.horario-niveles a.activo {
+    background: #102b4e;
+    color: #fff;
+}
+
+.filtros-horario label {
+    color: #102b4e;
+    font-weight: 600;
+}
+
+.filtros-horario select,
+.filtros-horario button {
+    min-height: 42px;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font: inherit;
+}
+
+.filtros-horario button {
+    border: 0;
+    background: #102b4e;
+    color: #fff;
+    cursor: pointer;
+}
+
+.gestion-horarios .tabla-horario-scroll,
+.gestion-horarios .tabla-usuarios-scroll {
+    margin: 1rem 0 2rem;
+    overflow-x: auto;
+    border: 1px solid #e1e7ef;
+    border-radius: 0.85rem;
+    background: #fff;
+    box-shadow: 0 5px 18px rgb(16 43 78 / 8%);
+}
+
+.gestion-horarios .tabla-usuarios {
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    .portal-estudiante {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .portal-menu {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .gestion-horarios .filtros-horario {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .gestion-horarios .filtros-horario select,
+    .gestion-horarios .filtros-horario button {
+        width: 100%;
+    }
+}
+
+/* Cabecera y filtros del panel UTP */
+.utp-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.utp-encabezado h1 {
+    margin: 0;
+    color: #102b4e;
+}
+
+.utp-encabezado p {
+    margin: 0.35rem 0 0;
+    color: #5b6573;
+}
+
+.utp-rol {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: #fff3d6;
+    color: #855600;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.utp-rol i {
+    color: #22c55e;
+    font-size: 0.6rem;
+}
+
+.utp-panel-filtros {
+    margin: 1.25rem 0;
+    padding: 1.2rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 5px 18px rgb(16 43 78 / 8%);
+}
+
+.utp-panel-filtros .horario-niveles {
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.utp-panel-filtros .filtros-horario {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.utp-importar-pendiente {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+@media (max-width: 600px) {
+    .utp-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+/* Presentación de la cuadrícula UTP */
+.horario-titulo-utp {
+    margin: 1.5rem 0 1rem;
+    text-align: center;
+}
+
+.horario-titulo-utp h2 {
+    margin: 0;
+    color: #102b4e;
+    font-size: 1.25rem;
+}
+
+.horario-titulo-utp p {
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.leyenda-utp {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.25rem;
+    margin: 0 0 0.8rem;
+    color: #334155;
+    font-size: 0.82rem;
+}
+
+.leyenda-utp span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.leyenda-color {
+    width: 14px;
+    height: 14px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.leyenda-color.normal {
+    border-color: #93c5fd;
+    background: #dbeafe;
+}
+
+.leyenda-color.tiempo {
+    border-color: #86efac;
+    background: #dcfce7;
+}
+
+.leyenda-color.grupo {
+    border-color: #fcd34d;
+    background: #fef3c7;
+}
+
+.gestion-horarios .horario-semanal {
+    min-width: 900px;
+    border-spacing: 0;
+    overflow: hidden;
+    border: 1px solid #e1e7ef;
+    border-radius: 0.85rem;
+}
+
+.gestion-horarios .horario-semanal thead th {
+    padding: 0.85rem 0.7rem;
+    background: #0a1628;
+    text-align: center;
+}
+
+.gestion-horarios .horario-semanal thead th:first-child {
+    text-align: left;
+}
+
+.gestion-horarios .horario-semanal td {
+    padding: 0.4rem;
+    border: 1px solid #eef0f3;
+    background: #fff;
+}
+
+.gestion-horarios .horario-semanal .horario-bloque {
+    border: 1px solid #e1e7ef;
+    background: #f8fafc;
+}
+
+.gestion-horarios .horario-semanal td.horario-pausa {
+    background: #f8fafc;
+    color: #102b4e;
+}
+
+.utp-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+.utp-boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    background: #f5a800;
+    color: #0a1628;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.utp-boton:hover {
+    background: #ffc107;
+}
+
+.utp-boton.secundario {
+    background: #0a1628;
+    color: #fff;
+}
+
+.utp-boton.secundario:hover {
+    background: #0f2557;
+}
+.clase-editar {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.clase-editar .clase-card {
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clase-editar:hover .clase-card {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgb(16 43 78 / 16%);
+}
+
+.clase-editar:focus-visible {
+    outline: 3px solid #f5a800;
+    outline-offset: 3px;
+    border-radius: 0.6rem;
+}
+.celda-agregar-clase {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.celda-agregar-clase .celda-vacia {
+    min-height: 72px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.6rem;
+    color: #64748b;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.celda-agregar-clase:hover .celda-vacia {
+    border-color: #f5a800;
+    background: #fffaf0;
+    color: #855600;
+}
+
+.celda-agregar-clase:focus-visible {
+    outline: 3px solid #f5a800;
+    outline-offset: 3px;
+    border-radius: 0.6rem;
+}
+.utp-imprimir {
+    min-height: 42px;
+    padding: 0.55rem 0.9rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #0a1628;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.utp-imprimir:hover {
+    background: #0f2557;
+}
+
+@media print {
+    @page {
+        size: landscape;
+        margin: 1cm;
+    }
+
+    .topbar,
+    body > nav,
+    .portal-admin-menu,
+    .utp-panel-filtros,
+    .gestion-horarios .tabla-usuarios-scroll,
+    #lista-bloques,
+    #lista-clases {
+        display: none !important;
+    }
+
+    .portal-admin {
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    .gestion-horarios {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .tabla-horario-scroll {
+        overflow: visible;
+    }
+
+    .gestion-horarios .horario-semanal {
+        width: 100%;
+        min-width: 0;
+        font-size: 9pt;
+    }
+
+    .clase-card {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}
+.utp-cursos {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 5px 18px rgb(16 43 78 / 8%);
+}
+
+.utp-cursos h2 {
+    margin: 0;
+    color: #102b4e;
+}
+
+.utp-cursos > p {
+    margin: 0.35rem 0 1rem;
+    color: #64748b;
+}
+
+.utp-cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 0.8rem;
+}
+
+.utp-curso-card {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 0.85rem;
+    background: #f8fafc;
+    color: #102b4e;
+    text-decoration: none;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.utp-curso-card:hover {
+    transform: translateY(-2px);
+    border-color: #f5a800;
+    box-shadow: 0 5px 14px rgb(16 43 78 / 10%);
+}
+
+.utp-curso-card > i {
+    color: #c99a2e;
+}
+
+.utp-curso-card span {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.gestion-horarios a.clase-editar,
+.gestion-horarios a.celda-agregar-clase {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+}
+
+.gestion-horarios a.clase-editar:hover,
+.gestion-horarios a.celda-agregar-clase:hover {
+    background: transparent;
+}
+
+.gestion-horarios a.celda-agregar-clase .celda-vacia {
+    background: #fff;
+    color: #64748b;
+}
+/* Ajuste de ancho y alineación exclusivo de Gestión de horarios */
+.portal-admin.portal-admin-utp {
+    width: calc(100% - 2rem);
+    max-width: 1700px;
+    margin: 2rem auto;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 1.5rem;
+}
+
+.portal-admin-utp .portal-admin-contenido {
+    padding: 0;
+}
+
+.portal-admin-utp .gestion-horarios {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 1.5rem;
+}
+
+@media (max-width: 760px) {
+    .portal-admin.portal-admin-utp {
+        width: calc(100% - 1.5rem);
+        margin: 1rem auto;
+        grid-template-columns: 1fr;
+    }
+}
+.gestion-horarios a.celda-agregar-clase {
+    display: flex;
+    height: 100%;
+    min-height: 72px;
+    text-decoration: none !important;
+}
+
+.gestion-horarios a.celda-agregar-clase .celda-vacia {
+    width: 100%;
+    height: 100%;
+    min-height: 72px;
+    color: #64748b;
+    text-decoration: none;
+}
+.utp-grupo-nivel + .utp-grupo-nivel {
+    margin-top: 1.5rem;
+}
+
+.utp-grupo-nivel h3 {
+    margin: 0 0 0.75rem;
+    color: #102b4e;
+    font-size: 1rem;
+}
+
+.utp-curso-card small {
+    color: #475569;
+    line-height: 1.4;
+}
+
+/* Barra superior propia del portal UTP */
+.utp-topbar {
+    min-height: 64px;
+    padding: 0.6rem 1.5rem;
+    display: grid;
+    grid-template-columns: 230px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 10px rgb(10 22 40 / 8%);
+}
+
+.utp-topbar-liceo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #0a1628;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+}
+
+.utp-topbar-liceo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.utp-topbar h1 {
+    margin: 0;
+    color: #0f2557;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.utp-topbar-estados {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.utp-topbar-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: #fff3d6;
+    color: #855600;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.utp-topbar-badge .fa-circle {
+    color: #22c55e;
+    font-size: 0.55rem;
+}
+
+.utp-topbar-guardado {
+    background: #e5f5f2;
+    color: #0f766e;
+}
+
+@media (max-width: 600px) {
+    .utp-topbar {
+        grid-template-columns: 1fr auto;
+        padding: 0.65rem 1rem;
+    }
+
+    .utp-topbar h1 {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        text-align: left;
+    }
+
+    .utp-topbar-estados {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}
+
+/* Menú UTP con margen y esquinas redondeadas */
+.utp-topbar {
+    margin-left: 244px;
+}
+
+.portal-admin.portal-admin-utp {
+    display: block;
+    width: auto;
+    max-width: none;
+    min-height: calc(100vh - 64px);
+    margin: 0;
+    padding: 0;
+    background: #f0f4f8;
+}
+
+.portal-admin-utp .portal-admin-menu {
+    position: fixed;
+    top: 12px;
+    bottom: 12px;
+    left: 12px;
+    z-index: 100;
+    width: 220px;
+    height: auto;
+    overflow-y: auto;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #0a1628, #0f2557);
+}
+
+.portal-admin-utp .portal-admin-contenido {
+    min-width: 0;
+    margin-left: 244px;
+    padding: 1.5rem;
+}
+
+@media (max-width: 760px) {
+    .utp-topbar {
+        margin-left: 0;
+    }
+
+    .portal-admin-utp .portal-admin-menu {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        width: auto;
+        height: auto;
+        max-height: none;
+        margin: 10px;
+        border-radius: 16px;
+    }
+
+    .portal-admin-utp .portal-admin-contenido {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
+/* Ajuste del texto del menú UTP */
+.portal-admin-utp .portal-admin-menu {
+    padding: 1.1rem 0.85rem;
+}
+
+.portal-admin-utp .portal-admin-menu h2 {
+    font-size: 0.95rem;
+}
+
+.portal-admin-utp .portal-admin-usuario {
+    font-size: 0.72rem;
+}
+
+.portal-admin-utp .portal-admin-etiqueta {
+    font-size: 0.6rem;
+}
+
+.portal-admin-utp .portal-admin-menu a {
+    gap: 0.55rem;
+    padding: 0.6rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+}
+
+.portal-admin-utp .portal-admin-menu a i {
+    flex-shrink: 0;
+}
+/* Fondo general del portal UTP */
+.portal-admin-utp .gestion-horarios {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+/* Alinea los filtros del horario en una fila */
+.utp-panel-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.utp-panel-filtros .horario-niveles {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.utp-panel-filtros .filtros-horario {
+    flex: 1 1 650px;
+    align-items: center;
+}
+
+.utp-panel-filtros .utp-acciones {
+    flex: 0 0 auto;
+    margin: 0;
+}
+/* Barra superior UTP con margen y bordes redondeados */
+.utp-topbar {
+    min-height: 64px;
+    margin: 12px 12px 0 244px;
+    border-radius: 16px;
+    align-items: center;
+}
+
+.utp-topbar-liceo img {
+    display: block;
+}
+
+.utp-topbar h1 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.utp-topbar-estados {
+    justify-content: flex-end;
+}
+
+@media (max-width: 760px) {
+    .utp-topbar {
+        margin: 10px;
+    }
+}
+.utp-topbar {
+    top: 10px;
+    margin-top: 10px !important;
+}
+/* Centra el acceso para agregar clase en las celdas vacías */
+.gestion-horarios a.celda-agregar-clase .celda-vacia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    text-align: center;
+}
+/* Mantiene fija la barra superior UTP al desplazarse */
+.utp-topbar {
+    position: fixed;
+    top: 10px;
+    left: 244px;
+    right: 12px;
+    z-index: 1000;
+    margin: 0 !important;
+}
+
+.portal-admin.portal-admin-utp {
+    padding-top: 86px;
+}
+
+@media (max-width: 760px) {
+    .utp-topbar {
+        left: 10px;
+        right: 10px;
+    }
+
+    .portal-admin.portal-admin-utp {
+        padding-top: 115px;
+    }
+}
+/* Centra el acceso para agregar clase */
+.gestion-horarios .horario-semanal td > a.celda-agregar-clase {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.gestion-horarios .horario-semanal td > a.celda-agregar-clase .celda-vacia {
+    box-sizing: border-box;
+    display: flex !important;
+    width: 100%;
+    min-height: 72px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    text-align: center;
+}
+/* Barra de filtros y acciones UTP */
+.utp-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.utp-toolbar .horario-niveles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.utp-toolbar .horario-niveles a {
+    padding: 0.4rem 0.8rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 999px;
+    background: #fff;
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.utp-toolbar .horario-niveles a.activo {
+    border-color: #0f2557;
+    background: #0f2557;
+    color: #fff;
+}
+
+.utp-toolbar-filtros {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.utp-toolbar-filtros label {
+    color: #0f2557;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.utp-toolbar-filtros select {
+    min-height: 36px;
+    padding: 0.35rem 0.7rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 9px;
+    background: #fff;
+    font: inherit;
+}
+
+.utp-jornada,
+.utp-toolbar-acciones button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.utp-jornada {
+    border: 2px solid #e5e7eb;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.utp-jornada.activo {
+    border-color: #f5a800;
+    background: #f5a800;
+    color: #0a1628;
+}
+
+.utp-toolbar-acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+}
+
+.utp-toolbar-acciones .utp-importar-pendiente {
+    background: #7c3aed;
+    color: #fff;
+    opacity: 1;
+}
+
+.utp-toolbar-acciones .utp-guardar-pendiente {
+    background: #f5a800;
+    color: #0a1628;
+}
+
+.utp-toolbar-acciones .utp-imprimir {
+    background: #0a1628;
+    color: #fff;
+}
+
+.utp-toolbar-acciones .utp-limpiar-pendiente {
+    background: #f1f2f4;
+    color: #374151;
+}
+
+.utp-toolbar-acciones button:disabled {
+    cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+    .utp-toolbar-acciones {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 650px) {
+    .utp-toolbar-filtros {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .utp-toolbar-acciones {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .utp-toolbar-acciones button {
+        width: 100%;
+    }
+}
+/* Encabezado de bloques y acción para agregarlos */
+.utp-seccion-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0 0.8rem;
+    padding: 0.75rem 1rem;
+    border-left: 5px solid #c99a2e;
+    border-radius: 0.5rem;
+    background: #eef3f9;
+}
+
+.utp-seccion-cabecera h2 {
+    margin: 0;
+    color: #102b4e;
+    font-size: 1.15rem;
+}
+
+.utp-seccion-cabecera .utp-boton {
+    border-radius: 0.6rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+    .utp-seccion-cabecera {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+/* Identidad del liceo en el menú UTP */
+.portal-admin-utp .portal-admin-menu .utp-menu-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+    padding: 0.25rem 0 0.85rem;
+    border-bottom: 1px solid rgb(255 255 255 / 15%);
+    background: transparent;
+    color: #fff;
+    text-decoration: none;
+}
+
+.portal-admin-utp .portal-admin-menu .utp-menu-marca:hover {
+    background: transparent;
+    color: #fff;
+}
+
+.utp-menu-marca img {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.utp-menu-marca span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* Título alineado al comienzo de la barra */
+.utp-topbar {
+    grid-template-columns: 1fr auto;
+}
+
+.utp-topbar h1 {
+    text-align: left;
+}
+/* Pantalla de disponibilidad de salas */
+.utp-salas h2 {
+    margin: 0 0 0.4rem;
+    color: #102b4e;
+}
+
+.utp-salas > p {
+    margin: 0 0 1.25rem;
+    color: #64748b;
+}
+
+.utp-salas-resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.utp-salas-resumen article {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 0.85rem;
+    background: #fff;
+    box-shadow: 0 4px 14px rgb(16 43 78 / 8%);
+}
+
+.utp-salas-resumen span {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.utp-salas-resumen strong {
+    color: #102b4e;
+    font-size: 1.5rem;
+}
+/* Reduce el espacio entre la barra superior y los filtros */
+.portal-admin-utp .portal-admin-contenido {
+    padding-top: 0.5rem;
+}
+
+.portal-admin-utp .utp-panel-filtros {
+    margin-top: 0.5rem;
+}
+/* Acerca el panel de cursos a la barra superior */
+.portal-admin-utp .utp-cursos {
+    margin-top: 0.5rem;
+}
+.portal-admin-utp .portal-admin-menu {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 0 18px 18px 0;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-utp .portal-admin-menu {
+        margin: 0;
+        border-radius: 0 0 18px 18px;
+    }
+}
+/* Identificación del rol UTP */
+.portal-admin-utp .utp-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 8%);
+}
+
+.portal-admin-utp .utp-identidad strong,
+.portal-admin-utp .utp-identidad span {
+    display: block;
+    color: #fff;
+}
+
+.portal-admin-utp .utp-identidad strong {
+    font-size: 0.78rem;
+}
+
+.portal-admin-utp .utp-identidad span {
+    margin-top: 0.2rem;
+    color: #cbd5e1;
+    font-size: 0.7rem;
+}
+
+.portal-admin-utp .utp-avatar {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 50%;
+    background: #f5a800;
+    color: #0a1628;
+}
+
+/* Menú UTP: más ancho para evitar saltos de línea */
+.portal-admin-utp .portal-admin-menu {
+    width: 260px;
+}
+
+.portal-admin-utp .portal-admin-contenido {
+    margin-left: 284px;
+}
+
+.portal-admin-utp .portal-admin-menu > a:not(.utp-menu-marca) {
+    white-space: nowrap;
+}
+
+/* Barra UTP con espacio y borde */
+.utp-topbar {
+    left: 284px;
+    top: 10px;
+    border: 1px solid #e1e7ef;
+    border-radius: 16px;
+}
+
+@media (max-width: 760px) {
+    .portal-admin-utp .portal-admin-menu {
+        width: auto;
+        margin: 0;
+    }
+
+    .portal-admin-utp .portal-admin-contenido {
+        margin-left: 0;
+    }
+
+    .portal-admin-utp .portal-admin-menu > a:not(.utp-menu-marca) {
+        white-space: normal;
+    }
+
+    .utp-topbar {
+        left: 10px;
+    }
+}
+.portal-admin-utp .utp-identidad .utp-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portal-admin-utp .utp-identidad .utp-avatar i {
+    color: #0a1628;
+    font-size: 1rem;
+    line-height: 1;
+}
