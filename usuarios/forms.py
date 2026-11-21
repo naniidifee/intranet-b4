@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 
 from portales.cursos import CURSOS_CHOICES
 from .models import Rol, perfil, SolicitudRecuperacion
+from .validators import MENSAJE_FORMATO_RUT, PATRON_RUT_HTML, validar_rut
 
 
 ROLES = [
@@ -39,22 +40,22 @@ class CrearUsuarioForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields["username"].label = "RUT (será el usuario de acceso)"
         self.fields["username"].help_text = (
-            "Ingresa el RUT sin puntos y con guion. Ejemplo: 12345678-K."
+            "Ingresa el RUT sin puntos y con guion. Ejemplo: 12345678-5."
         )
         self.fields["username"].widget.attrs.update({
             "maxlength": "10",
-            "placeholder": "12345678-K",
+            "placeholder": "12345678-5",
+            "pattern": PATRON_RUT_HTML,
+            "title": MENSAJE_FORMATO_RUT,
+            "autocomplete": "off",
         })
+
     def clean_username(self):
-        username = super().clean_username()
-
-        if not username:
-            raise ValidationError("Ingresa el RUT del usuario.")
-
-        if len(username) > 10:
-            raise ValidationError("El RUT no debe superar los 10 caracteres.")
-
-        return username
+        # Valida el formato y el dígito verificador antes de revisar si ya existe.
+        self.cleaned_data["username"] = validar_rut(
+            self.cleaned_data.get("username")
+        )
+        return super().clean_username()
     
     def clean(self):
         datos = super().clean()
@@ -109,8 +110,11 @@ class SolicitudRecuperacionForm(forms.ModelForm):
         }
         widgets = {
             "rut": forms.TextInput(attrs={
-                "placeholder": "12345678-K",
+                "placeholder": "12345678-5",
                 "maxlength": "10",
+                "pattern": PATRON_RUT_HTML,
+                "title": MENSAJE_FORMATO_RUT,
+                "autocomplete": "off",
             }),
             "nombre_completo": forms.TextInput(attrs={
                 "placeholder": "Nombre y apellidos",
@@ -124,7 +128,7 @@ class SolicitudRecuperacionForm(forms.ModelForm):
         }
 
     def clean_rut(self):
-        return self.cleaned_data["rut"].strip().upper()
+        return validar_rut(self.cleaned_data["rut"])
 
     def clean_nombre_completo(self):
         return self.cleaned_data["nombre_completo"].strip()
