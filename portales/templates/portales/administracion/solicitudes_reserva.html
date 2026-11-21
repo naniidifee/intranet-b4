@@ -12,28 +12,91 @@
         </div>
     </header>
 
+    {% for message in messages %}
+        <p class="admin-reservas-mensaje {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
     <div class="admin-reservas-resumen">
-        <article><strong>0</strong><span>Pendientes</span></article>
-        <article><strong>0</strong><span>Aprobadas</span></article>
-        <article><strong>0</strong><span>Rechazadas</span></article>
+        <article><strong>{{ total_pendientes }}</strong><span>Pendientes</span></article>
+        <article><strong>{{ total_aprobadas }}</strong><span>Aprobadas</span></article>
+        <article><strong>{{ total_rechazadas }}</strong><span>Rechazadas</span></article>
     </div>
 
     <section class="admin-reservas-panel">
         <div class="admin-reservas-filtros">
             <h2>Solicitudes recibidas</h2>
-            <select aria-label="Filtrar solicitudes">
-                <option>Todas</option>
-                <option>Pendientes</option>
-                <option>Aprobadas</option>
-                <option>Rechazadas</option>
-            </select>
+            <form method="get">
+                <select name="estado" aria-label="Filtrar solicitudes" onchange="this.form.submit()">
+                    {% for valor, nombre in filtros %}
+                        <option value="{{ valor }}" {% if estado == valor %}selected{% endif %}>{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+            </form>
         </div>
 
-        <div class="admin-reservas-vacio">
-            <i class="fa-regular fa-calendar-xmark"></i>
-            <h3>Aún no hay solicitudes</h3>
-            <p>Aquí aparecerán las reservas enviadas para revisión.</p>
-        </div>
+        {% if solicitudes %}
+            <div class="admin-reservas-tabla-scroll">
+                <table class="admin-reservas-tabla">
+                    <thead>
+                        <tr>
+                            <th>Docente</th>
+                            <th>Espacio</th>
+                            <th>Fecha</th>
+                            <th>Bloque</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for solicitud in solicitudes %}
+                            <tr>
+                                <td>
+                                    {{ solicitud.docente_nombre }}
+                                    <small>Solicitada el {{ solicitud.creada|date:"d/m/Y H:i" }}</small>
+                                </td>
+                                <td>{{ solicitud.get_espacio_display }}</td>
+                                <td>{{ solicitud.fecha|date:"D j M Y"|capfirst }}</td>
+                                <td>{{ solicitud.bloque.hora_inicio|time:"H:i" }}–{{ solicitud.bloque.hora_fin|time:"H:i" }}</td>
+                                <td>{{ solicitud.motivo }}</td>
+                                <td>
+                                    <span class="reserva-estado {{ solicitud.estado }}">{{ solicitud.get_estado_display }}</span>
+                                    {% if solicitud.comentario_admin %}
+                                        <small>{{ solicitud.comentario_admin }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if solicitud.estado == "pendiente" %}
+                                        <div class="admin-reservas-acciones">
+                                            <form method="post" action="{% url 'aprobar_reserva' solicitud.pk %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="estado_filtro" value="{{ estado }}">
+                                                <button type="submit" class="aprobar">Aprobar</button>
+                                            </form>
+                                            <form method="post" action="{% url 'rechazar_reserva' solicitud.pk %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="estado_filtro" value="{{ estado }}">
+                                                <input type="text" name="comentario" maxlength="200"
+                                                       placeholder="Motivo (opcional)" aria-label="Motivo del rechazo">
+                                                <button type="submit" class="rechazar">Rechazar</button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="admin-reservas-vacio">
+                <i class="fa-regular fa-calendar-xmark"></i>
+                <h3>No hay solicitudes en esta vista</h3>
+                <p>Aquí aparecerán las reservas enviadas por los docentes.</p>
+            </div>
+        {% endif %}
     </section>
 </section>
 {% endblock %}

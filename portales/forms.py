@@ -1,9 +1,10 @@
 import os
 
 from django import forms
+from django.utils import timezone
 
 from .cursos import CURSOS_CHOICES
-from .models import BloqueHorario, ClaseHorario, HorarioArchivo
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
 
 
 class BloqueHorarioForm(forms.ModelForm):
@@ -41,12 +42,12 @@ class BloqueHorarioForm(forms.ModelForm):
 
         if (
             self.instance.pk
-            and self.instance.clases.exists()
+            and (self.instance.clases.exists() or self.instance.reservas.exists())
             and datos.get("tipo") != "clase"
         ):
             self.add_error(
                 "tipo",
-                "Este bloque tiene clases asignadas y no puede cambiarse a recreo o almuerzo.",
+                "Este bloque tiene clases o reservas asignadas y no puede cambiarse a recreo o almuerzo.",
             )
 
         return datos
@@ -146,3 +147,58 @@ class HorarioArchivoForm(forms.Form):
             horario.archivo.storage.delete(anterior)
 
         return horario
+
+
+class SolicitudReservaForm(forms.Form):
+    """Datos que envía un docente para pedir un espacio."""
+
+    espacio = forms.ChoiceField(choices=ReservaEspacio.ESPACIOS)
+    fecha = forms.DateField(input_formats=["%Y-%m-%d"])
+    bloque = forms.ModelChoiceField(
+        queryset=BloqueHorario.objects.filter(tipo="clase"),
+    )
+    motivo = forms.CharField(
+        max_length=150,
+        error_messages={"required": "Indica el motivo o el curso de la reserva."},
+    )
+
+    def __init__(self, *args, docente=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.docente = docente
+
+    def clean(self):
+        datos = super().clean()
+        espacio = datos.get("espacio")
+        fecha = datos.get("fecha")
+        bloque = datos.get("bloque")
+
+        if not (espacio and fecha and bloque):
+            return datos
+
+        ahora = timezone.localtime()
+
+        if fecha.weekday() > 4:
+            raise forms.ValidationError("Solo se puede reservar de lunes a viernes.")
+
+        if fecha < ahora.date() or (
+            fecha == ahora.date() and bloque.hora_fin <= ahora.time()
+        ):
+            raise forms.ValidationError("No puedes reservar un bloque que ya pasó.")
+
+        if ReservaEspacio.objects.filter(
+            espacio=espacio, fecha=fecha, bloque=bloque, estado="aprobada",
+        ).exists():
+            raise forms.ValidationError(
+                "Ese bloque ya está reservado por otro docente."
+            )
+
+        if self.docente and ReservaEspacio.objects.filter(
+            docente=self.docente,
+            espacio=espacio,
+            fecha=fecha,
+            bloque=bloque,
+            estado__in=["pendiente", "aprobada"],
+        ).exists():
+            raise forms.ValidationError("Ya tienes una solicitud para ese bloque.")
+
+        return datos

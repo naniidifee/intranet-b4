@@ -88,6 +88,26 @@ urlpatterns = [
         name="reservar_espacios",
     ),
     path(
+        "docente/reservar-espacios/solicitar/",
+        views.solicitar_reserva,
+        name="solicitar_reserva",
+    ),
+    path(
+        "docente/reservas/<int:pk>/cancelar/",
+        views.cancelar_reserva,
+        name="cancelar_reserva",
+    ),
+    path(
+        "administrador/reservas/<int:pk>/aprobar/",
+        views.aprobar_reserva,
+        name="aprobar_reserva",
+    ),
+    path(
+        "administrador/reservas/<int:pk>/rechazar/",
+        views.rechazar_reserva,
+        name="rechazar_reserva",
+    ),
+    path(
         "docente/lista-curso/",
         views.lista_curso_docente,
         name="lista_curso_docente",

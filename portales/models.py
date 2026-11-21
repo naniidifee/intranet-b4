@@ -195,3 +195,71 @@ class HorarioArchivo(models.Model):
         if nombre:
             almacenamiento.delete(nombre)
         return resultado
+
+
+class ReservaEspacio(models.Model):
+    """Solicitud de un docente para usar un espacio del liceo en un bloque."""
+
+    ESPACIOS = [
+        ("biblioteca", "Biblioteca"),
+        ("laboratorio", "Laboratorio"),
+        ("gimnasio", "Gimnasio"),
+    ]
+
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("aprobada", "Aprobada"),
+        ("rechazada", "Rechazada"),
+        ("cancelada", "Cancelada"),
+    ]
+
+    docente = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reservas_espacios",
+    )
+    espacio = models.CharField(max_length=20, choices=ESPACIOS)
+    fecha = models.DateField()
+    bloque = models.ForeignKey(
+        BloqueHorario,
+        on_delete=models.PROTECT,
+        related_name="reservas",
+    )
+    motivo = models.CharField(max_length=150)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADOS,
+        default="pendiente",
+    )
+    creada = models.DateTimeField(auto_now_add=True)
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    revisada_en = models.DateTimeField(null=True, blank=True)
+    comentario_admin = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        ordering = ["-creada"]
+        verbose_name = "reserva de espacio"
+        verbose_name_plural = "reservas de espacios"
+        constraints = [
+            # Un espacio solo puede tener una reserva aprobada por bloque y día.
+            models.UniqueConstraint(
+                fields=["espacio", "fecha", "bloque"],
+                condition=models.Q(estado="aprobada"),
+                name="reserva_aprobada_unica",
+            ),
+            # Un docente no puede pedir dos veces el mismo bloque.
+            models.UniqueConstraint(
+                fields=["docente", "espacio", "fecha", "bloque"],
+                condition=models.Q(estado__in=["pendiente", "aprobada"]),
+                name="reserva_activa_unica_por_docente",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.get_espacio_display()} - {self.fecha:%d/%m/%Y} - {self.get_estado_display()}"
