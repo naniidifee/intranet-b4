@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -6,9 +6,24 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 import re
-from .models import BloqueHorario, ClaseHorario
-from .forms import BloqueHorarioForm, ClaseHorarioForm
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
+from .forms import (
+    BloqueHorarioForm,
+    ClaseHorarioForm,
+    HorarioArchivoForm,
+    SolicitudReservaForm,
+)
 from django.contrib.auth import logout
+import mimetypes
+from django.db import IntegrityError, transaction
+from django.db.models import Count
+from django.utils import timezone
+from django.utils.formats import date_format
+from django.utils.text import capfirst
+from urllib.parse import urlencode
+from django.http import FileResponse, Http404
+from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 # Create your views here.
 
@@ -27,6 +42,11 @@ def horario_estudiante(request):
     bloques = []
     electividades = []
     talleres = []
+
+    archivo_horario = (
+        HorarioArchivo.objects.filter(curso__iexact=curso).first()
+        if curso else None
+    )
 
     if curso:
         clases_qs = (
@@ -136,6 +156,7 @@ def horario_estudiante(request):
             "bloques": bloques,
             "electividades": electividades,
             "talleres": talleres,
+            "archivo_horario": archivo_horario,
         },
     )
 
@@ -166,7 +187,100 @@ def _verificar_docente(request):
 @login_required(login_url="login")
 def reservar_espacios(request):
     _verificar_docente(request)
-    return render(request, "portales/docente/reservar_espacios.html")
+
+    ahora = timezone.localtime()
+    hoy = ahora.date()
+    espacios = ReservaEspacio.ESPACIOS
+
+    espacio = request.GET.get("espacio", "")
+    if espacio not in dict(espacios):
+        espacio = espacios[0][0]
+
+    semana = _parsear_fecha(request.GET.get("semana"))
+    if semana is None:
+        semana = hoy + timedelta(days=7 - hoy.weekday()) if hoy.weekday() > 4 else hoy
+    lunes = semana - timedelta(days=semana.weekday())
+    dias = [lunes + timedelta(days=i) for i in range(5)]
+
+    reservas = (
+        ReservaEspacio.objects
+        .filter(
+            espacio=espacio,
+            fecha__range=(dias[0], dias[-1]),
+            estado__in=["pendiente", "aprobada"],
+        )
+        .select_related("docente__perfil")
+    )
+
+    aprobadas = {}
+    propias = {}
+    for reserva in reservas:
+        clave = (reserva.fecha, reserva.bloque_id)
+        if reserva.estado == "aprobada":
+            aprobadas[clave] = reserva
+        if reserva.docente_id == request.user.id:
+            propias[clave] = reserva
+
+    filas = []
+    for bloque in BloqueHorario.objects.all():
+        fila = {
+            "id": bloque.id,
+            "es_clase": bloque.tipo == "clase",
+            "etiqueta": bloque.get_tipo_display(),
+            "inicio": bloque.hora_inicio,
+            "fin": bloque.hora_fin,
+            "celdas": [],
+        }
+
+        if fila["es_clase"]:
+            for dia in dias:
+                clave = (dia, bloque.id)
+                celda = {
+                    "fecha": dia,
+                    "resumen": capfirst(date_format(dia, r"l j \d\e F")),
+                }
+                propia = propias.get(clave)
+                ocupada = aprobadas.get(clave)
+
+                if dia < hoy or (dia == hoy and bloque.hora_fin <= ahora.time()):
+                    celda["estado"] = "pasado"
+                elif propia is not None:
+                    celda["estado"] = "mia" if propia.estado == "aprobada" else "pendiente"
+                    celda["reserva_id"] = propia.id
+                    celda["motivo"] = propia.motivo
+                elif ocupada is not None:
+                    celda["estado"] = "ocupado"
+                    celda["docente"] = _nombre_docente(ocupada.docente)
+                else:
+                    celda["estado"] = "disponible"
+
+                fila["celdas"].append(celda)
+
+        filas.append(fila)
+
+    mis_solicitudes = (
+        ReservaEspacio.objects
+        .filter(docente=request.user)
+        .select_related("bloque")[:15]
+    )
+
+    return render(
+        request,
+        "portales/docente/reservar_espacios.html",
+        {
+            "espacios": espacios,
+            "espacio": espacio,
+            "espacio_nombre": dict(espacios)[espacio],
+            "dias": dias,
+            "lunes": dias[0],
+            "viernes": dias[-1],
+            "semana_numero": dias[0].isocalendar()[1],
+            "anterior": dias[0] - timedelta(days=7),
+            "siguiente": dias[0] + timedelta(days=7),
+            "filas": filas,
+            "mis_solicitudes": mis_solicitudes,
+        },
+    )
 
 
 @login_required(login_url="login")
@@ -292,6 +406,11 @@ def gestionar_horarios(request):
         curso_solicitado
         if curso_solicitado in cursos_nivel
         else (cursos_nivel[0] if cursos_nivel else "")
+    )
+
+    archivo_horario = (
+        HorarioArchivo.objects.filter(curso=curso_seleccionado).first()
+        if curso_seleccionado else None
     )
 
     jornadas = BloqueHorario.JORNADAS
@@ -427,6 +546,7 @@ def gestionar_horarios(request):
             "nivel_seleccionado": nivel_seleccionado,
             "vista": vista,
             "cursos_opciones": cursos_opciones,
+            "archivo_horario": archivo_horario,
         },
     )
 
@@ -495,10 +615,10 @@ def eliminar_bloque_horario(request, bloque_id):
     _verificar_administrador(request)
     bloque = get_object_or_404(BloqueHorario, pk=bloque_id)
 
-    if bloque.clases.exists():
+    if bloque.clases.exists() or bloque.reservas.exists():
         messages.error(
             request,
-            "No puedes eliminar este bloque porque tiene clases asignadas.",
+            "No puedes eliminar este bloque porque tiene clases o reservas asignadas.",
         )
     else:
         bloque.delete()
@@ -559,9 +679,42 @@ def crear_noticia(request):
 @login_required(login_url="logear")
 def gestionar_reservas(request):
     _verificar_administrador(request)
+
+    filtros = [
+        ("pendiente", "Pendientes"),
+        ("aprobada", "Aprobadas"),
+        ("rechazada", "Rechazadas"),
+        ("todas", "Todas"),
+    ]
+    estado = request.GET.get("estado", "pendiente")
+    if estado not in dict(filtros):
+        estado = "pendiente"
+
+    base = ReservaEspacio.objects.select_related("docente__perfil", "bloque")
+    conteos = {
+        fila["estado"]: fila["total"]
+        for fila in base.values("estado").annotate(total=Count("id"))
+    }
+
+    solicitudes = base if estado == "todas" else base.filter(estado=estado)
+    if estado == "pendiente":
+        solicitudes = solicitudes.order_by("fecha", "bloque__hora_inicio")
+
+    solicitudes = list(solicitudes)
+    for solicitud in solicitudes:
+        solicitud.docente_nombre = _nombre_docente(solicitud.docente)
+
     return render(
         request,
         "portales/administracion/solicitudes_reserva.html",
+        {
+            "solicitudes": solicitudes,
+            "filtros": filtros,
+            "estado": estado,
+            "total_pendientes": conteos.get("pendiente", 0),
+            "total_aprobadas": conteos.get("aprobada", 0),
+            "total_rechazadas": conteos.get("rechazada", 0),
+        },
     )
 
 @login_required(login_url="logear")
@@ -571,3 +724,252 @@ def gestionar_avisos(request):
         request,
         "portales/administracion/gestionar_avisos.html",
     )
+
+
+def _redirigir_a_horario(curso):
+    consulta = urlencode({
+        "vista": "horarios",
+        "nivel": _nivel_de_curso(curso),
+        "curso": curso,
+    })
+    return redirect(f"{reverse('gestionar_horarios')}?{consulta}")
+
+
+@login_required(login_url="login")
+def subir_horario_archivo(request):
+    _verificar_administrador(request)
+    form = HorarioArchivoForm(
+        request.POST or None,
+        request.FILES or None,
+        initial={"curso": request.GET.get("curso", "")},
+    )
+
+    if request.method == "POST" and form.is_valid():
+        horario = form.guardar(request.user)
+        messages.success(
+            request,
+            f"El horario de {horario.curso} fue publicado y ya aparece "
+            "en la intranet de los estudiantes del curso.",
+        )
+        return _redirigir_a_horario(horario.curso)
+
+    return render(
+        request,
+        "portales/horarios/formulario.html",
+        {
+            "form": form,
+            "titulo": "Subir horario del curso",
+            "ayuda": (
+                "Elige el curso y sube el horario en PDF o PNG (máximo 10 MB). "
+                "Si el curso ya tiene un horario, será reemplazado."
+            ),
+        },
+    )
+
+
+@login_required(login_url="login")
+@require_POST
+def eliminar_horario_archivo(request, pk):
+    _verificar_administrador(request)
+    horario = get_object_or_404(HorarioArchivo, pk=pk)
+    curso = horario.curso
+    horario.delete()
+    messages.success(request, f"Se eliminó el horario en archivo de {curso}.")
+    return _redirigir_a_horario(curso)
+
+
+@login_required(login_url="login")
+@xframe_options_sameorigin
+def ver_horario_archivo(request, pk):
+    """Entrega el archivo solo a administradores o a estudiantes del mismo curso."""
+    horario = get_object_or_404(HorarioArchivo, pk=pk)
+
+    if not _es_administrador(request.user):
+        try:
+            perfil = request.user.perfil
+            permitido = (
+                perfil.rol.nombre == "Estudiante"
+                and (perfil.curso or "").strip().lower() == horario.curso.lower()
+            )
+        except AttributeError:
+            permitido = False
+
+        if not permitido:
+            raise PermissionDenied
+
+    try:
+        archivo = horario.archivo.open("rb")
+    except FileNotFoundError:
+        raise Http404("El archivo del horario no está disponible.")
+
+    tipo, _ = mimetypes.guess_type(horario.archivo.name)
+    return FileResponse(
+        archivo,
+        content_type=tipo or "application/octet-stream",
+        as_attachment=request.GET.get("descargar") == "1",
+        filename=horario.nombre_descarga,
+    )
+
+
+def _nombre_docente(usuario):
+    try:
+        nombre = usuario.perfil.nombre_completo
+    except AttributeError:
+        nombre = ""
+    return nombre or usuario.get_username()
+
+
+def _parsear_fecha(texto):
+    try:
+        return date.fromisoformat((texto or "").strip())
+    except ValueError:
+        return None
+
+
+def _volver_a_reservas(espacio, fecha):
+    consulta = {}
+    if espacio in dict(ReservaEspacio.ESPACIOS):
+        consulta["espacio"] = espacio
+    if fecha:
+        consulta["semana"] = (fecha - timedelta(days=fecha.weekday())).isoformat()
+    destino = reverse("reservar_espacios")
+    return redirect(f"{destino}?{urlencode(consulta)}" if consulta else destino)
+
+
+@login_required(login_url="login")
+@require_POST
+def solicitar_reserva(request):
+    _verificar_docente(request)
+    form = SolicitudReservaForm(request.POST, docente=request.user)
+
+    if form.is_valid():
+        datos = form.cleaned_data
+        try:
+            with transaction.atomic():
+                ReservaEspacio.objects.create(
+                    docente=request.user,
+                    espacio=datos["espacio"],
+                    fecha=datos["fecha"],
+                    bloque=datos["bloque"],
+                    motivo=datos["motivo"],
+                )
+        except IntegrityError:
+            messages.error(
+                request,
+                "No se pudo registrar la solicitud: el bloque ya no está disponible.",
+            )
+        else:
+            messages.success(
+                request,
+                "Solicitud enviada. Quedó pendiente de aprobación por Administración.",
+            )
+    else:
+        for errores in form.errors.values():
+            for error in errores:
+                messages.error(request, error)
+
+    return _volver_a_reservas(
+        request.POST.get("espacio", ""),
+        _parsear_fecha(request.POST.get("fecha")),
+    )
+
+
+@login_required(login_url="login")
+@require_POST
+def cancelar_reserva(request, pk):
+    _verificar_docente(request)
+    reserva = get_object_or_404(ReservaEspacio, pk=pk, docente=request.user)
+
+    if reserva.estado in {"pendiente", "aprobada"} and reserva.fecha >= timezone.localdate():
+        reserva.estado = "cancelada"
+        reserva.save(update_fields=["estado"])
+        messages.success(request, "La reserva fue cancelada.")
+    else:
+        messages.error(request, "Esta reserva ya no se puede cancelar.")
+
+    return _volver_a_reservas(reserva.espacio, reserva.fecha)
+
+
+def _volver_a_solicitudes(request):
+    estado = request.POST.get("estado_filtro", "pendiente")
+    if estado not in {"pendiente", "aprobada", "rechazada", "todas"}:
+        estado = "pendiente"
+    return redirect(f"{reverse('gestionar_reservas')}?{urlencode({'estado': estado})}")
+
+
+@login_required(login_url="logear")
+@require_POST
+def aprobar_reserva(request, pk):
+    _verificar_administrador(request)
+
+    with transaction.atomic():
+        reserva = get_object_or_404(
+            ReservaEspacio.objects.select_for_update(), pk=pk,
+        )
+
+        if reserva.estado != "pendiente":
+            messages.error(request, "Esta solicitud ya fue revisada.")
+        elif reserva.fecha < timezone.localdate():
+            messages.error(request, "La fecha de esta solicitud ya pasó.")
+        elif ReservaEspacio.objects.filter(
+            espacio=reserva.espacio,
+            fecha=reserva.fecha,
+            bloque=reserva.bloque,
+            estado="aprobada",
+        ).exclude(pk=reserva.pk).exists():
+            messages.error(
+                request,
+                "Ese bloque ya fue aprobado para otro docente.",
+            )
+        else:
+            ahora = timezone.now()
+            reserva.estado = "aprobada"
+            reserva.revisada_por = request.user
+            reserva.revisada_en = ahora
+            reserva.save()
+
+            descartadas = (
+                ReservaEspacio.objects
+                .filter(
+                    espacio=reserva.espacio,
+                    fecha=reserva.fecha,
+                    bloque=reserva.bloque,
+                    estado="pendiente",
+                )
+                .exclude(pk=reserva.pk)
+                .update(
+                    estado="rechazada",
+                    revisada_por=request.user,
+                    revisada_en=ahora,
+                    comentario_admin="El espacio fue asignado a otro docente.",
+                )
+            )
+
+            mensaje = (
+                f"Reserva aprobada para {_nombre_docente(reserva.docente)}. "
+                "Ya aparece en su horario de reservas."
+            )
+            if descartadas:
+                mensaje += f" Se rechazaron {descartadas} solicitud(es) en conflicto."
+            messages.success(request, mensaje)
+
+    return _volver_a_solicitudes(request)
+
+
+@login_required(login_url="logear")
+@require_POST
+def rechazar_reserva(request, pk):
+    _verificar_administrador(request)
+    reserva = get_object_or_404(ReservaEspacio, pk=pk)
+
+    if reserva.estado != "pendiente":
+        messages.error(request, "Esta solicitud ya fue revisada.")
+    else:
+        reserva.estado = "rechazada"
+        reserva.revisada_por = request.user
+        reserva.revisada_en = timezone.now()
+        reserva.comentario_admin = request.POST.get("comentario", "").strip()[:200]
+        reserva.save()
+        messages.success(request, "La solicitud fue rechazada.")
+
+    return _volver_a_solicitudes(request)

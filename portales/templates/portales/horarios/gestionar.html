@@ -56,10 +56,11 @@
             </form>
 
             <div class="utp-toolbar-acciones">
-                <button type="button" class="utp-importar-pendiente" disabled>
-                    <i class="fa-solid fa-file-pdf"></i>
-                    Importar PDF
-                </button>
+                <a href="{% url 'subir_horario_archivo' %}{% if curso_seleccionado %}?curso={{ curso_seleccionado|urlencode }}{% endif %}"
+                   class="utp-subir-horario">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    Subir horario (PDF/PNG)
+                </a>
 
                 <button type="button" class="utp-guardar-pendiente" disabled>
                     <i class="fa-solid fa-floppy-disk"></i>
@@ -85,6 +86,49 @@
         {% endif %}
 
         {% if curso_seleccionado %}
+            <section class="horario-archivo-panel" aria-label="Horario en archivo">
+                {% if archivo_horario %}
+                    <div>
+                        <strong>
+                            <i class="fa-solid fa-file-circle-check"></i>
+                            Horario publicado para {{ curso_seleccionado }}
+                        </strong>
+                        <small>
+                            {{ archivo_horario.nombre_descarga }} ·
+                            actualizado el {{ archivo_horario.actualizado|date:"d/m/Y H:i" }}.
+                            Los estudiantes de este curso ya lo ven en su intranet.
+                        </small>
+                    </div>
+                    <div class="horario-archivo-acciones">
+                        <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}"
+                           target="_blank" rel="noopener">Ver</a>
+                        <a href="{% url 'subir_horario_archivo' %}?curso={{ curso_seleccionado|urlencode }}">Reemplazar</a>
+                        <form method="post"
+                              action="{% url 'eliminar_horario_archivo' archivo_horario.pk %}"
+                              class="form-estado">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    onclick="return confirm('¿Eliminar el horario en archivo de este curso?')">
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div>
+                        <strong>
+                            <i class="fa-regular fa-file"></i>
+                            {{ curso_seleccionado }} no tiene horario en archivo
+                        </strong>
+                        <small>
+                            Sube un PDF o PNG y aparecerá en la intranet de los estudiantes del curso.
+                        </small>
+                    </div>
+                    <div class="horario-archivo-acciones">
+                        <a href="{% url 'subir_horario_archivo' %}?curso={{ curso_seleccionado|urlencode }}">Subir horario</a>
+                    </div>
+                {% endif %}
+            </section>
+
             <header class="horario-titulo-utp" id="horario-utp">
                 <h2>Horario — {{ curso_seleccionado }}</h2>
                 <p>Liceo Técnico Profesional Antonio Varas de la Barra</p>

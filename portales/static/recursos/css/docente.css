@@ -514,3 +514,201 @@ button.reserva-disponible:hover {
         gap: 0.45rem;
     }
 }
+
+/* Reservas: navegación, estados y diálogo */
+.reservas-sala form {
+    margin: 0;
+}
+
+.reservas-sala a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #dbe2ea;
+    border-radius: 999px;
+    background: #fff;
+    color: #102b5c;
+    text-decoration: none;
+}
+
+.reservas-sala a:hover {
+    background: #f1f4f8;
+}
+
+.reservas-leyenda .pendiente {
+    border-color: #fcd34d;
+    background: #fffbeb;
+}
+
+.reservas-mensaje {
+    margin: 0 0 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.reservas-mensaje.success {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.reservas-mensaje.error {
+    background: #fff1f2;
+    color: #9f1239;
+}
+
+.reserva-ocupado,
+button.reserva-mia,
+button.reserva-pendiente {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+.reserva-ocupado {
+    border: 1px solid #fda4af;
+    background: #fff1f2;
+    color: #9f1239;
+}
+
+button.reserva-mia {
+    border: 1px solid #93c5fd;
+    background: #eff6ff;
+    color: #1d4ed8;
+    cursor: pointer;
+}
+
+button.reserva-pendiente {
+    border: 1px solid #fcd34d;
+    background: #fffbeb;
+    color: #92400e;
+    cursor: pointer;
+}
+
+.reserva-ocupado small,
+button.reserva-mia small,
+button.reserva-pendiente small {
+    font-size: 0.62rem;
+    font-weight: 400;
+}
+
+.reservas-tabla td form {
+    margin: 0;
+}
+
+.reservas-subtitulo {
+    margin: 1.6rem 0 0.8rem;
+    color: #102b5c;
+    font-size: 1rem;
+}
+
+.reservas-vacio {
+    padding: 1rem;
+    border-radius: 12px;
+    background: #f3f6fa;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.reservas-lista {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+.reservas-lista th,
+.reservas-lista td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid #e5e9f0;
+    text-align: left;
+}
+
+.reservas-lista th {
+    background: #f3f6fa;
+    color: #102b5c;
+}
+
+.reserva-estado {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.reserva-estado.pendiente { background: #fffbeb; color: #92400e; }
+.reserva-estado.aprobada { background: #f0fdf4; color: #166534; }
+.reserva-estado.rechazada { background: #fff1f2; color: #9f1239; }
+.reserva-estado.cancelada { background: #f3f4f6; color: #64748b; }
+
+.reserva-dialogo {
+    width: min(92vw, 420px);
+    padding: 1.4rem;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.3);
+}
+
+.reserva-dialogo::backdrop {
+    background: rgba(10, 22, 40, 0.5);
+}
+
+.reserva-dialogo h2 {
+    margin: 0 0 0.5rem;
+    color: #102b5c;
+    font-size: 1.1rem;
+}
+
+.reserva-dialogo label {
+    display: block;
+    margin: 0.8rem 0 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.reserva-dialogo input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.reserva-dialogo-nota {
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.reserva-dialogo-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.reserva-dialogo-acciones button {
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: #f1f4f8;
+    color: #102b5c;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.reserva-dialogo-acciones button[type="submit"] {
+    background: #f5a800;
+    color: #0a1628;
+}

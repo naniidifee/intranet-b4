@@ -5,122 +5,185 @@
 {% block contenido_docente %}
 <section class="docente-reservas">
 
+    {% for message in messages %}
+        <p class="reservas-mensaje {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
     <div class="reservas-controles">
         <div class="reservas-fecha">
             <i class="fa-solid fa-calendar-days"></i>
-            <span>16 nov – 20 nov</span>
-            <span class="reservas-semana">Semana 47</span>
+            <span>{{ lunes|date:"j M" }} – {{ viernes|date:"j M" }}</span>
+            <span class="reservas-semana">Semana {{ semana_numero }}</span>
         </div>
 
         <div class="reservas-sala">
             <i class="fa-solid fa-door-open"></i>
-            <select aria-label="Seleccionar espacio">
-                <option>Biblioteca</option>
-                <option>Laboratorio</option>
-                <option>Gimnasio</option>
-            </select>
-            <button type="button" aria-label="Semana anterior">‹</button>
-            <button type="button">Hoy</button>
-            <button type="button" aria-label="Semana siguiente">›</button>
+            <form method="get">
+                <input type="hidden" name="semana" value="{{ lunes|date:'Y-m-d' }}">
+                <select name="espacio" aria-label="Seleccionar espacio" onchange="this.form.submit()">
+                    {% for valor, nombre in espacios %}
+                        <option value="{{ valor }}" {% if valor == espacio %}selected{% endif %}>{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+            <a href="?espacio={{ espacio }}&semana={{ anterior|date:'Y-m-d' }}" aria-label="Semana anterior">‹</a>
+            <a href="?espacio={{ espacio }}">Hoy</a>
+            <a href="?espacio={{ espacio }}&semana={{ siguiente|date:'Y-m-d' }}" aria-label="Semana siguiente">›</a>
         </div>
     </div>
 
     <div class="reservas-leyenda">
         <span><i class="disponible"></i> Disponible</span>
-        <span><i class="reservado"></i> Reservado por otro</span>
-        <span><i class="mi-reserva"></i> Mi reserva (clic para cancelar)</span>
-        <span><i class="no-disponible"></i> No disponible</span>
+        <span><i class="reservado"></i> Ocupado por otro docente</span>
+        <span><i class="pendiente"></i> Mi solicitud pendiente (clic para cancelar)</span>
+        <span><i class="mi-reserva"></i> Mi reserva aprobada (clic para cancelar)</span>
     </div>
 
-    <div class="reservas-tabla-contenedor">
-        <table class="reservas-tabla">
-            <thead>
-                <tr>
-                    <th>Bloque</th>
-                    <th>Lunes <small>16 nov</small></th>
-                    <th>Martes <small>17 nov</small></th>
-                    <th>Miércoles <small>18 nov</small></th>
-                    <th>Jueves <small>19 nov</small></th>
-                    <th>Viernes <small>20 nov</small></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>07:45 – 08:30</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
-                <tr>
-                    <th>08:30 – 09:15</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
+    {% if filas %}
+        <div class="reservas-tabla-contenedor">
+            <table class="reservas-tabla">
+                <thead>
+                    <tr>
+                        <th>Bloque</th>
+                        {% for dia in dias %}
+                            <th>{{ dia|date:"l"|capfirst }} <small>{{ dia|date:"j M" }}</small></th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in filas %}
+                        {% if fila.es_clase %}
+                            <tr>
+                                <th>{{ fila.inicio|time:"H:i" }} – {{ fila.fin|time:"H:i" }}</th>
+                                {% for celda in fila.celdas %}
+                                    <td>
+                                        {% if celda.estado == "pasado" %}
+                                            <div class="reserva-pasado">Pasado</div>
 
-                <tr class="reserva-pausa"><th colspan="6">— RECREO —</th></tr>
+                                        {% elif celda.estado == "disponible" %}
+                                            <button type="button"
+                                                    class="reserva-disponible"
+                                                    data-fecha="{{ celda.fecha|date:'Y-m-d' }}"
+                                                    data-bloque="{{ fila.id }}"
+                                                    data-resumen="{{ celda.resumen }} · {{ fila.inicio|time:'H:i' }}–{{ fila.fin|time:'H:i' }}">
+                                                ＋<small>Reservar</small>
+                                            </button>
 
-                <tr>
-                    <th>09:30 – 10:15</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
-                <tr>
-                    <th>10:15 – 11:00</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
+                                        {% elif celda.estado == "ocupado" %}
+                                            <div class="reserva-ocupado">
+                                                Ocupado
+                                                <small>{{ celda.docente }}</small>
+                                            </div>
 
-                <tr class="reserva-pausa"><th colspan="6">— RECREO —</th></tr>
+                                        {% else %}
+                                            <form method="post" action="{% url 'cancelar_reserva' celda.reserva_id %}">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="reserva-{{ celda.estado }}"
+                                                        title="{{ celda.motivo }}"
+                                                        onclick="return confirm('¿Cancelar esta {% if celda.estado == 'mia' %}reserva{% else %}solicitud{% endif %}?')">
+                                                    {% if celda.estado == "mia" %}Mi reserva{% else %}Pendiente{% endif %}
+                                                    <small>{{ celda.motivo|truncatechars:22 }}</small>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% else %}
+                            <tr class="reserva-pausa">
+                                <th colspan="6">— {{ fila.etiqueta|upper }} —</th>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="reservas-vacio">
+            Aún no hay bloques horarios configurados. Pide a UTP que los registre en
+            Gestionar horarios para poder reservar espacios.
+        </p>
+    {% endif %}
 
-                <tr>
-                    <th>11:15 – 12:00</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
-                <tr>
-                    <th>12:00 – 12:45</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
+    <h2 class="reservas-subtitulo">Mis solicitudes</h2>
 
-                <tr class="reserva-pausa"><th colspan="6">— ALMUERZO —</th></tr>
+    {% if mis_solicitudes %}
+        <div class="reservas-tabla-contenedor">
+            <table class="reservas-lista">
+                <thead>
+                    <tr>
+                        <th>Espacio</th>
+                        <th>Fecha</th>
+                        <th>Bloque</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in mis_solicitudes %}
+                        <tr>
+                            <td>{{ reserva.get_espacio_display }}</td>
+                            <td>{{ reserva.fecha|date:"D j M Y"|capfirst }}</td>
+                            <td>{{ reserva.bloque.hora_inicio|time:"H:i" }}–{{ reserva.bloque.hora_fin|time:"H:i" }}</td>
+                            <td>{{ reserva.motivo }}</td>
+                            <td><span class="reserva-estado {{ reserva.estado }}">{{ reserva.get_estado_display }}</span></td>
+                            <td>{{ reserva.comentario_admin|default:"—" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="reservas-vacio">Todavía no has enviado solicitudes.</p>
+    {% endif %}
 
-                <tr>
-                    <th>13:30 – 14:15</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
-                <tr>
-                    <th>14:15 – 15:00</th>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><div class="reserva-pasado">Pasado</div></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                    <td><button class="reserva-disponible">＋<small>Reservar</small></button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <dialog id="dialogo-reserva" class="reserva-dialogo">
+        <form method="post" action="{% url 'solicitar_reserva' %}">
+            {% csrf_token %}
+            <h2>Solicitar reserva</h2>
+            <p><strong>{{ espacio_nombre }}</strong> · <span id="dialogo-resumen"></span></p>
 
+            <input type="hidden" name="espacio" value="{{ espacio }}">
+            <input type="hidden" name="fecha" id="dialogo-fecha">
+            <input type="hidden" name="bloque" id="dialogo-bloque">
+
+            <label for="dialogo-motivo">Motivo o curso</label>
+            <input type="text" id="dialogo-motivo" name="motivo" maxlength="150" required
+                   placeholder="Ejemplo: Clase de Lenguaje 2° A">
+
+            <p class="reserva-dialogo-nota">
+                Administración revisará tu solicitud. Si la aprueba, el bloque quedará
+                como "Mi reserva" en este horario.
+            </p>
+
+            <div class="reserva-dialogo-acciones">
+                <button type="button" id="dialogo-cancelar">Cancelar</button>
+                <button type="submit">Enviar solicitud</button>
+            </div>
+        </form>
+    </dialog>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const dialogo = document.getElementById("dialogo-reserva");
+
+    document.querySelectorAll("button.reserva-disponible").forEach(function (boton) {
+        boton.addEventListener("click", function () {
+            document.getElementById("dialogo-fecha").value = boton.dataset.fecha;
+            document.getElementById("dialogo-bloque").value = boton.dataset.bloque;
+            document.getElementById("dialogo-resumen").textContent = boton.dataset.resumen;
+            document.getElementById("dialogo-motivo").value = "";
+            dialogo.showModal();
+            document.getElementById("dialogo-motivo").focus();
+        });
+    });
+
+    document.getElementById("dialogo-cancelar").addEventListener("click", function () {
+        dialogo.close();
+    });
+</script>
 {% endblock %}

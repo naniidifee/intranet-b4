@@ -1,6 +1,10 @@
-from django import forms
+import os
 
-from .models import BloqueHorario, ClaseHorario
+from django import forms
+from django.utils import timezone
+
+from .cursos import CURSOS_CHOICES
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
 
 
 class BloqueHorarioForm(forms.ModelForm):
@@ -38,12 +42,12 @@ class BloqueHorarioForm(forms.ModelForm):
 
         if (
             self.instance.pk
-            and self.instance.clases.exists()
+            and (self.instance.clases.exists() or self.instance.reservas.exists())
             and datos.get("tipo") != "clase"
         ):
             self.add_error(
                 "tipo",
-                "Este bloque tiene clases asignadas y no puede cambiarse a recreo o almuerzo.",
+                "Este bloque tiene clases o reservas asignadas y no puede cambiarse a recreo o almuerzo.",
             )
 
         return datos
@@ -88,22 +92,113 @@ class ClaseHorarioForm(forms.ModelForm):
     def clean_curso(self):
         return self.cleaned_data["curso"].strip()
 
-class ImportarHorarioPDFForm(forms.Form):
-    archivo = forms.FileField(label="Selecciona el horario en PDF")
+class HorarioArchivoForm(forms.Form):
+    """Sube el horario de un curso como PDF o imagen (PNG/JPG)."""
+
+    FIRMAS = {
+        ".pdf": (b"%PDF-",),
+        ".png": (b"\x89PNG\r\n\x1a\n",),
+        ".jpg": (b"\xff\xd8\xff",),
+        ".jpeg": (b"\xff\xd8\xff",),
+    }
+    TAMANO_MAXIMO = 10 * 1024 * 1024  # 10 MB
+
+    curso = forms.ChoiceField(choices=CURSOS_CHOICES, label="Curso")
+    archivo = forms.FileField(
+        label="Archivo del horario (PDF o PNG)",
+        widget=forms.ClearableFileInput(
+            attrs={"accept": ".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"}
+        ),
+    )
 
     def clean_archivo(self):
         archivo = self.cleaned_data["archivo"]
+        extension = os.path.splitext(archivo.name)[1].lower()
 
-        if not archivo.name.lower().endswith(".pdf"):
-            raise forms.ValidationError("El archivo debe tener formato PDF.")
+        if extension not in self.FIRMAS:
+            raise forms.ValidationError("El archivo debe ser PDF o imagen PNG/JPG.")
 
-        if archivo.size > 20 * 1024 * 1024:
-            raise forms.ValidationError("El PDF no puede superar los 20 MB.")
+        if archivo.size > self.TAMANO_MAXIMO:
+            raise forms.ValidationError("El archivo no puede superar los 10 MB.")
 
-        encabezado = archivo.read(5)
+        encabezado = archivo.read(8)
         archivo.seek(0)
 
-        if encabezado != b"%PDF-":
-            raise forms.ValidationError("El archivo seleccionado no parece ser un PDF válido.")
+        if not any(encabezado.startswith(firma) for firma in self.FIRMAS[extension]):
+            raise forms.ValidationError(
+                "El contenido no coincide con el formato del archivo."
+            )
 
         return archivo
+
+    def guardar(self, usuario):
+        """Crea o reemplaza el horario del curso y borra el archivo anterior."""
+        curso = self.cleaned_data["curso"]
+        archivo = self.cleaned_data["archivo"]
+
+        horario, _ = HorarioArchivo.objects.get_or_create(curso=curso)
+        anterior = horario.archivo.name if horario.archivo else ""
+
+        horario.archivo = archivo
+        horario.subido_por = usuario
+        horario.save()
+
+        if anterior and anterior != horario.archivo.name:
+            horario.archivo.storage.delete(anterior)
+
+        return horario
+
+
+class SolicitudReservaForm(forms.Form):
+    """Datos que envía un docente para pedir un espacio."""
+
+    espacio = forms.ChoiceField(choices=ReservaEspacio.ESPACIOS)
+    fecha = forms.DateField(input_formats=["%Y-%m-%d"])
+    bloque = forms.ModelChoiceField(
+        queryset=BloqueHorario.objects.filter(tipo="clase"),
+    )
+    motivo = forms.CharField(
+        max_length=150,
+        error_messages={"required": "Indica el motivo o el curso de la reserva."},
+    )
+
+    def __init__(self, *args, docente=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.docente = docente
+
+    def clean(self):
+        datos = super().clean()
+        espacio = datos.get("espacio")
+        fecha = datos.get("fecha")
+        bloque = datos.get("bloque")
+
+        if not (espacio and fecha and bloque):
+            return datos
+
+        ahora = timezone.localtime()
+
+        if fecha.weekday() > 4:
+            raise forms.ValidationError("Solo se puede reservar de lunes a viernes.")
+
+        if fecha < ahora.date() or (
+            fecha == ahora.date() and bloque.hora_fin <= ahora.time()
+        ):
+            raise forms.ValidationError("No puedes reservar un bloque que ya pasó.")
+
+        if ReservaEspacio.objects.filter(
+            espacio=espacio, fecha=fecha, bloque=bloque, estado="aprobada",
+        ).exists():
+            raise forms.ValidationError(
+                "Ese bloque ya está reservado por otro docente."
+            )
+
+        if self.docente and ReservaEspacio.objects.filter(
+            docente=self.docente,
+            espacio=espacio,
+            fecha=fecha,
+            bloque=bloque,
+            estado__in=["pendiente", "aprobada"],
+        ).exists():
+            raise forms.ValidationError("Ya tienes una solicitud para ese bloque.")
+
+        return datos
