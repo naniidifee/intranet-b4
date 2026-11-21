@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-
+import re
 from .models import BloqueHorario, ClaseHorario
 from .forms import BloqueHorarioForm, ClaseHorarioForm
 from django.contrib.auth import logout
