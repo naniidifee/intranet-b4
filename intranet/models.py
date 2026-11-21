@@ -9,6 +9,11 @@ class Noticia(models.Model):
         ('Actividades', 'Actividades'),
         ('Comunidad', 'Comunidad'),
     ]
+    
+    publicada = models.BooleanField(
+        default=True,
+        verbose_name="Publicada",
+    )
 
     titulo = models.CharField(max_length=200, verbose_name="Título")
     slug = models.SlugField(unique=True, max_length=200)

@@ -78,11 +78,6 @@ urlpatterns = [
         name="gestionar_reservas",
     ),
     path(
-        "administrador/avisos/",
-        views.gestionar_avisos,
-        name="gestionar_avisos",
-    ),
-    path(
         "docente/reservar-espacios/",
         views.reservar_espacios,
         name="reservar_espacios",
@@ -111,5 +106,35 @@ urlpatterns = [
         "docente/lista-curso/",
         views.lista_curso_docente,
         name="lista_curso_docente",
+    ),
+    path(
+        "administrador/horarios/limpiar/",
+        views.limpiar_horario_curso,
+        name="limpiar_horario_curso",
+    ),
+    path(
+        "administrador/noticias/<int:noticia_id>/editar/",
+        views.editar_noticia,
+        name="editar_noticia",
+    ),
+    path(
+        "administrador/noticias/<int:noticia_id>/estado/",
+        views.cambiar_estado_noticia,
+        name="cambiar_estado_noticia",
+    ),
+    path(
+        "administrador/noticias/<int:noticia_id>/eliminar/",
+        views.eliminar_noticia,
+        name="eliminar_noticia",
+    ),
+    path(
+        "administrador/reservas/<int:reserva_id>/estado/",
+        views.actualizar_estado_reserva,
+        name="actualizar_estado_reserva",
+    ),
+    path(
+        "docente/mi-horario/",
+        views.horario_docente,
+        name="horario_docente",
     ),
 ]

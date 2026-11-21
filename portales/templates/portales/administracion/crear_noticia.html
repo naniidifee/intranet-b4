@@ -1,105 +1,127 @@
 {% extends "portales/base_comunicaciones.html" %}
 
-{% block title %}Nueva Noticia{% endblock %}
+{% block title %}{% if modo_edicion %}Editar Noticia{% else %}Nueva Noticia{% endif %}{% endblock %}
 
 {% block contenido_comunicaciones %}
-<section class="noticia-crear-grid">
-    <div class="noticia-columna">
-        <section class="noticia-panel">
-            <h2><i class="fa-solid fa-pen-to-square"></i> Redactar Noticia</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-            <div class="noticia-campo">
-                <label for="titulo-noticia">Título de la noticia *</label>
-                <input id="titulo-noticia" type="text"
-                       placeholder="Ej: Estudiantes de AVB ganan concurso regional">
-            </div>
+    {{ form.non_field_errors }}
 
-            <div class="noticia-campo">
-                <label for="categoria-noticia">Categoría</label>
-                <select id="categoria-noticia">
-                    <option>Logros Institucionales</option>
-                    <option>Académico</option>
-                    <option>Actividades</option>
-                    <option>Institucional</option>
-                </select>
-            </div>
+    <section class="noticia-crear-grid">
+        <div class="noticia-columna">
+            <section class="noticia-panel">
+                <h2><i class="fa-solid fa-pen-to-square"></i> Redactar Noticia</h2>
 
-            <div class="noticia-campo">
-                <label for="descripcion-noticia">Descripción breve *</label>
-                <textarea id="descripcion-noticia" rows="4"
-                          placeholder="Resumen de la noticia en 2–3 oraciones..."></textarea>
-                <small>Aparecerá en el listado de noticias.</small>
-            </div>
-
-            <div class="noticia-campo">
-                <label for="contenido-noticia">Contenido completo</label>
-                <textarea id="contenido-noticia" rows="6"
-                          placeholder="Desarrollo completo de la noticia..."></textarea>
-            </div>
-        </section>
-
-        <section class="noticia-panel">
-            <h2><i class="fa-regular fa-image"></i> Imágenes</h2>
-            <label class="noticia-zona-imagen">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>Haz clic para subir imágenes</span>
-                <small>JPG o PNG · Máx. 5 MB por imagen · Hasta 6 imágenes</small>
-                <input type="file" accept="image/png,image/jpeg" multiple>
-            </label>
-        </section>
-    </div>
-
-    <div class="noticia-columna">
-        <section class="noticia-panel">
-            <h2><i class="fa-solid fa-eye"></i> Vista previa</h2>
-
-            <article class="noticia-vista-previa">
-                <div class="noticia-imagen-previa">
-                    <i class="fa-regular fa-image"></i>
+                <div class="noticia-campo">
+                    <label for="{{ form.titulo.id_for_label }}">Título de la noticia *</label>
+                    {{ form.titulo }}
+                    {% for error in form.titulo.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
                 </div>
-                <div class="noticia-vista-contenido">
-                    <span>LOGROS INSTITUCIONALES</span>
-                    <h3>Título de la noticia</h3>
-                    <p>La descripción de la noticia aparecerá aquí mientras escribes...</p>
-                    <small>
-                        <i class="fa-regular fa-calendar"></i>
-                        {% now "d/m/Y" %}
-                        ·
-                        <i class="fa-regular fa-user"></i>
-                        {{ request.user.perfil.nombre_completo|default:request.user.username }}
-                    </small>
+
+                <div class="noticia-campo">
+                    <label for="{{ form.categoria.id_for_label }}">Categoría</label>
+                    {{ form.categoria }}
+                    {% for error in form.categoria.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
                 </div>
-            </article>
-        </section>
 
-        <section class="noticia-panel">
-            <h2><i class="fa-solid fa-gear"></i> Opciones de publicación</h2>
+                <div class="noticia-campo">
+                    <label for="{{ form.descripcion.id_for_label }}">Descripción breve *</label>
+                    {{ form.descripcion }}
+                    <small>Aparecerá en el listado de noticias.</small>
+                    {% for error in form.descripcion.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
 
-            <div class="noticia-campo">
-                <label for="fecha-noticia">Fecha de publicación</label>
-                <input id="fecha-noticia" type="date" value="{% now 'Y-m-d' %}">
-            </div>
+                <div class="noticia-campo">
+                    <label for="{{ form.contenido.id_for_label }}">Contenido completo</label>
+                    {{ form.contenido }}
+                    {% for error in form.contenido.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </section>
 
-            <div class="noticia-campo">
-                <label for="destacada-noticia">¿Noticia destacada?</label>
-                <select id="destacada-noticia">
-                    <option>No</option>
-                    <option>Sí</option>
-                </select>
-            </div>
+            <section class="noticia-panel">
+                <h2><i class="fa-regular fa-image"></i> Imagen</h2>
 
-            <div class="noticia-acciones">
-                <button type="button" disabled class="noticia-publicar">
-                    <i class="fa-solid fa-paper-plane"></i> Publicar
-                </button>
-                <button type="button" disabled>
-                    <i class="fa-solid fa-floppy-disk"></i> Guardar borrador
-                </button>
-                <a href="{% url 'gestion_noticias' %}" aria-label="Volver a gestionar noticias">
-                    <i class="fa-solid fa-trash"></i>
-                </a>
-            </div>
-        </section>
-    </div>
-</section>
+                <label class="noticia-zona-imagen">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Haz clic para subir una imagen</span>
+                    <small>JPG o PNG · Máx. 5 MB</small>
+                    {{ form.imagen }}
+                </label>
+
+                {% for error in form.imagen.errors %}
+                    <small>{{ error }}</small>
+                {% endfor %}
+            </section>
+        </div>
+
+        <div class="noticia-columna">
+            <section class="noticia-panel">
+                <h2><i class="fa-solid fa-eye"></i> Vista previa</h2>
+
+                <article class="noticia-vista-previa">
+                    <div class="noticia-imagen-previa">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+
+                    <div class="noticia-vista-contenido">
+                        <span>VISTA PREVIA</span>
+                        <h3>La noticia aparecerá aquí</h3>
+                        <p>Completa el título y la descripción para redactar tu publicación.</p>
+                        <small>
+                            <i class="fa-regular fa-calendar"></i>
+                            {% now "d/m/Y" %}
+                            ·
+                            <i class="fa-regular fa-user"></i>
+                            {{ request.user.perfil.nombre_completo|default:request.user.username }}
+                        </small>
+                    </div>
+                </article>
+            </section>
+
+            <section class="noticia-panel">
+                <h2><i class="fa-solid fa-gear"></i> Opciones de publicación</h2>
+
+                <div class="noticia-campo">
+                    <label for="{{ form.fecha.id_for_label }}">Fecha de publicación</label>
+                    {{ form.fecha }}
+                    {% for error in form.fecha.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="noticia-campo">
+                    <label for="{{ form.destacado.id_for_label }}">¿Noticia destacada?</label>
+                    {{ form.destacado }}
+                </div>
+
+                <div class="noticia-acciones">
+                    <button type="submit" name="accion" value="publicar"
+                            class="noticia-publicar">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Publicar
+                    </button>
+
+                    <button type="submit" name="accion" value="borrador">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar borrador
+                    </button>
+
+                    <a href="{% url 'gestion_noticias' %}"
+                       aria-label="Volver a gestionar noticias">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </section>
+</form>
 {% endblock %}

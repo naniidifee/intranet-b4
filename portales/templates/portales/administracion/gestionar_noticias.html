@@ -6,19 +6,19 @@
 <section class="noticias-admin">
     <div class="noticias-resumen">
         <article>
-            <strong>2</strong>
+            <strong>{{ publicadas_count }}</strong>
             <span>Publicadas</span>
         </article>
         <article>
-            <strong>1</strong>
+            <strong>{{ borradores_count }}</strong>
             <span>Borradores</span>
         </article>
         <article>
-            <strong>3</strong>
+            <strong>{{ total_count }}</strong>
             <span>Total</span>
         </article>
         <article>
-            <strong>3</strong>
+            <strong>{{ mes_count }}</strong>
             <span>Este mes</span>
         </article>
     </div>
@@ -31,90 +31,91 @@
             </h2>
 
             <div class="noticias-filtros">
-                <button class="seleccionado" type="button">Todas</button>
-                <button type="button">Publicadas</button>
-                <button type="button">Borradores</button>
+                <a href="?estado=todas"
+                   class="{% if estado_seleccionado == 'todas' %}seleccionado{% endif %}">
+                    Todas
+                </a>
+                <a href="?estado=publicadas"
+                   class="{% if estado_seleccionado == 'publicadas' %}seleccionado{% endif %}">
+                    Publicadas
+                </a>
+                <a href="?estado=borradores"
+                   class="{% if estado_seleccionado == 'borradores' %}seleccionado{% endif %}">
+                    Borradores
+                </a>
             </div>
+
+            <a href="{% url 'crear_noticia' %}" class="noticias-nueva">
+                <i class="fa-solid fa-plus"></i>
+                Nueva noticia
+            </a>
         </header>
 
         <div class="noticias-admin-lista">
-            <article class="noticia-admin">
-                <div class="noticia-admin-imagen">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <div class="noticia-admin-texto">
-                    <h3>Liceo AVB obtiene reconocimiento regional</h3>
-                    <p>Nuestra institución fue distinguida por su excelencia técnica.</p>
-                    <div class="noticia-admin-datos">
-                        <span class="estado-publicada">Publicada</span>
-                        <span>12/03/2025</span>
-                        <span>Logros institucionales</span>
+            {% for noticia in noticias %}
+                <article class="noticia-admin {% if not noticia.publicada %}borrador{% endif %}">
+                    <div class="noticia-admin-imagen">
+                        {% if noticia.imagen %}
+                            <img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}">
+                        {% else %}
+                            <i class="fa-solid fa-newspaper"></i>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="noticia-admin-acciones">
-                    <button type="button" disabled aria-label="Editar">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Ocultar">
-                        <i class="fa-solid fa-eye-slash"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Eliminar">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </article>
 
-            <article class="noticia-admin">
-                <div class="noticia-admin-imagen">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <div class="noticia-admin-texto">
-                    <h3>Estudiantes de Gastronomía representan a Arica</h3>
-                    <p>Cuatro alumnos participaron en un concurso nacional.</p>
-                    <div class="noticia-admin-datos">
-                        <span class="estado-publicada">Publicada</span>
-                        <span>05/03/2025</span>
-                        <span>Gastronomía</span>
-                    </div>
-                </div>
-                <div class="noticia-admin-acciones">
-                    <button type="button" disabled aria-label="Editar">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Ocultar">
-                        <i class="fa-solid fa-eye-slash"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Eliminar">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </article>
+                    <div class="noticia-admin-texto">
+                        <h3>{{ noticia.titulo }}</h3>
+                        <p>{{ noticia.descripcion|truncatechars:150 }}</p>
 
-            <article class="noticia-admin borrador">
-                <div class="noticia-admin-imagen">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </div>
-                <div class="noticia-admin-texto">
-                    <h3>Nuevo laboratorio de Programación próximamente</h3>
-                    <p>Se están instalando nuevos equipos para la especialidad.</p>
-                    <div class="noticia-admin-datos">
-                        <span class="estado-borrador">Borrador</span>
-                        <span>01/03/2025</span>
-                        <span>Programación</span>
+                        <div class="noticia-admin-datos">
+                            {% if noticia.publicada %}
+                                <span class="estado-publicada">Publicada</span>
+                            {% else %}
+                                <span class="estado-borrador">Borrador</span>
+                            {% endif %}
+
+                            {% if noticia.destacado %}
+                                <span>Destacada</span>
+                            {% endif %}
+
+                            <span>{{ noticia.fecha|date:"d/m/Y" }}</span>
+                            <span>{{ noticia.categoria }}</span>
+                        </div>
                     </div>
+
+                    <div class="noticia-admin-acciones">
+                        <a href="{% url 'editar_noticia' noticia.id %}"
+                        class="noticia-admin-accion"
+                        aria-label="Editar noticia">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <form method="post"
+                            action="{% url 'cambiar_estado_noticia' noticia.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    aria-label="{% if noticia.publicada %}Ocultar{% else %}Publicar{% endif %} noticia"
+                                    onclick="return confirm('¿Quieres cambiar el estado de esta noticia?')">
+                                <i class="fa-solid {% if noticia.publicada %}fa-eye-slash{% else %}fa-paper-plane{% endif %}"></i>
+                            </button>
+                        </form>
+
+                        <form method="post"
+                            action="{% url 'eliminar_noticia' noticia.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    aria-label="Eliminar noticia"
+                                    onclick="return confirm('¿Seguro que quieres eliminar esta noticia?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="admin-avisos-vacio">
+                    <i class="fa-regular fa-newspaper"></i>
+                    <p>No hay noticias para mostrar en este filtro.</p>
                 </div>
-                <div class="noticia-admin-acciones">
-                    <button type="button" disabled aria-label="Editar">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Publicar">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                    <button type="button" disabled aria-label="Eliminar">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </article>
+            {% endfor %}
         </div>
     </section>
 </section>

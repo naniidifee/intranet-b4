@@ -56,11 +56,6 @@
                     Disponibilidad de salas
                 </a>
 
-                <span class="portal-admin-etiqueta">HERRAMIENTAS</span>
-                <a href="#" onclick="window.print(); return false;">
-                    <i class="fa-solid fa-print"></i>
-                    Imprimir horario
-                </a>
                 <a href="{% url 'intranet_dashboard' %}">
                     <i class="fa-solid fa-arrow-left"></i>
                     Volver a Administración
@@ -84,45 +79,48 @@
             </div>
 
             <span class="portal-admin-etiqueta">PANEL</span>
-            <a href="{% url 'intranet_dashboard' %}">
+            <a href="{% url 'intranet_dashboard' %}"
+            class="{% if request.resolver_match.url_name == 'intranet_dashboard' %}activo{% endif %}">
                 <i class="fa-solid fa-house"></i>
                 Inicio
             </a>
 
             <span class="portal-admin-etiqueta">GESTIÓN DE USUARIOS</span>
-            <a href="{% url 'crear_usuario' %}">
+            <a href="{% url 'crear_usuario' %}"
+            class="{% if request.resolver_match.url_name == 'crear_usuario' %}activo{% endif %}">
                 <i class="fa-solid fa-user-plus"></i>
                 Registrar usuario
             </a>
-            <a href="{% url 'listar_usuarios' %}">
+            <a href="{% url 'listar_usuarios' %}"
+            class="{% if request.resolver_match.url_name == 'listar_usuarios' %}activo{% endif %}">
                 <i class="fa-solid fa-users"></i>
                 Usuarios registrados
             </a>
 
             <span class="portal-admin-etiqueta">GESTIÓN ACADÉMICA</span>
-            <a href="{% url 'gestionar_horarios' %}">
+            <a href="{% url 'gestionar_horarios' %}"
+            class="{% if request.resolver_match.url_name == 'gestionar_horarios' %}activo{% endif %}">
                 <i class="fa-solid fa-calendar-days"></i>
                 Horarios
             </a>
 
             <span class="portal-admin-etiqueta">COMUNICACIONES</span>
-            <a href="{% url 'gestion_noticias' %}">
+            <a href="{% url 'gestion_noticias' %}"
+            class="{% if request.resolver_match.url_name == 'gestion_noticias' %}activo{% endif %}">
                 <i class="fa-solid fa-newspaper"></i>
                 Gestión de noticias
             </a>
-            <a href="{% url 'gestionar_avisos' %}">
-                <i class="fa-solid fa-bell"></i>
-                Avisos a usuarios
-            </a>
 
             <span class="portal-admin-etiqueta">ESPACIOS</span>
-            <a href="{% url 'gestionar_reservas' %}">
+            <a href="{% url 'gestionar_reservas' %}"
+            class="{% if request.resolver_match.url_name == 'gestionar_reservas' %}activo{% endif %}">
                 <i class="fa-solid fa-door-open"></i>
                 Solicitudes de reserva
             </a>
 
             <span class="portal-admin-etiqueta">SEGURIDAD</span>
-            <a href="{% url 'listar_solicitudes_recuperacion' %}">
+            <a href="{% url 'listar_solicitudes_recuperacion' %}"
+            class="{% if request.resolver_match.url_name == 'listar_solicitudes_recuperacion' %}activo{% endif %}">
                 <i class="fa-solid fa-key"></i>
                 Solicitudes de recuperación
             </a>

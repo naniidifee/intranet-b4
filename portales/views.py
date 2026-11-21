@@ -1,29 +1,27 @@
+import mimetypes
+import re
 from datetime import date, datetime, timedelta
+from urllib.parse import urlencode
+
 from django.contrib import messages
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
-import re
-from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
-from .forms import (
-    BloqueHorarioForm,
-    ClaseHorarioForm,
-    HorarioArchivoForm,
-    SolicitudReservaForm,
-)
-from django.contrib.auth import logout
-import mimetypes
 from django.db import IntegrityError, transaction
-from django.db.models import Count
+from django.db.models import Count, Q
+from django.http import FileResponse, Http404
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import date_format
-from django.utils.text import capfirst
-from urllib.parse import urlencode
-from django.http import FileResponse, Http404
-from django.urls import reverse
+from django.utils.text import capfirst, slugify
 from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.views.decorators.http import require_POST
+
+from intranet.models import Noticia
+
+from .forms import BloqueHorarioForm, ClaseHorarioForm, HorarioArchivoForm, NoticiaForm, SolicitudReservaForm
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
 
 # Create your views here.
 
@@ -67,10 +65,6 @@ def horario_estudiante(request):
 
             if clase.tipo == "taller":
                 talleres.append(clase)
-
-        for clase in clases:
-            if clase.tipo == "electiva":
-                electividades.append(clase)
 
         franjas = (
             BloqueHorario.objects
@@ -149,6 +143,15 @@ def horario_estudiante(request):
 
             bloques.append(datos_bloque)
 
+    Usuario = get_user_model()
+
+    companeros = (
+        Usuario.objects
+        .filter(perfil__curso__iexact=curso, perfil__rol__nombre="Estudiante")
+        .select_related("perfil")
+        .order_by("perfil__nombre_completo")
+    )
+
     return render(
         request,
         "portales/estudiantes/horario.html",
@@ -156,6 +159,7 @@ def horario_estudiante(request):
             "bloques": bloques,
             "electividades": electividades,
             "talleres": talleres,
+            "companeros": companeros,
             "archivo_horario": archivo_horario,
         },
     )
@@ -201,6 +205,34 @@ def reservar_espacios(request):
         semana = hoy + timedelta(days=7 - hoy.weekday()) if hoy.weekday() > 4 else hoy
     lunes = semana - timedelta(days=semana.weekday())
     dias = [lunes + timedelta(days=i) for i in range(5)]
+
+    form = SolicitudReservaForm(
+        request.POST or None,
+        initial={
+            "espacio": espacio,
+            "fecha": request.GET.get("fecha", hoy.isoformat()),
+        },
+        docente=request.user,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        datos = form.cleaned_data
+
+        ReservaEspacio.objects.create(
+            docente=request.user,
+            espacio=datos["espacio"],
+            fecha=datos["fecha"],
+            bloque=datos["bloque"],
+            motivo=datos["motivo"],
+            estado="pendiente",
+        )
+
+        messages.success(request, "Tu solicitud de reserva fue enviada.")
+        return redirect("reservar_espacios")
+    
+    bloques_reservables = BloqueHorario.objects.filter(
+            tipo="clase"
+        ).order_by("jornada", "orden", "hora_inicio")
 
     reservas = (
         ReservaEspacio.objects
@@ -279,6 +311,9 @@ def reservar_espacios(request):
             "siguiente": dias[0] + timedelta(days=7),
             "filas": filas,
             "mis_solicitudes": mis_solicitudes,
+            "form": form,
+            "bloques_reservables": bloques_reservables,
+            "bloques": bloques_reservables,
         },
     )
 
@@ -286,7 +321,77 @@ def reservar_espacios(request):
 @login_required(login_url="login")
 def lista_curso_docente(request):
     _verificar_docente(request)
-    return render(request, "portales/docente/lista_curso.html")
+
+    perfil = request.user.perfil
+    nombre_docente = perfil.nombre_completo or request.user.username
+
+    # ClaseHorario.docente es texto; buscamos el nombre del usuario
+    # entre las asignaciones registradas en los horarios.
+    clases_docente = ClaseHorario.objects.filter(
+        docente__icontains=nombre_docente
+    )
+
+    cursos = list(
+        clases_docente
+        .exclude(curso="")
+        .values_list("curso", flat=True)
+        .distinct()
+        .order_by("curso")
+    )
+
+    curso_seleccionado = request.GET.get("curso", "")
+    if curso_seleccionado not in cursos:
+        curso_seleccionado = cursos[0] if cursos else ""
+
+    Usuario = get_user_model()
+
+    if curso_seleccionado:
+        estudiantes = (
+            Usuario.objects
+            .filter(
+                perfil__rol__nombre="Estudiante",
+                perfil__curso__iexact=curso_seleccionado,
+            )
+            .select_related("perfil")
+            .order_by("perfil__nombre_completo")
+        )
+
+        asignaturas = (
+            clases_docente
+            .filter(curso__iexact=curso_seleccionado)
+            .values_list("asignatura", flat=True)
+            .distinct()
+            .order_by("asignatura")
+        )
+
+        coincidencia = re.match(
+            r"^\s*[1-4]\s*(?:°?\s*medio\s*)?([A-J])",
+            curso_seleccionado,
+            re.IGNORECASE,
+        )
+        especialidad = (
+            ESPECIALIDADES_TP.get(coincidencia.group(1).upper(), "Formación General")
+            if coincidencia
+            else "Formación General"
+        )
+    else:
+        estudiantes = Usuario.objects.none()
+        asignaturas = []
+        especialidad = ""
+
+    return render(
+        request,
+        "portales/docente/lista_curso.html",
+        {
+            "cursos": cursos,
+            "curso_seleccionado": curso_seleccionado,
+            "estudiantes": estudiantes,
+            "total_alumnos": estudiantes.count(),
+            "asignaturas": asignaturas,
+            "especialidad": especialidad,
+            "docente_nombre": nombre_docente,
+        },
+    )
 
 def _nivel_de_curso(nombre):
     coincidencia = re.match(r"^\s*([1-4])", nombre)
@@ -305,6 +410,57 @@ ESPECIALIDADES_TP = {
     "J": "Gastronomía",
 }
 
+@login_required(login_url="login")
+def horario_docente(request):
+    _verificar_docente(request)
+
+    perfil = request.user.perfil
+    nombre_docente = perfil.nombre_completo or request.user.username
+
+    clases = (
+        ClaseHorario.objects
+        .filter(docente__icontains=nombre_docente)
+        .select_related("bloque")
+        .order_by(
+            "dia",
+            "bloque__jornada",
+            "bloque__orden",
+            "bloque__hora_inicio",
+        )
+    )
+
+    return render(
+        request,
+        "portales/docente/horario_docente.html",
+        {
+            "clases": clases,
+            "nombre_docente": nombre_docente,
+        },
+    )
+
+@login_required(login_url="login")
+@require_POST
+def limpiar_horario_curso(request):
+    _verificar_administrador(request)
+
+    curso = request.POST.get("curso", "").strip()
+
+    if not curso:
+        messages.error(request, "Selecciona un curso antes de limpiar.")
+    else:
+        cantidad = ClaseHorario.objects.filter(
+            curso__iexact=curso
+        ).count()
+
+        ClaseHorario.objects.filter(curso__iexact=curso).delete()
+
+        messages.success(
+            request,
+            f"Se eliminaron {cantidad} clases de {curso}. "
+            "Los bloques y pausas se conservaron."
+        )
+
+    return redirect("gestionar_horarios")
 
 def _etiqueta_curso(codigo):
     coincidencia = re.match(
@@ -415,24 +571,39 @@ def gestionar_horarios(request):
 
     jornadas = BloqueHorario.JORNADAS
     jornada_seleccionada = request.GET.get("jornada", "manana")
-    if jornada_seleccionada not in dict(jornadas):
+
+    if jornada_seleccionada not in ("manana", "tarde", "completa"):
         jornada_seleccionada = "manana"
 
-    bloques = list(
-        BloqueHorario.objects
-        .filter(jornada=jornada_seleccionada)
-        .order_by("orden", "hora_inicio")
-    )
-
-    clases = list(
-        ClaseHorario.objects
-        .filter(
-            curso__iexact=curso_seleccionado,
-            bloque__jornada=jornada_seleccionada,
+    if jornada_seleccionada == "completa":
+        bloques = list(
+            BloqueHorario.objects.order_by(
+                "jornada", "orden", "hora_inicio"
+            )
         )
-        .select_related("bloque")
-        .order_by("dia", "grupo", "segmento")
-    ) if curso_seleccionado else []
+
+        clases = list(
+            ClaseHorario.objects
+            .filter(curso__iexact=curso_seleccionado)
+            .select_related("bloque")
+            .order_by("bloque__jornada", "dia", "grupo", "segmento")
+        ) if curso_seleccionado else []
+    else:
+        bloques = list(
+            BloqueHorario.objects
+            .filter(jornada=jornada_seleccionada)
+            .order_by("orden", "hora_inicio")
+        )
+
+        clases = list(
+            ClaseHorario.objects
+            .filter(
+                curso__iexact=curso_seleccionado,
+                bloque__jornada=jornada_seleccionada,
+            )
+            .select_related("bloque")
+            .order_by("dia", "grupo", "segmento")
+        ) if curso_seleccionado else []
 
     cursos_tarjetas = []
 
@@ -530,6 +701,19 @@ def gestionar_horarios(request):
 
         matriz.append(fila)
 
+    clases_con_sala = list(
+        ClaseHorario.objects
+        .exclude(sala__isnull=True)
+        .exclude(sala__exact="")
+        .select_related("bloque")
+        .order_by("sala", "dia", "bloque__orden")
+    )
+
+    salas_ocupadas_count = len({
+        clase.sala.strip().casefold()
+        for clase in clases_con_sala
+    })
+
     return render(
         request,
         "portales/horarios/gestionar.html",
@@ -546,6 +730,8 @@ def gestionar_horarios(request):
             "nivel_seleccionado": nivel_seleccionado,
             "vista": vista,
             "cursos_opciones": cursos_opciones,
+            "clases_con_sala": clases_con_sala,
+            "salas_ocupadas_count": salas_ocupadas_count,
             "archivo_horario": archivo_horario,
         },
     )
@@ -660,25 +846,147 @@ def cerrar_sesion_estudiante(request):
     logout(request)
     return redirect("logear")
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
 def gestion_noticias(request):
     _verificar_administrador(request)
+
+    todas_las_noticias = Noticia.objects.all()
+    estado = request.GET.get("estado", "todas")
+
+    noticias = todas_las_noticias
+
+    if estado == "publicadas":
+        noticias = noticias.filter(publicada=True)
+    elif estado == "borradores":
+        noticias = noticias.filter(publicada=False)
+    else:
+        estado = "todas"
+
+    hoy = date.today()
+
+    contexto = {
+        "noticias": noticias,
+        "estado_seleccionado": estado,
+        "publicadas_count": todas_las_noticias.filter(publicada=True).count(),
+        "borradores_count": todas_las_noticias.filter(publicada=False).count(),
+        "total_count": todas_las_noticias.count(),
+        "mes_count": todas_las_noticias.filter(
+            fecha__month=hoy.month,
+            fecha__year=hoy.year,
+        ).count(),
+    }
+
     return render(
         request,
         "portales/administracion/gestionar_noticias.html",
+        contexto,
     )
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
 def crear_noticia(request):
     _verificar_administrador(request)
+
+    form = NoticiaForm(
+        request.POST or None,
+        request.FILES or None,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        noticia = form.save(commit=False)
+
+        slug_base = slugify(noticia.titulo) or "noticia"
+        noticia.slug = slug_base
+        numero = 2
+
+        while Noticia.objects.filter(slug=noticia.slug).exists():
+            noticia.slug = f"{slug_base}-{numero}"
+            numero += 1
+
+        try:
+            noticia.autor = request.user.perfil.nombre_completo
+        except AttributeError:
+            noticia.autor = request.user.username
+
+        noticia.publicada = request.POST.get("accion") == "publicar"
+        noticia.save()
+
+        if noticia.publicada:
+            messages.success(request, "La noticia fue publicada.")
+        else:
+            messages.success(request, "El borrador fue guardado.")
+
+        return redirect("gestion_noticias")
+
     return render(
         request,
         "portales/administracion/crear_noticia.html",
+        {"form": form},
     )
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
+def editar_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    form = NoticiaForm(
+        request.POST or None,
+        request.FILES or None,
+        instance=noticia,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        noticia = form.save(commit=False)
+        noticia.publicada = request.POST.get("accion") == "publicar"
+        noticia.save()
+
+        messages.success(request, "La noticia fue actualizada.")
+        return redirect("gestion_noticias")
+
+    return render(
+        request,
+        "portales/administracion/crear_noticia.html",
+        {
+            "form": form,
+            "modo_edicion": True,
+        },
+    )
+
+@login_required(login_url="login")
+@require_POST
+def cambiar_estado_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    noticia.publicada = not noticia.publicada
+    noticia.save(update_fields=["publicada"])
+
+    messages.success(request, "El estado de la noticia fue actualizado.")
+    return redirect("gestion_noticias")
+
+
+@login_required(login_url="login")
+@require_POST
+def eliminar_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    noticia.delete()
+
+    messages.success(request, "La noticia fue eliminada.")
+    return redirect("gestion_noticias")
+
+@login_required(login_url="login")
 def gestionar_reservas(request):
     _verificar_administrador(request)
+
+    estado = request.GET.get("estado", "todas")
+    solicitudes = ReservaEspacio.objects.select_related(
+        "docente",
+        "bloque",
+    )
+
+    if estado in ["pendiente", "aprobada", "rechazada"]:
+        solicitudes = solicitudes.filter(estado=estado)
 
     filtros = [
         ("pendiente", "Pendientes"),
@@ -711,19 +1019,53 @@ def gestionar_reservas(request):
             "solicitudes": solicitudes,
             "filtros": filtros,
             "estado": estado,
+            "estado_seleccionado": estado,
             "total_pendientes": conteos.get("pendiente", 0),
             "total_aprobadas": conteos.get("aprobada", 0),
             "total_rechazadas": conteos.get("rechazada", 0),
+            "pendientes": conteos.get("pendiente", 0),
+            "aprobadas": conteos.get("aprobada", 0),
+            "rechazadas": conteos.get("rechazada", 0),
         },
     )
 
-@login_required(login_url="logear")
-def gestionar_avisos(request):
+
+@login_required(login_url="login")
+@require_POST
+def actualizar_estado_reserva(request, reserva_id):
     _verificar_administrador(request)
-    return render(
-        request,
-        "portales/administracion/gestionar_avisos.html",
-    )
+    solicitud = get_object_or_404(ReservaEspacio, pk=reserva_id)
+    accion = request.POST.get("accion")
+
+    if solicitud.estado != "pendiente":
+        messages.error(request, "Esta solicitud ya fue revisada.")
+    elif accion == "aprobar":
+        hay_conflicto = ReservaEspacio.objects.filter(
+            espacio=solicitud.espacio,
+            fecha=solicitud.fecha,
+            bloque=solicitud.bloque,
+            estado="aprobada",
+        ).exclude(pk=solicitud.pk).exists()
+
+        if hay_conflicto:
+            messages.error(
+                request,
+                "Ya existe una reserva aprobada para ese espacio y horario.",
+            )
+        else:
+            solicitud.estado = "aprobada"
+            solicitud.save()
+            messages.success(request, "La solicitud fue aprobada.")
+
+    elif accion == "rechazar":
+        solicitud.estado = "rechazada"
+        solicitud.save()
+        messages.success(request, "La solicitud fue rechazada.")
+    else:
+        messages.error(request, "No se reconoció la acción.")
+
+    return redirect("gestionar_reservas")
+
 
 
 def _redirigir_a_horario(curso):

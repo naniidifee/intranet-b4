@@ -1,10 +1,13 @@
 import os
 
+from intranet.models import Noticia
+
 from django import forms
 from django.utils import timezone
 
 from .cursos import CURSOS_CHOICES
 from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
+
 
 
 class BloqueHorarioForm(forms.ModelForm):
@@ -52,6 +55,20 @@ class BloqueHorarioForm(forms.ModelForm):
 
         return datos
 
+ESPACIOS = [("", "Selecciona una sala o espacio")]
+
+for numero in range(1, 41):
+    nombre = f"Sala {numero:02}"
+    ESPACIOS.append((nombre, nombre))
+
+ESPACIOS += [
+    ("Biblioteca", "Biblioteca"),
+    ("Laboratorio", "Laboratorio"),
+    ("Gimnasio", "Gimnasio"),
+    ("Cancha", "Cancha"),
+    ("Patio central", "Patio central"),
+]
+
 
 class ClaseHorarioForm(forms.ModelForm):
     class Meta:
@@ -82,12 +99,29 @@ class ClaseHorarioForm(forms.ModelForm):
             "curso": forms.TextInput(attrs={"placeholder": "Ejemplo: 1° Medio A"}),
             "asignatura": forms.TextInput(attrs={"placeholder": "Asignatura"}),
             "docente": forms.TextInput(attrs={"placeholder": "Nombre del docente"}),
-            "sala": forms.TextInput(attrs={"placeholder": "Ejemplo: Sala 1"}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["bloque"].queryset = BloqueHorario.objects.filter(tipo="clase")
+
+        self.fields["bloque"].queryset = BloqueHorario.objects.filter(
+            tipo="clase"
+        )
+
+        opciones_sala = ESPACIOS.copy()
+        sala_actual = self.instance.sala
+
+        if sala_actual and sala_actual not in dict(opciones_sala):
+            opciones_sala.insert(
+                1,
+                (sala_actual, f"{sala_actual} (nombre actual)"),
+            )
+
+        self.fields["sala"] = forms.ChoiceField(
+            choices=opciones_sala,
+            required=False,
+            label="Sala o espacio",
+        )
 
     def clean_curso(self):
         return self.cleaned_data["curso"].strip()
@@ -128,27 +162,25 @@ class HorarioArchivoForm(forms.Form):
             raise forms.ValidationError(
                 "El contenido no coincide con el formato del archivo."
             )
-
         return archivo
-
+    
     def guardar(self, usuario):
         """Crea o reemplaza el horario del curso y borra el archivo anterior."""
         curso = self.cleaned_data["curso"]
         archivo = self.cleaned_data["archivo"]
-
+    
         horario, _ = HorarioArchivo.objects.get_or_create(curso=curso)
         anterior = horario.archivo.name if horario.archivo else ""
-
+    
         horario.archivo = archivo
         horario.subido_por = usuario
         horario.save()
-
+    
         if anterior and anterior != horario.archivo.name:
             horario.archivo.storage.delete(anterior)
-
+    
         return horario
-
-
+    
 class SolicitudReservaForm(forms.Form):
     """Datos que envía un docente para pedir un espacio."""
 
@@ -202,3 +234,38 @@ class SolicitudReservaForm(forms.Form):
             raise forms.ValidationError("Ya tienes una solicitud para ese bloque.")
 
         return datos
+    
+class NoticiaForm(forms.ModelForm):
+    class Meta:
+        model = Noticia
+        fields = [
+            "titulo",
+            "categoria",
+            "descripcion",
+            "contenido",
+            "imagen",
+            "fecha",
+            "destacado",
+        ]
+
+        widgets = {
+            "titulo": forms.TextInput(attrs={
+                "placeholder": "Ej: Estudiantes de AVB ganan concurso regional",
+            }),
+            "descripcion": forms.Textarea(attrs={
+                "rows": 4,
+                "placeholder": "Resumen breve de la noticia...",
+            }),
+            "contenido": forms.Textarea(attrs={
+                "rows": 6,
+                "placeholder": "Desarrollo completo de la noticia...",
+            }),
+            "imagen": forms.ClearableFileInput(attrs={
+                "accept": "image/png,image/jpeg",
+            }),
+            "fecha": forms.DateInput(attrs={
+                "type": "date",
+            }),
+        }
+
+

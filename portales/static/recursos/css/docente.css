@@ -712,3 +712,511 @@ button.reserva-pendiente small {
     background: #f5a800;
     color: #0a1628;
 }
+.reservas-intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid #e0e7f0;
+    border-left: 5px solid #f5a900;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(15 35 65 / 7%);
+}
+
+.reservas-intro-etiqueta {
+    color: #a66d00;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.reservas-intro h2 {
+    margin: 0.35rem 0;
+    color: #102b4e;
+    font-size: 1.45rem;
+}
+
+.reservas-intro p {
+    margin: 0;
+    color: #64748b;
+}
+
+.reservas-espacio-activo {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    column-gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: #f3f6fa;
+    color: #102b4e;
+}
+
+.reservas-espacio-activo i {
+    grid-row: span 2;
+    color: #e49a00;
+}
+
+.reservas-espacio-activo span {
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.reservas-espacio-activo strong {
+    font-size: 0.95rem;
+}
+
+.reserva-dialogo {
+    width: min(92vw, 480px);
+    padding: 1.5rem;
+    border: 1px solid #dbe3ed;
+    border-radius: 18px;
+    color: #102b4e;
+    box-shadow: 0 20px 60px rgb(8 22 42 / 25%);
+}
+
+.reserva-dialogo::backdrop {
+    background: rgb(8 22 42 / 55%);
+    backdrop-filter: blur(3px);
+}
+
+.reserva-dialogo form {
+    display: grid;
+    gap: 1rem;
+}
+
+.reserva-dialogo input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: inherit;
+}
+
+.reserva-dialogo input[type="text"]:focus {
+    border-color: #d49b22;
+    outline: 3px solid rgb(212 155 34 / 18%);
+}
+
+.reserva-dialogo-acciones button {
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.reserva-dialogo-acciones button[type="submit"] {
+    background: #f5a900;
+    color: #102b4e;
+}
+
+@media (max-width: 650px) {
+    .reservas-intro {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .reservas-espacio-activo {
+        align-self: flex-start;
+    }
+}
+.docente-horario {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.docente-horario-encabezado,
+.docente-horario-tabla-contenedor,
+.docente-horario-vacio {
+    padding: 1.5rem;
+    border: 1px solid #e1e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(15 35 65 / 7%);
+}
+
+.docente-horario-encabezado {
+    border-top: 4px solid #f5a900;
+}
+
+.docente-horario-encabezado > span {
+    color: #a66d00;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.docente-horario-encabezado h2 {
+    margin: 0.4rem 0;
+    color: #102b4e;
+    font-size: 1.5rem;
+}
+
+.docente-horario-encabezado p {
+    margin: 0;
+    color: #64748b;
+}
+
+.docente-horario-tabla-contenedor {
+    overflow-x: auto;
+    padding: 0;
+}
+
+.docente-horario-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    color: #17375e;
+}
+
+.docente-horario-tabla th {
+    padding: 1rem;
+    background: #0b1729;
+    color: #fff;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.docente-horario-tabla th:first-child {
+    border-radius: 15px 0 0;
+}
+
+.docente-horario-tabla th:last-child {
+    border-radius: 0 15px 0 0;
+}
+
+.docente-horario-tabla td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.docente-horario-tabla tbody tr:nth-child(even) {
+    background: #f5f7fa;
+}
+
+.docente-horario-vacio {
+    padding: 3rem 1.5rem;
+    background: #f3f6fa;
+    text-align: center;
+}
+
+.docente-horario-vacio i {
+    color: #d49b22;
+    font-size: 2rem;
+}
+
+.docente-horario-vacio h3 {
+    margin: 0.8rem 0 0.3rem;
+    color: #102b4e;
+}
+
+.docente-horario-vacio p {
+    margin: 0;
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+    .docente-horario-encabezado,
+    .docente-horario-vacio {
+        padding: 1.2rem;
+    }
+
+    .docente-horario-tabla {
+        min-width: 700px;
+    }
+}
+/* Identidad del docente */
+.docente-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.docente-avatar {
+    display: flex;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.docente-avatar i {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    transform: none;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* Opciones del menú */
+.docente-etiqueta {
+    display: block;
+    margin: 1.2rem 0 0.45rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+    color: #aabbd0;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.docente-menu > a:not(.docente-marca) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 44px;
+    margin: 0.25rem 0;
+    padding: 0.7rem 0.85rem;
+    border-radius: 11px;
+    color: #f5f8fc;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.docente-menu > a:not(.docente-marca):hover {
+    background: #1b3e64;
+}
+
+.docente-menu > a.activo {
+    border-right: 4px solid #ffb000;
+    background: #263c59;
+    color: #ffb000;
+}
+
+.docente-menu > a:not(.docente-marca) i {
+    width: 1.2rem;
+    color: #ffb000;
+    text-align: center;
+}
+
+/* Cerrar sesión al pie del menú */
+.docente-salir {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.docente-salir button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem;
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 11px;
+    background: rgb(255 255 255 / 5%);
+    color: #d5dfec;
+    font: inherit;
+    cursor: pointer;
+}
+
+.docente-salir button:hover {
+    background: #263c59;
+    color: #fff;
+}
+/* Sube el contenido para acercarlo a la barra superior */
+.docente-contenido {
+    align-self: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0 !important;
+    padding: 1rem 1.5rem 2rem !important;
+}
+
+/* Centra ópticamente el icono del perfil */
+.docente-avatar {
+    position: relative;
+    display: grid !important;
+    place-items: center;
+    padding: 0 !important;
+}
+
+.docente-avatar i {
+    position: static !important;
+    inset: auto !important;
+    display: block;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    transform: translateY(3px) !important;
+}
+
+/* Da más presencia al botón de cerrar sesión */
+.docente-salir {
+    padding: 1rem 0.25rem;
+}
+
+.docente-salir button {
+    min-height: 48px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #395679;
+    border-radius: 12px;
+    background: #203d63;
+    color: #fff;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.docente-salir button:hover {
+    border-color: #e6a400;
+    background: #294b75;
+}
+
+@media (max-width: 700px) {
+    .docente-contenido {
+        padding: 1rem !important;
+    }
+}
+/* Menú Docente con el estilo del portal de Administración */
+.docente-menu {
+    display: flex;
+    flex: 0 0 250px;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding: 0.75rem 0.65rem;
+    background: linear-gradient(180deg, #0b1729, #122d55);
+}
+
+.docente-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 1rem;
+    padding: 0.25rem 0.5rem 0.9rem;
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+}
+
+.docente-identidad {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 1rem;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: #1e2c43;
+}
+
+.docente-avatar {
+    position: relative;
+    display: grid !important;
+    flex: 0 0 42px;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0 !important;
+    border-radius: 50%;
+}
+
+.docente-avatar i {
+    position: static !important;
+    display: block;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    transform: translateY(2px) !important;
+}
+
+.docente-etiqueta {
+    display: block;
+    margin: 0.75rem 0 0.45rem;
+    padding: 0 0 0.45rem;
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+    color: #b6c5d8;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.docente-menu > a:not(.docente-marca) {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 40px;
+    margin: 0.12rem 0;
+    padding: 0.55rem 0.65rem;
+    border-right: 3px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: #f3f6fa;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.docente-menu > a:not(.docente-marca):hover {
+    background: rgb(255 255 255 / 6%);
+}
+
+.docente-menu > a.activo {
+    border-right-color: #ffb000;
+    background: #253955;
+    color: #ffb000;
+}
+
+.docente-menu > a:not(.docente-marca) i {
+    width: 1.1rem;
+    color: #ffb000;
+    text-align: center;
+}
+
+/* Cierre de sesión sencillo al pie, como en Administración */
+.docente-salir {
+    margin-top: auto;
+    padding: 1rem 0.25rem 0;
+}
+
+.docente-salir button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #aabbd0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.docente-salir button:hover {
+    background: rgb(255 255 255 / 6%);
+    color: #fff;
+}
+
+/* Sube el contenido debajo de la barra superior */
+.docente-principal > .docente-contenido {
+    align-self: stretch;
+    box-sizing: border-box;
+    margin-top: 0 !important;
+    padding: 0.65rem 1.5rem 2rem !important;
+}
+
+.docente-contenido > .docente-horario {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+@media (max-width: 700px) {
+    .docente-menu {
+        flex-basis: 220px;
+    }
+
+    .docente-principal > .docente-contenido {
+        padding: 0.5rem 1rem 1.5rem !important;
+    }
+}
