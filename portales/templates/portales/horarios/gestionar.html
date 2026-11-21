@@ -329,9 +329,8 @@
                                    href="?vista=horarios&nivel={{ valor }}&curso={{ curso.nombre|urlencode }}&jornada={{ curso.jornada }}#horario-utp">
                                     <i class="fa-solid fa-users"></i>
                                     <strong>{{ curso.nombre }}</strong>
-                                    <span>{{ curso.jornada_nombre }}</span>
-                                    <span>{{ curso.bloques }} bloques programados</span>
-
+                                    <span>Jornada: {{ curso.jornada_nombre }}</span>
+                                    <span>Bloques programados: {{ curso.bloques }}</span>
                                     {% if curso.docentes %}
                                         <small>
                                             Docentes: {{ curso.docentes|join:", " }}

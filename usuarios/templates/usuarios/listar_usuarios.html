@@ -30,34 +30,40 @@
                             <td>{{ perfil.nombre_completo }}</td>
                             <td>{{ perfil.rut }}</td>
                             <td>{{ perfil.rol.nombre }}</td>
+                            <td>{{ perfil.curso|default:"—" }}</td>
+
                             <td>
-                                {% if perfil.curso %}
-                                    {{ perfil.curso }}
+                                {% if perfil.usuario.is_active %}
+                                    <span class="estado-usuario activo">Activo</span>
                                 {% else %}
-                                    —
+                                    <span class="estado-usuario inactivo">Desactivado</span>
                                 {% endif %}
                             </td>
+
                             <td>
-                                <a href="{% url 'editar_usuario' perfil.usuario.id %}">
-                                    Editar
-                                </a>
-                                {% if perfil.usuario_id == request.user.id %}
-                                    <span>Tu cuenta</span>
-                                {% else %}
-                                    <form
-                                        method="post"
-                                        action="{% url 'cambiar_estado_usuario' perfil.usuario.id %}" class="form-estado">
-                                        
-                                        {% csrf_token %}
-                                        <button type="submit">
-                                            {% if perfil.usuario.is_active %}
-                                                Desactivar
-                                            {% else %}
-                                                Reactivar
-                                            {% endif %}
-                                        </button>
-                                    </form>
-                                {% endif %}
+                                <div class="acciones-usuario">
+                                    <a class="accion-editar"
+                                    href="{% url 'editar_usuario' perfil.usuario.id %}">
+                                        Editar
+                                    </a>
+
+                                    {% if perfil.usuario_id == request.user.id %}
+                                        <span>Tu cuenta</span>
+                                    {% else %}
+                                        <form method="post"
+                                            action="{% url 'cambiar_estado_usuario' perfil.usuario.id %}"
+                                            class="form-estado">
+                                            {% csrf_token %}
+                                            <button type="submit">
+                                                {% if perfil.usuario.is_active %}
+                                                    Desactivar
+                                                {% else %}
+                                                    Reactivar
+                                                {% endif %}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

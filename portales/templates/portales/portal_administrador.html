@@ -3,14 +3,57 @@
 {% block title %}Panel de administración{% endblock %}
 
 {% block contenido_admin %}
-    <h1>Bienvenido/a al portal de administración</h1>
-    <p>Selecciona una opción del menú para comenzar.</p>
+<section class="admin-inicio">
+    <header class="admin-inicio-cabecera">
+        <span>PANEL DE CONTROL</span>
+        <h1>Bienvenido/a al portal de Administración</h1>
+        <p>Selecciona una opción para continuar con la gestión del liceo.</p>
+    </header>
 
-    <div class="portal-admin-tarjeta">
-        <i class="fa-solid fa-user-gear"></i>
-        <div>
-            <h2>Gestión del liceo</h2>
-            <p>Administra las cuentas y los horarios del sistema.</p>
-        </div>
+    <div class="admin-inicio-accesos">
+        <a href="{% url 'listar_usuarios' %}" class="admin-inicio-tarjeta">
+            <span class="admin-inicio-icono">
+                <i class="fa-solid fa-users"></i>
+            </span>
+            <span class="admin-inicio-texto">
+                <strong>Usuarios</strong>
+                <small>Consulta y administra las cuentas.</small>
+            </span>
+            <i class="fa-solid fa-arrow-right admin-inicio-flecha"></i>
+        </a>
+
+        <a href="{% url 'gestionar_horarios' %}" class="admin-inicio-tarjeta">
+            <span class="admin-inicio-icono">
+                <i class="fa-solid fa-calendar-days"></i>
+            </span>
+            <span class="admin-inicio-texto">
+                <strong>Horarios</strong>
+                <small>Organiza cursos, bloques y docentes.</small>
+            </span>
+            <i class="fa-solid fa-arrow-right admin-inicio-flecha"></i>
+        </a>
+
+        <a href="{% url 'gestion_noticias' %}" class="admin-inicio-tarjeta">
+            <span class="admin-inicio-icono">
+                <i class="fa-solid fa-newspaper"></i>
+            </span>
+            <span class="admin-inicio-texto">
+                <strong>Noticias</strong>
+                <small>Administra las publicaciones del liceo.</small>
+            </span>
+            <i class="fa-solid fa-arrow-right admin-inicio-flecha"></i>
+        </a>
+
+        <a href="{% url 'gestionar_reservas' %}" class="admin-inicio-tarjeta">
+            <span class="admin-inicio-icono">
+                <i class="fa-solid fa-door-open"></i>
+            </span>
+            <span class="admin-inicio-texto">
+                <strong>Solicitudes de reserva</strong>
+                <small>Revisa las solicitudes de espacios.</small>
+            </span>
+            <i class="fa-solid fa-arrow-right admin-inicio-flecha"></i>
+        </a>
     </div>
+</section>
 {% endblock %}

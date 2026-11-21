@@ -41,6 +41,11 @@
             Gestionar Noticias
         </a>
 
+        <a href="{% url 'intranet_dashboard' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Volver a Administración
+        </a>
+
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="portal-cerrar-sesion">

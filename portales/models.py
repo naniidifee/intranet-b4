@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class BloqueHorario(models.Model):
@@ -135,3 +135,45 @@ class ClaseHorario(models.Model):
 
     def __str__(self):
         return f"{self.curso} - {self.get_dia_display()} - {self.asignatura}"
+
+class ReservaEspacio(models.Model):
+    ESPACIOS = [
+        ("biblioteca", "Biblioteca"),
+        ("laboratorio", "Laboratorio"),
+        ("gimnasio", "Gimnasio"),
+        ("patio_central", "Patio central"),
+        ("cancha", "Cancha"),
+    ]
+
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("aprobada", "Aprobada"),
+        ("rechazada", "Rechazada"),
+    ]
+
+    docente = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reservas_espacios",
+    )
+    espacio = models.CharField(max_length=30, choices=ESPACIOS)
+    fecha = models.DateField()
+    bloque = models.ForeignKey(
+        BloqueHorario,
+        on_delete=models.PROTECT,
+        related_name="reservas_espacios",
+    )
+    motivo = models.TextField()
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADOS,
+        default="pendiente",
+    )
+    respuesta_administracion = models.TextField(blank=True)
+    fecha_solicitud = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-fecha_solicitud"]
+
+    def __str__(self):
+        return f"{self.get_espacio_display()} - {self.fecha} - {self.get_estado_display()}"

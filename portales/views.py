@@ -5,9 +5,11 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from .models import BloqueHorario, ClaseHorario
-from .forms import BloqueHorarioForm, ClaseHorarioForm
+from .models import BloqueHorario, ClaseHorario, ReservaEspacio
+from .forms import BloqueHorarioForm, ClaseHorarioForm, NoticiaForm
 from django.contrib.auth import logout
+from intranet.models import Noticia
+from django.utils.text import slugify
 import re
 
 # Create your views here.
@@ -166,8 +168,74 @@ def _verificar_docente(request):
 @login_required(login_url="login")
 def reservar_espacios(request):
     _verificar_docente(request)
-    return render(request, "portales/docente/reservar_espacios.html")
 
+    if request.method == "POST":
+        espacio = request.POST.get("espacio", "")
+        fecha_texto = request.POST.get("fecha", "")
+        bloque_id = request.POST.get("bloque", "")
+        motivo = request.POST.get("motivo", "").strip()
+
+        espacios_validos = dict(ReservaEspacio.ESPACIOS)
+
+        if espacio not in espacios_validos:
+            messages.error(request, "Selecciona un espacio válido.")
+        elif not motivo:
+            messages.error(request, "Escribe el motivo de la reserva.")
+        else:
+            try:
+                fecha = date.fromisoformat(fecha_texto)
+                bloque = get_object_or_404(
+                    BloqueHorario,
+                    pk=bloque_id,
+                    tipo="clase",
+                )
+            except (ValueError, TypeError):
+                messages.error(request, "La fecha o el bloque no son válidos.")
+            else:
+                solicitud_existente = ReservaEspacio.objects.filter(
+                    espacio=espacio,
+                    fecha=fecha,
+                    bloque=bloque,
+                    estado__in=["pendiente", "aprobada"],
+                ).exists()
+
+                if solicitud_existente:
+                    messages.error(
+                        request,
+                        "Ese espacio y horario ya tienen una solicitud.",
+                    )
+                else:
+                    ReservaEspacio.objects.create(
+                        docente=request.user,
+                        espacio=espacio,
+                        fecha=fecha,
+                        bloque=bloque,
+                        motivo=motivo,
+                    )
+                    messages.success(
+                        request,
+                        "Tu solicitud fue enviada a Administración.",
+                    )
+
+        return redirect("reservar_espacios")
+
+    bloques = BloqueHorario.objects.filter(
+        tipo="clase",
+    ).order_by("jornada", "orden", "hora_inicio")
+
+    mis_solicitudes = ReservaEspacio.objects.filter(
+        docente=request.user
+    ).select_related("bloque")[:10]
+
+    return render(
+        request,
+        "portales/docente/reservar_espacios.html",
+        {
+            "bloques": bloques,
+            "espacios": ReservaEspacio.ESPACIOS,
+            "mis_solicitudes": mis_solicitudes,
+        },
+    )
 
 @login_required(login_url="login")
 def lista_curso_docente(request):
@@ -593,34 +661,200 @@ def cerrar_sesion_estudiante(request):
     logout(request)
     return redirect("logear")
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
 def gestion_noticias(request):
     _verificar_administrador(request)
+
+    todas_las_noticias = Noticia.objects.all()
+    estado = request.GET.get("estado", "todas")
+
+    noticias = todas_las_noticias
+
+    if estado == "publicadas":
+        noticias = noticias.filter(publicada=True)
+    elif estado == "borradores":
+        noticias = noticias.filter(publicada=False)
+    else:
+        estado = "todas"
+
+    hoy = date.today()
+
+    contexto = {
+        "noticias": noticias,
+        "estado_seleccionado": estado,
+        "publicadas_count": todas_las_noticias.filter(publicada=True).count(),
+        "borradores_count": todas_las_noticias.filter(publicada=False).count(),
+        "total_count": todas_las_noticias.count(),
+        "mes_count": todas_las_noticias.filter(
+            fecha__month=hoy.month,
+            fecha__year=hoy.year,
+        ).count(),
+    }
+
     return render(
         request,
         "portales/administracion/gestionar_noticias.html",
+        contexto,
     )
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
 def crear_noticia(request):
     _verificar_administrador(request)
+
+    form = NoticiaForm(
+        request.POST or None,
+        request.FILES or None,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        noticia = form.save(commit=False)
+
+        slug_base = slugify(noticia.titulo) or "noticia"
+        noticia.slug = slug_base
+        numero = 2
+
+        while Noticia.objects.filter(slug=noticia.slug).exists():
+            noticia.slug = f"{slug_base}-{numero}"
+            numero += 1
+
+        try:
+            noticia.autor = request.user.perfil.nombre_completo
+        except AttributeError:
+            noticia.autor = request.user.username
+
+        noticia.publicada = request.POST.get("accion") == "publicar"
+        noticia.save()
+
+        if noticia.publicada:
+            messages.success(request, "La noticia fue publicada.")
+        else:
+            messages.success(request, "El borrador fue guardado.")
+
+        return redirect("gestion_noticias")
+
     return render(
         request,
         "portales/administracion/crear_noticia.html",
+        {"form": form},
     )
 
-@login_required(login_url="logear")
+@login_required(login_url="login")
+def editar_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    form = NoticiaForm(
+        request.POST or None,
+        request.FILES or None,
+        instance=noticia,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        noticia = form.save(commit=False)
+        noticia.publicada = request.POST.get("accion") == "publicar"
+        noticia.save()
+
+        messages.success(request, "La noticia fue actualizada.")
+        return redirect("gestion_noticias")
+
+    return render(
+        request,
+        "portales/administracion/crear_noticia.html",
+        {
+            "form": form,
+            "modo_edicion": True,
+        },
+    )
+
+@login_required(login_url="login")
+@require_POST
+def cambiar_estado_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    noticia.publicada = not noticia.publicada
+    noticia.save(update_fields=["publicada"])
+
+    messages.success(request, "El estado de la noticia fue actualizado.")
+    return redirect("gestion_noticias")
+
+
+@login_required(login_url="login")
+@require_POST
+def eliminar_noticia(request, noticia_id):
+    _verificar_administrador(request)
+
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    noticia.delete()
+
+    messages.success(request, "La noticia fue eliminada.")
+    return redirect("gestion_noticias")
+
+@login_required(login_url="login")
 def gestionar_reservas(request):
     _verificar_administrador(request)
+
+    estado = request.GET.get("estado", "todas")
+    solicitudes = ReservaEspacio.objects.select_related(
+        "docente",
+        "bloque",
+    )
+
+    if estado in ["pendiente", "aprobada", "rechazada"]:
+        solicitudes = solicitudes.filter(estado=estado)
+
     return render(
         request,
         "portales/administracion/solicitudes_reserva.html",
+        {
+            "solicitudes": solicitudes,
+            "estado_seleccionado": estado,
+            "pendientes": ReservaEspacio.objects.filter(
+                estado="pendiente"
+            ).count(),
+            "aprobadas": ReservaEspacio.objects.filter(
+                estado="aprobada"
+            ).count(),
+            "rechazadas": ReservaEspacio.objects.filter(
+                estado="rechazada"
+            ).count(),
+        },
     )
 
-@login_required(login_url="logear")
-def gestionar_avisos(request):
+
+@login_required(login_url="login")
+@require_POST
+def actualizar_estado_reserva(request, reserva_id):
     _verificar_administrador(request)
-    return render(
-        request,
-        "portales/administracion/gestionar_avisos.html",
-    )
+
+    solicitud = get_object_or_404(ReservaEspacio, pk=reserva_id)
+    accion = request.POST.get("accion")
+
+    if solicitud.estado != "pendiente":
+        messages.error(request, "Esta solicitud ya fue revisada.")
+    elif accion == "aprobar":
+        hay_conflicto = ReservaEspacio.objects.filter(
+            espacio=solicitud.espacio,
+            fecha=solicitud.fecha,
+            bloque=solicitud.bloque,
+            estado="aprobada",
+        ).exclude(pk=solicitud.pk).exists()
+
+        if hay_conflicto:
+            messages.error(
+                request,
+                "Ya existe una reserva aprobada para ese espacio y horario.",
+            )
+        else:
+            solicitud.estado = "aprobada"
+            solicitud.save()
+            messages.success(request, "La solicitud fue aprobada.")
+
+    elif accion == "rechazar":
+        solicitud.estado = "rechazada"
+        solicitud.save()
+        messages.success(request, "La solicitud fue rechazada.")
+    else:
+        messages.error(request, "No se reconoció la acción.")
+
+    return redirect("gestionar_reservas")

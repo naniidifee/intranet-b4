@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import BloqueHorario, ClaseHorario
+from intranet.models import Noticia
 
 
 class BloqueHorarioForm(forms.ModelForm):
@@ -138,3 +139,36 @@ class ImportarHorarioPDFForm(forms.Form):
             raise forms.ValidationError("El archivo seleccionado no parece ser un PDF válido.")
 
         return archivo
+
+class NoticiaForm(forms.ModelForm):
+    class Meta:
+        model = Noticia
+        fields = [
+            "titulo",
+            "categoria",
+            "descripcion",
+            "contenido",
+            "imagen",
+            "fecha",
+            "destacado",
+        ]
+
+        widgets = {
+            "titulo": forms.TextInput(attrs={
+                "placeholder": "Ej: Estudiantes de AVB ganan concurso regional",
+            }),
+            "descripcion": forms.Textarea(attrs={
+                "rows": 4,
+                "placeholder": "Resumen breve de la noticia...",
+            }),
+            "contenido": forms.Textarea(attrs={
+                "rows": 6,
+                "placeholder": "Desarrollo completo de la noticia...",
+            }),
+            "imagen": forms.ClearableFileInput(attrs={
+                "accept": "image/png,image/jpeg",
+            }),
+            "fecha": forms.DateInput(attrs={
+                "type": "date",
+            }),
+        }
