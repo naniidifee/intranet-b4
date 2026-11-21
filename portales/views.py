@@ -1,17 +1,19 @@
+import re
 from datetime import date, datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+
 from .models import BloqueHorario, ClaseHorario, ReservaEspacio
 from .forms import BloqueHorarioForm, ClaseHorarioForm, NoticiaForm
-from django.contrib.auth import logout
+
+from django.contrib.auth import logout, get_user_model
 from intranet.models import Noticia
 from django.utils.text import slugify
-from django.contrib.auth import get_user_model
-import re
 
 # Create your views here.
 

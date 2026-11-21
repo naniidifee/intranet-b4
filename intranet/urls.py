@@ -27,6 +27,9 @@ urlpatterns = [
 
     # Ruta para egresados
     path('egresados/', views.egresados_view, name='egresados'),
+    
+    
+    path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
 
 
 ]

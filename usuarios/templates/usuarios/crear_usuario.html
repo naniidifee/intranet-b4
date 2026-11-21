@@ -40,4 +40,25 @@
         <button type="submit">Crear usuario</button>
     </form>
 </section>
+
+<script>
+    // El curso solo se muestra (y se exige) cuando el rol elegido es Estudiante
+    (function () {
+        const rol = document.getElementById("id_rol");
+        const curso = document.getElementById("id_curso");
+        if (!rol || !curso) return;
+
+        const campoCurso = curso.closest(".campo-formulario");
+
+        function actualizarCurso() {
+            const esEstudiante = rol.value === "Estudiante";
+            campoCurso.style.display = esEstudiante ? "" : "none";
+            curso.required = esEstudiante;
+            if (!esEstudiante) curso.value = "";
+        }
+
+        rol.addEventListener("change", actualizarCurso);
+        actualizarCurso();
+    })();
+</script>
 {% endblock %}
