@@ -56,7 +56,7 @@ class CrearUsuarioForm(UserCreationForm):
             self.cleaned_data.get("username")
         )
         return super().clean_username()
-    
+
     def clean(self):
         datos = super().clean()
 
