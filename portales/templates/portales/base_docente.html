@@ -38,6 +38,12 @@
             Reservar espacios
         </a>
 
+        <a href="{% url 'horario_docente' %}"
+        class="{% if request.resolver_match.url_name == 'horario_docente' %}activo{% endif %}">
+            <i class="fa-solid fa-calendar-week"></i>
+            Mi horario
+        </a>
+
         <a href="{% url 'lista_curso_docente' %}"
             class="{% if request.resolver_match.url_name == 'lista_curso_docente' %}activo{% endif %}">
             <i class="fa-solid fa-list-ol"></i>

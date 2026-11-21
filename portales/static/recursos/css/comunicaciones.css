@@ -528,3 +528,112 @@
         grid-template-columns: 1fr;
     }
 }
+.noticia-admin-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e1e7ef;
+    border-radius: 8px;
+    background: #fff;
+    color: #52647e;
+    text-decoration: none;
+}
+
+.noticia-admin-accion:hover {
+    background: #f1f5f9;
+    color: #102b5c;
+}
+/* Botones de los filtros de noticias */
+.noticias-filtros a {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #e1e7ef;
+    border-radius: 50px;
+    background: #fff;
+    color: #64748b;
+    font-size: 0.72rem;
+    text-decoration: none;
+}
+
+.noticias-filtros a.seleccionado {
+    border-color: #102b5c;
+    background: #102b5c;
+    color: #fff;
+}
+
+/* Botón para crear una noticia */
+.noticias-nueva {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 50px;
+    background: #f5a800;
+    color: #102b5c;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.noticias-nueva:hover {
+    background: #e39b00;
+}
+
+/* Botón Cerrar sesión al final del menú */
+.comunicaciones-menu > form {
+    width: 100%;
+    margin-top: auto;
+}
+
+.comunicaciones-menu .portal-cerrar-sesion {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.5rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+    font: inherit;
+    font-size: 0.75rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.comunicaciones-menu .portal-cerrar-sesion:hover {
+    background: rgb(255 255 255 / 10%);
+    color: #fff;
+}
+
+/* Alinea los botones de cada noticia */
+.noticia-admin-acciones form {
+    display: inline-flex;
+    margin: 0;
+}
+.comunicaciones-avatar {
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+
+.comunicaciones-avatar i {
+    display: block;
+    margin: 0;
+    color: #0a1628;
+    font-size: 1rem;
+    line-height: 1;
+}
+.comunicaciones-identidad .comunicaciones-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comunicaciones-identidad .comunicaciones-avatar i {
+    display: block;
+    margin: 0;
+    color: #0a1628;
+    line-height: 1;
+}

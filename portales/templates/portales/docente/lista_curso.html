@@ -11,27 +11,31 @@
     </h2>
 
     <div class="lista-curso-controles">
-        <select aria-label="Seleccionar curso">
-            <option>4° Medio B – Electrónica</option>
-            <option>4° Medio A – Programación</option>
-        </select>
+        <form method="get">
+            <select name="curso" aria-label="Seleccionar curso"
+                    onchange="this.form.submit()">
+                {% for curso in cursos %}
+                    <option value="{{ curso }}"
+                        {% if curso == curso_seleccionado %}selected{% endif %}>
+                        {{ curso }}
+                    </option>
+                {% empty %}
+                    <option value="">No tienes cursos asignados</option>
+                {% endfor %}
+            </select>
+        </form>
 
-        <button type="button" class="lista-btn-imprimir">
+        <button type="button" class="lista-btn-imprimir" onclick="window.print()">
             <i class="fa-solid fa-print"></i>
-            Imprimir PDF
-        </button>
-
-        <button type="button" class="lista-btn-excel">
-            <i class="fa-solid fa-file-excel"></i>
-            Exportar Excel
+            Imprimir
         </button>
     </div>
 
     <div class="lista-curso-datos">
-        <span><strong>Curso:</strong> 4° Medio B</span>
-        <span><strong>Especialidad:</strong> Electrónica</span>
-        <span><strong>Prof. Jefe:</strong> Prof. Álvaro Díaz Castillo</span>
-        <span><strong>Total:</strong> 8 alumnos</span>
+        <span><strong>Curso:</strong> {{ curso_seleccionado|default:"—" }}</span>
+        <span><strong>Especialidad:</strong> {{ especialidad|default:"—" }}</span>
+        <span><strong>Docente:</strong> {{ docente_nombre }}</span>
+        <span><strong>Total:</strong> {{ total_alumnos }} alumnos</span>
     </div>
 
     <div class="lista-curso-tabla-contenedor">
@@ -45,14 +49,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>1</td><td>Alumno 01 4°B</td><td>22.200.001-0</td><td></td></tr>
-                <tr><td>2</td><td>Alumno 02 4°B</td><td>22.200.002-1</td><td></td></tr>
-                <tr><td>3</td><td>Alumno 03 4°B</td><td>22.200.003-2</td><td></td></tr>
-                <tr><td>4</td><td>Alumno 04 4°B</td><td>22.200.004-3</td><td></td></tr>
-                <tr><td>5</td><td>Alumno 05 4°B</td><td>22.200.005-4</td><td></td></tr>
-                <tr><td>6</td><td>Alumno 06 4°B</td><td>22.200.006-5</td><td></td></tr>
-                <tr><td>7</td><td>Alumno 07 4°B</td><td>22.200.007-6</td><td></td></tr>
-                <tr><td>8</td><td>Alumno 08 4°B</td><td>22.200.008-7</td><td></td></tr>
+                {% for estudiante in estudiantes %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ estudiante.perfil.nombre_completo|default:estudiante.username }}</td>
+                        <td>{{ estudiante.username }}</td>
+                        <td><span class="lista-firma-linea"></span></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No hay estudiantes registrados en este curso.</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

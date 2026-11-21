@@ -31,6 +31,20 @@
             <a href="?espacio={{ espacio }}&semana={{ siguiente|date:'Y-m-d' }}" aria-label="Semana siguiente">›</a>
         </div>
     </div>
+    
+    <section class="reservas-intro">
+        <div>
+            <span class="reservas-intro-etiqueta">RESERVAS DE ESPACIOS</span>
+            <h2>Disponibilidad semanal</h2>
+            <p>Selecciona un bloque disponible para solicitar una reserva.</p>
+        </div>
+
+        <div class="reservas-espacio-activo">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Espacio seleccionado</span>
+            <strong>{{ espacio_nombre }}</strong>
+        </div>
+    </section>
 
     <div class="reservas-leyenda">
         <span><i class="disponible"></i> Disponible</span>

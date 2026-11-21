@@ -14,7 +14,7 @@ from .models import Noticia
 
 def home(request):
 
-    ultimas_noticias = Noticia.objects.all()[:3] 
+    ultimas_noticias = Noticia.objects.filter(publicada=True)[:3]
     
     context = {
         'ultimas_noticias': ultimas_noticias,
@@ -84,7 +84,7 @@ def intranet_dashboard(request):
 
 def portal_noticias(request):
     # Obtener todas las noticias ordenadas de más reciente a más antigua
-    noticias = Noticia.objects.all()
+    noticias = Noticia.objects.filter(publicada=True)
     
     # Filtro opcional por categoría si viene en la URL (?categoria=Académico)
     categoria_query = request.GET.get('categoria')
@@ -98,7 +98,11 @@ def portal_noticias(request):
     return render(request, 'intranet/noticias.html', context)
 
 def detalle_noticia(request, slug):
-    noticia = get_object_or_404(Noticia, slug=slug)
+    noticia = get_object_or_404(
+        Noticia,
+        slug=slug,
+        publicada=True,
+    )
     context = {
         'noticia': noticia
     }
