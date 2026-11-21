@@ -1,3 +1,8 @@
+import os
+import re
+import uuid
+
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -135,3 +140,58 @@ class ClaseHorario(models.Model):
 
     def __str__(self):
         return f"{self.curso} - {self.get_dia_display()} - {self.asignatura}"
+
+
+def ruta_horario(instance, filename):
+    """Guarda el archivo como horarios/<curso>-<id aleatorio>.<ext>."""
+    extension = os.path.splitext(filename)[1].lower()
+    curso = re.sub(r"[^A-Za-z0-9]+", "-", instance.curso).strip("-") or "curso"
+    return f"horarios/{curso}-{uuid.uuid4().hex[:8]}{extension}"
+
+
+class HorarioArchivo(models.Model):
+    """Horario de un curso subido como PDF o imagen (uno por curso)."""
+
+    curso = models.CharField(max_length=25, unique=True)
+    archivo = models.FileField(upload_to=ruta_horario)
+    actualizado = models.DateTimeField(auto_now=True)
+    subido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    class Meta:
+        ordering = ["curso"]
+        verbose_name = "horario en archivo"
+        verbose_name_plural = "horarios en archivo"
+
+    def __str__(self):
+        return f"Horario {self.curso}"
+
+    @property
+    def extension(self):
+        return os.path.splitext(self.archivo.name)[1].lower()
+
+    @property
+    def es_pdf(self):
+        return self.extension == ".pdf"
+
+    @property
+    def es_imagen(self):
+        return self.extension in {".png", ".jpg", ".jpeg"}
+
+    @property
+    def nombre_descarga(self):
+        curso = re.sub(r"[^A-Za-z0-9]+", "-", self.curso).strip("-") or "curso"
+        return f"horario-{curso}{self.extension}"
+
+    def delete(self, *args, **kwargs):
+        nombre = self.archivo.name
+        almacenamiento = self.archivo.storage
+        resultado = super().delete(*args, **kwargs)
+        if nombre:
+            almacenamiento.delete(nombre)
+        return resultado

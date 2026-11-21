@@ -1,6 +1,9 @@
+import os
+
 from django import forms
 
-from .models import BloqueHorario, ClaseHorario
+from .cursos import CURSOS_CHOICES
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo
 
 
 class BloqueHorarioForm(forms.ModelForm):
@@ -88,22 +91,58 @@ class ClaseHorarioForm(forms.ModelForm):
     def clean_curso(self):
         return self.cleaned_data["curso"].strip()
 
-class ImportarHorarioPDFForm(forms.Form):
-    archivo = forms.FileField(label="Selecciona el horario en PDF")
+class HorarioArchivoForm(forms.Form):
+    """Sube el horario de un curso como PDF o imagen (PNG/JPG)."""
+
+    FIRMAS = {
+        ".pdf": (b"%PDF-",),
+        ".png": (b"\x89PNG\r\n\x1a\n",),
+        ".jpg": (b"\xff\xd8\xff",),
+        ".jpeg": (b"\xff\xd8\xff",),
+    }
+    TAMANO_MAXIMO = 10 * 1024 * 1024  # 10 MB
+
+    curso = forms.ChoiceField(choices=CURSOS_CHOICES, label="Curso")
+    archivo = forms.FileField(
+        label="Archivo del horario (PDF o PNG)",
+        widget=forms.ClearableFileInput(
+            attrs={"accept": ".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"}
+        ),
+    )
 
     def clean_archivo(self):
         archivo = self.cleaned_data["archivo"]
+        extension = os.path.splitext(archivo.name)[1].lower()
 
-        if not archivo.name.lower().endswith(".pdf"):
-            raise forms.ValidationError("El archivo debe tener formato PDF.")
+        if extension not in self.FIRMAS:
+            raise forms.ValidationError("El archivo debe ser PDF o imagen PNG/JPG.")
 
-        if archivo.size > 20 * 1024 * 1024:
-            raise forms.ValidationError("El PDF no puede superar los 20 MB.")
+        if archivo.size > self.TAMANO_MAXIMO:
+            raise forms.ValidationError("El archivo no puede superar los 10 MB.")
 
-        encabezado = archivo.read(5)
+        encabezado = archivo.read(8)
         archivo.seek(0)
 
-        if encabezado != b"%PDF-":
-            raise forms.ValidationError("El archivo seleccionado no parece ser un PDF válido.")
+        if not any(encabezado.startswith(firma) for firma in self.FIRMAS[extension]):
+            raise forms.ValidationError(
+                "El contenido no coincide con el formato del archivo."
+            )
 
         return archivo
+
+    def guardar(self, usuario):
+        """Crea o reemplaza el horario del curso y borra el archivo anterior."""
+        curso = self.cleaned_data["curso"]
+        archivo = self.cleaned_data["archivo"]
+
+        horario, _ = HorarioArchivo.objects.get_or_create(curso=curso)
+        anterior = horario.archivo.name if horario.archivo else ""
+
+        horario.archivo = archivo
+        horario.subido_por = usuario
+        horario.save()
+
+        if anterior and anterior != horario.archivo.name:
+            horario.archivo.storage.delete(anterior)
+
+        return horario

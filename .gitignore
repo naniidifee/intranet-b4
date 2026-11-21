@@ -1,2 +1,5 @@
 #VARIABLE DE ENTORNO CONTIENE LA SECRET KEY
 .env
+
+# Archivos subidos por los usuarios (horarios en PDF/PNG)
+media/

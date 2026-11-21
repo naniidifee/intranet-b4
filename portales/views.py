@@ -6,9 +6,14 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 import re
-from .models import BloqueHorario, ClaseHorario
-from .forms import BloqueHorarioForm, ClaseHorarioForm
+from .models import BloqueHorario, ClaseHorario, HorarioArchivo
+from .forms import BloqueHorarioForm, ClaseHorarioForm, HorarioArchivoForm
 from django.contrib.auth import logout
+import mimetypes
+from urllib.parse import urlencode
+from django.http import FileResponse, Http404
+from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 # Create your views here.
 
@@ -27,6 +32,11 @@ def horario_estudiante(request):
     bloques = []
     electividades = []
     talleres = []
+
+    archivo_horario = (
+        HorarioArchivo.objects.filter(curso__iexact=curso).first()
+        if curso else None
+    )
 
     if curso:
         clases_qs = (
@@ -136,6 +146,7 @@ def horario_estudiante(request):
             "bloques": bloques,
             "electividades": electividades,
             "talleres": talleres,
+            "archivo_horario": archivo_horario,
         },
     )
 
@@ -294,6 +305,11 @@ def gestionar_horarios(request):
         else (cursos_nivel[0] if cursos_nivel else "")
     )
 
+    archivo_horario = (
+        HorarioArchivo.objects.filter(curso=curso_seleccionado).first()
+        if curso_seleccionado else None
+    )
+
     jornadas = BloqueHorario.JORNADAS
     jornada_seleccionada = request.GET.get("jornada", "manana")
     if jornada_seleccionada not in dict(jornadas):
@@ -427,6 +443,7 @@ def gestionar_horarios(request):
             "nivel_seleccionado": nivel_seleccionado,
             "vista": vista,
             "cursos_opciones": cursos_opciones,
+            "archivo_horario": archivo_horario,
         },
     )
 
@@ -570,4 +587,89 @@ def gestionar_avisos(request):
     return render(
         request,
         "portales/administracion/gestionar_avisos.html",
+    )
+
+
+def _redirigir_a_horario(curso):
+    consulta = urlencode({
+        "vista": "horarios",
+        "nivel": _nivel_de_curso(curso),
+        "curso": curso,
+    })
+    return redirect(f"{reverse('gestionar_horarios')}?{consulta}")
+
+
+@login_required(login_url="login")
+def subir_horario_archivo(request):
+    _verificar_administrador(request)
+    form = HorarioArchivoForm(
+        request.POST or None,
+        request.FILES or None,
+        initial={"curso": request.GET.get("curso", "")},
+    )
+
+    if request.method == "POST" and form.is_valid():
+        horario = form.guardar(request.user)
+        messages.success(
+            request,
+            f"El horario de {horario.curso} fue publicado y ya aparece "
+            "en la intranet de los estudiantes del curso.",
+        )
+        return _redirigir_a_horario(horario.curso)
+
+    return render(
+        request,
+        "portales/horarios/formulario.html",
+        {
+            "form": form,
+            "titulo": "Subir horario del curso",
+            "ayuda": (
+                "Elige el curso y sube el horario en PDF o PNG (máximo 10 MB). "
+                "Si el curso ya tiene un horario, será reemplazado."
+            ),
+        },
+    )
+
+
+@login_required(login_url="login")
+@require_POST
+def eliminar_horario_archivo(request, pk):
+    _verificar_administrador(request)
+    horario = get_object_or_404(HorarioArchivo, pk=pk)
+    curso = horario.curso
+    horario.delete()
+    messages.success(request, f"Se eliminó el horario en archivo de {curso}.")
+    return _redirigir_a_horario(curso)
+
+
+@login_required(login_url="login")
+@xframe_options_sameorigin
+def ver_horario_archivo(request, pk):
+    """Entrega el archivo solo a administradores o a estudiantes del mismo curso."""
+    horario = get_object_or_404(HorarioArchivo, pk=pk)
+
+    if not _es_administrador(request.user):
+        try:
+            perfil = request.user.perfil
+            permitido = (
+                perfil.rol.nombre == "Estudiante"
+                and (perfil.curso or "").strip().lower() == horario.curso.lower()
+            )
+        except AttributeError:
+            permitido = False
+
+        if not permitido:
+            raise PermissionDenied
+
+    try:
+        archivo = horario.archivo.open("rb")
+    except FileNotFoundError:
+        raise Http404("El archivo del horario no está disponible.")
+
+    tipo, _ = mimetypes.guess_type(horario.archivo.name)
+    return FileResponse(
+        archivo,
+        content_type=tipo or "application/octet-stream",
+        as_attachment=request.GET.get("descargar") == "1",
+        filename=horario.nombre_descarga,
     )

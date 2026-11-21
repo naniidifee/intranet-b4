@@ -43,6 +43,21 @@ urlpatterns = [
         name="eliminar_clase_horario",
     ),
     path(
+        "administrador/horarios/archivo/subir/",
+        views.subir_horario_archivo,
+        name="subir_horario_archivo",
+    ),
+    path(
+        "administrador/horarios/archivo/<int:pk>/eliminar/",
+        views.eliminar_horario_archivo,
+        name="eliminar_horario_archivo",
+    ),
+    path(
+        "horarios/archivo/<int:pk>/",
+        views.ver_horario_archivo,
+        name="ver_horario_archivo",
+    ),
+    path(
         "estudiantes/cerrar-sesion/",
         views.cerrar_sesion_estudiante,
         name="cerrar_sesion_estudiante",
