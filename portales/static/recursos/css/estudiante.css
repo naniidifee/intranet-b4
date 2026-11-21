@@ -484,3 +484,277 @@
 .avisos-estudiante-vacio p {
     margin: 0;
 }
+.curso-resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.curso-dato {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem;
+    border: 1px solid #e0e7f0;
+    border-radius: 14px;
+    background: #f8fafc;
+}
+
+.curso-dato-icono,
+.companero-avatar {
+    display: grid;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff1cc;
+    color: #bd8b16;
+    font-weight: 700;
+}
+
+.curso-dato div {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.curso-dato small {
+    color: #718096;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.curso-dato strong {
+    color: #102b4e;
+}
+
+.companeros-curso {
+    padding: 1rem;
+    border: 1px solid #e0e7f0;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.companeros-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.companeros-encabezado h3 {
+    margin: 0;
+    color: #102b4e;
+}
+
+.companeros-encabezado p {
+    margin: 0.3rem 0 0;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.companeros-total {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 50%;
+    background: #102b4e;
+    color: #fff;
+    font-weight: 700;
+}
+
+.companeros-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.7rem;
+}
+
+.companero {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem;
+    border-radius: 12px;
+    background: #f3f6fa;
+    color: #263b58;
+}
+
+.companero-avatar {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+}
+
+.companeros-vacio {
+    margin: 0;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #f3f6fa;
+    color: #718096;
+}
+.actividades-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.actividad-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.1rem;
+    border: 1px solid #e0e7f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgb(16 43 78 / 6%);
+}
+
+.actividad-icono {
+    display: grid;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 12px;
+    background: #fff1cc;
+    color: #bd8b16;
+}
+
+.actividad-info h3 {
+    margin: 0 0 0.6rem;
+    color: #102b4e;
+}
+
+.actividad-info p {
+    margin: 0.3rem 0;
+    color: #5b6f89;
+}
+
+.actividad-vacia {
+    margin: 1rem 0 0;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #f3f6fa;
+    color: #718096;
+}
+.portal-menu-label {
+    margin: 1.2rem 0 0.65rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+    color: #c5d4e8;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.portal-menu nav {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.portal-menu nav a {
+    min-height: 46px;
+    border: 1px solid rgb(255 255 255 / 9%);
+    border-radius: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-menu nav a:hover {
+    border-color: rgb(255 255 255 / 20%);
+    background: rgb(255 255 255 / 8%);
+}
+
+.portal-menu nav a.activo {
+    border-color: #c99a2e;
+    background: #c99a2e;
+    color: #102b4e;
+}
+
+.salir-estudiante button {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 10px;
+    background: rgb(255 255 255 / 7%);
+    color: #e4edf8;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.salir-estudiante button:hover {
+    border-color: rgb(255 255 255 / 30%);
+    background: rgb(255 255 255 / 12%);
+}
+/* Menú estudiante con el estilo del portal de Administración */
+.portal-estudiante .portal-menu {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.portal-estudiante .portal-menu-label {
+    margin: 1.15rem 0 0.4rem;
+    padding: 0 0 0.55rem;
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+    color: #d3dfed;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.portal-estudiante .portal-menu nav {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.portal-estudiante .portal-menu nav a {
+    min-height: 40px;
+    padding: 0.6rem 0.65rem;
+    border: 0;
+    border-right: 3px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: #f5f7fb;
+    font-size: 0.88rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.portal-estudiante .portal-menu nav a i {
+    width: 1.25rem;
+    color: #f5a800;
+}
+
+.portal-estudiante .portal-menu nav a:hover {
+    background: rgb(255 255 255 / 6%);
+}
+
+.portal-estudiante .portal-menu nav a.activo {
+    border-right-color: #f5a800;
+    background: #263953;
+    color: #f5a800;
+}
+
+.portal-estudiante .salir-estudiante {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.portal-estudiante .salir-estudiante button {
+    min-height: 42px;
+    padding: 0.55rem 0.65rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #9fb0c7;
+    text-align: left;
+}
+
+.portal-estudiante .salir-estudiante button:hover {
+    background: rgb(255 255 255 / 6%);
+    color: #fff;
+}

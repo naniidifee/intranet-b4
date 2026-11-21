@@ -10,6 +10,7 @@ from .forms import BloqueHorarioForm, ClaseHorarioForm, NoticiaForm
 from django.contrib.auth import logout
 from intranet.models import Noticia
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
 import re
 
 # Create your views here.
@@ -49,10 +50,6 @@ def horario_estudiante(request):
 
             if clase.tipo == "taller":
                 talleres.append(clase)
-
-        for clase in clases:
-            if clase.tipo == "electiva":
-                electividades.append(clase)
 
         franjas = (
             BloqueHorario.objects
@@ -131,6 +128,15 @@ def horario_estudiante(request):
 
             bloques.append(datos_bloque)
 
+    Usuario = get_user_model()
+
+    companeros = (
+        Usuario.objects
+        .filter(perfil__curso__iexact=curso, perfil__rol__nombre="Estudiante")
+        .select_related("perfil")
+        .order_by("perfil__nombre_completo")
+    )
+
     return render(
         request,
         "portales/estudiantes/horario.html",
@@ -138,6 +144,7 @@ def horario_estudiante(request):
             "bloques": bloques,
             "electividades": electividades,
             "talleres": talleres,
+            "companeros": companeros,
         },
     )
 

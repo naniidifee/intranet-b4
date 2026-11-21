@@ -29,7 +29,7 @@
             </span>
             <div>
                 <strong>
-                    Estudiante AVB
+                    {{ request.user.perfil.nombre_completo|default:request.user.username }}
                 </strong>
                 <span>
                     {{ request.user.perfil.curso|default:"Curso pendiente" }}
@@ -65,10 +65,6 @@
                 <span>Mapa del liceo</span>
             </a>
 
-            <a href="#" data-seccion="avisos">
-                <i class="fa-solid fa-bell"></i>
-                <span>Mis avisos</span>
-            </a>
         </nav>
             <form method="post" action="{% url 'cerrar_sesion_estudiante' %}" class="salir-estudiante">
                 {% csrf_token %}
@@ -193,79 +189,111 @@
                 </table>
             </div>
         </section>
-        
-        <section class="horario-estudiante pagina-estudiante" id="avisos">
-            <div class="avisos-estudiante-cabecera">
-                <div>
-                    <h2><i class="fa-solid fa-bell"></i> Mis avisos</h2>
-                    <p>Comunicaciones importantes del liceo.</p>
-                </div>
-                <span class="avisos-estudiante-contador">0 avisos</span>
-            </div>
-
-            <div class="avisos-estudiante-vacio">
-                <i class="fa-regular fa-bell-slash"></i>
-                <h3>No tienes avisos nuevos</h3>
-                <p>Cuando Administración envíe una comunicación, aparecerá aquí.</p>
-            </div>
-        </section>
 
         <section class="electividad-estudiante pagina-estudiante" id="mi-electividad">
             <h2>Mi electividad</h2>
 
             {% if electividades %}
-                {% for clase in electividades %}
-                    <div class="datos-curso">
-                        <p><strong>Asignatura:</strong> {{ clase.asignatura }}</p>
-                        <p><strong>Docente:</strong> {{ clase.docente }}</p>
-                        <p><strong>Día:</strong> {{ clase.get_dia_display }}</p>
-                        <p>
-                            <strong>Bloque:</strong>
-                            {{ clase.bloque.numero }},
-                            {{ clase.bloque.hora_inicio|time:"H:i" }}–{{ clase.bloque.hora_fin|time:"H:i" }}
-                        </p>
-                        <p><strong>Sala:</strong> {{ clase.sala|default:"Por asignar" }}</p>
-                    </div>
-                {% endfor %}
+                <div class="actividades-lista">
+                    {% for clase in electividades %}
+                        <article class="actividad-card">
+                            <span class="actividad-icono"><i class="fa-solid fa-book-open"></i></span>
+                            <div class="actividad-info">
+                                <h3>{{ clase.asignatura }}</h3>
+                                <p><strong>Día:</strong> {{ clase.get_dia_display }}</p>
+                                <p>
+                                    <strong>Horario:</strong>
+                                    {{ clase.bloque.hora_inicio|time:"H:i" }}–{{ clase.bloque.hora_fin|time:"H:i" }}
+                                </p>
+                                {% if clase.docente %}
+                                    <p><strong>Docente:</strong> {{ clase.docente }}</p>
+                                {% endif %}
+                                {% if clase.sala %}
+                                    <p><strong>Lugar:</strong> {{ clase.sala }}</p>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
             {% else %}
-                <p class="mensaje-vacio">Aún no hay una electividad asignada.</p>
+                <p class="actividad-vacia">Aún no tienes una electividad asignada.</p>
             {% endif %}
         </section>
 
         <section class="horario-estudiante pagina-estudiante" id="mi-curso">
             <h2>Mi curso</h2>
 
-            <div class="datos-curso">
-                <p>
-                    <strong>Estudiante:</strong>
-                    {{ request.user.perfil.nombre_completo|default:request.user.username }}
-                </p>
-                <p>
-                    <strong>Curso:</strong>
-                    {{ request.user.perfil.curso|default:"Por asignar" }}
-                </p>
+            <div class="curso-resumen">
+                <article class="curso-dato">
+                    <span class="curso-dato-icono"><i class="fa-solid fa-user-graduate"></i></span>
+                    <div>
+                        <small>ESTUDIANTE</small>
+                        <strong>{{ request.user.perfil.nombre_completo|default:request.user.username }}</strong>
+                    </div>
+                </article>
+
+                <article class="curso-dato">
+                    <span class="curso-dato-icono"><i class="fa-solid fa-users"></i></span>
+                    <div>
+                        <small>CURSO</small>
+                        <strong>{{ request.user.perfil.curso|default:"Por asignar" }}</strong>
+                    </div>
+                </article>
+            </div>
+
+            <div class="companeros-curso">
+                <div class="companeros-encabezado">
+                    <div>
+                        <h3>Compañeros de curso</h3>
+                        <p>Estudiantes registrados en tu curso</p>
+                    </div>
+                    <span class="companeros-total">{{ companeros|length }}</span>
+                </div>
+
+                {% if companeros %}
+                    <div class="companeros-lista">
+                        {% for estudiante in companeros %}
+                            <div class="companero">
+                                <span class="companero-avatar">
+                                    {{ estudiante.perfil.nombre_completo|default:estudiante.username|slice:":1"|upper }}
+                                </span>
+                                <span>{{ estudiante.perfil.nombre_completo|default:estudiante.username }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="companeros-vacio">Aún no hay compañeros registrados para tu curso.</p>
+                {% endif %}
             </div>
         </section>
 
         <section class="horario-estudiante pagina-estudiante" id="talleres">
-            <h2>Mis talleres</h2>
+            <h2>Talleres</h2>
 
             {% if talleres %}
-                {% for taller in talleres %}
-                    <div class="datos-curso">
-                        <p><strong>Taller:</strong> {{ taller.asignatura }}</p>
-                        <p><strong>Docente:</strong> {{ taller.docente }}</p>
-                        <p><strong>Día:</strong> {{ taller.get_dia_display }}</p>
-                        <p>
-                            <strong>Bloque:</strong>
-                            {{ taller.bloque.numero }},
-                            {{ taller.bloque.hora_inicio|time:"H:i" }}–{{ taller.bloque.hora_fin|time:"H:i" }}
-                        </p>
-                        <p><strong>Sala:</strong> {{ taller.sala|default:"Por asignar" }}</p>
-                    </div>
-                {% endfor %}
+                <div class="actividades-lista">
+                    {% for clase in talleres %}
+                        <article class="actividad-card">
+                            <span class="actividad-icono"><i class="fa-solid fa-palette"></i></span>
+                            <div class="actividad-info">
+                                <h3>{{ clase.asignatura }}</h3>
+                                <p><strong>Día:</strong> {{ clase.get_dia_display }}</p>
+                                <p>
+                                    <strong>Horario:</strong>
+                                    {{ clase.bloque.hora_inicio|time:"H:i" }}–{{ clase.bloque.hora_fin|time:"H:i" }}
+                                </p>
+                                {% if clase.docente %}
+                                    <p><strong>Docente:</strong> {{ clase.docente }}</p>
+                                {% endif %}
+                                {% if clase.sala %}
+                                    <p><strong>Lugar:</strong> {{ clase.sala }}</p>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
             {% else %}
-                <p class="mensaje-vacio">Aún no tienes talleres asignados para mostrar.</p>
+                <p class="actividad-vacia">Aún no tienes talleres asignados.</p>
             {% endif %}
         </section>
 
