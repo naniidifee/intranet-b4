@@ -259,18 +259,6 @@ class ReservaEspacio(models.Model):
             ),
         ]
 
-    @property
-    def fecha_solicitud(self):
-        return self.creada
-
-    @property
-    def respuesta_administracion(self):
-        return self.comentario_admin
-
-    @respuesta_administracion.setter
-    def respuesta_administracion(self, valor):
-        self.comentario_admin = valor
-
     def __str__(self):
         return (
             f"{self.get_espacio_display()} - "

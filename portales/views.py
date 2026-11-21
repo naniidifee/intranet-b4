@@ -206,34 +206,6 @@ def reservar_espacios(request):
     lunes = semana - timedelta(days=semana.weekday())
     dias = [lunes + timedelta(days=i) for i in range(5)]
 
-    form = SolicitudReservaForm(
-        request.POST or None,
-        initial={
-            "espacio": espacio,
-            "fecha": request.GET.get("fecha", hoy.isoformat()),
-        },
-        docente=request.user,
-    )
-
-    if request.method == "POST" and form.is_valid():
-        datos = form.cleaned_data
-
-        ReservaEspacio.objects.create(
-            docente=request.user,
-            espacio=datos["espacio"],
-            fecha=datos["fecha"],
-            bloque=datos["bloque"],
-            motivo=datos["motivo"],
-            estado="pendiente",
-        )
-
-        messages.success(request, "Tu solicitud de reserva fue enviada.")
-        return redirect("reservar_espacios")
-    
-    bloques_reservables = BloqueHorario.objects.filter(
-            tipo="clase"
-        ).order_by("jornada", "orden", "hora_inicio")
-
     reservas = (
         ReservaEspacio.objects
         .filter(
@@ -311,9 +283,6 @@ def reservar_espacios(request):
             "siguiente": dias[0] + timedelta(days=7),
             "filas": filas,
             "mis_solicitudes": mis_solicitudes,
-            "form": form,
-            "bloques_reservables": bloques_reservables,
-            "bloques": bloques_reservables,
         },
     )
 
@@ -979,15 +948,6 @@ def eliminar_noticia(request, noticia_id):
 def gestionar_reservas(request):
     _verificar_administrador(request)
 
-    estado = request.GET.get("estado", "todas")
-    solicitudes = ReservaEspacio.objects.select_related(
-        "docente",
-        "bloque",
-    )
-
-    if estado in ["pendiente", "aprobada", "rechazada"]:
-        solicitudes = solicitudes.filter(estado=estado)
-
     filtros = [
         ("pendiente", "Pendientes"),
         ("aprobada", "Aprobadas"),
@@ -1019,52 +979,13 @@ def gestionar_reservas(request):
             "solicitudes": solicitudes,
             "filtros": filtros,
             "estado": estado,
-            "estado_seleccionado": estado,
             "total_pendientes": conteos.get("pendiente", 0),
             "total_aprobadas": conteos.get("aprobada", 0),
             "total_rechazadas": conteos.get("rechazada", 0),
-            "pendientes": conteos.get("pendiente", 0),
-            "aprobadas": conteos.get("aprobada", 0),
-            "rechazadas": conteos.get("rechazada", 0),
         },
     )
 
 
-@login_required(login_url="login")
-@require_POST
-def actualizar_estado_reserva(request, reserva_id):
-    _verificar_administrador(request)
-    solicitud = get_object_or_404(ReservaEspacio, pk=reserva_id)
-    accion = request.POST.get("accion")
-
-    if solicitud.estado != "pendiente":
-        messages.error(request, "Esta solicitud ya fue revisada.")
-    elif accion == "aprobar":
-        hay_conflicto = ReservaEspacio.objects.filter(
-            espacio=solicitud.espacio,
-            fecha=solicitud.fecha,
-            bloque=solicitud.bloque,
-            estado="aprobada",
-        ).exclude(pk=solicitud.pk).exists()
-
-        if hay_conflicto:
-            messages.error(
-                request,
-                "Ya existe una reserva aprobada para ese espacio y horario.",
-            )
-        else:
-            solicitud.estado = "aprobada"
-            solicitud.save()
-            messages.success(request, "La solicitud fue aprobada.")
-
-    elif accion == "rechazar":
-        solicitud.estado = "rechazada"
-        solicitud.save()
-        messages.success(request, "La solicitud fue rechazada.")
-    else:
-        messages.error(request, "No se reconoció la acción.")
-
-    return redirect("gestionar_reservas")
 
 
 

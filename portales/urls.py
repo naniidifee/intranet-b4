@@ -128,11 +128,6 @@ urlpatterns = [
         name="eliminar_noticia",
     ),
     path(
-        "administrador/reservas/<int:reserva_id>/estado/",
-        views.actualizar_estado_reserva,
-        name="actualizar_estado_reserva",
-    ),
-    path(
         "docente/mi-horario/",
         views.horario_docente,
         name="horario_docente",

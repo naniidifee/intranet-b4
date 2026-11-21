@@ -5,7 +5,7 @@
 {% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'recursos/css/horarios.css' %}">
-<link rel="stylesheet" href="{% static 'recursos/css/estudiante.css' %}">
+<link rel="stylesheet" href="{% static 'recursos/css/estudiante.css' %}?v=3">
 {% endblock %}
 {% block encabezado_publico %}{% endblock %}
 
@@ -249,23 +249,56 @@
         <section class="horario-estudiante pagina-estudiante" id="mi-curso">
             <h2>Mi curso</h2>
 
-            <div class="curso-resumen">
-                <article class="curso-dato">
-                    <span class="curso-dato-icono"><i class="fa-solid fa-user-graduate"></i></span>
-                    <div>
-                        <small>ESTUDIANTE</small>
-                        <strong>{{ request.user.perfil.nombre_completo|default:request.user.username }}</strong>
-                    </div>
-                </article>
+            <p class="credencial-introduccion">Tu credencial de estudiante del liceo.</p>
 
-                <article class="curso-dato">
-                    <span class="curso-dato-icono"><i class="fa-solid fa-users"></i></span>
-                    <div>
-                        <small>CURSO</small>
-                        <strong>{{ request.user.perfil.curso|default:"Por asignar" }}</strong>
+            {% with p=request.user.perfil %}
+            <div class="credencial-escena">
+                <article class="credencial" aria-label="Credencial de estudiante">
+                    <span class="credencial-ranura" aria-hidden="true"></span>
+
+                    <header class="credencial-cabecera">
+                        <img src="{% static 'recursos/img/avb-logo.jpg' %}" alt="">
+                        <div>
+                            <strong>Liceo Antonio Varas de la Barra</strong>
+                            <span>Credencial estudiantil</span>
+                        </div>
+                    </header>
+
+                    <div class="credencial-cuerpo">
+                        <div class="credencial-foto" aria-hidden="true">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+
+                        <h3 class="credencial-nombre">{{ p.nombre_completo|default:request.user.username }}</h3>
+                        <span class="credencial-rol">Estudiante</span>
+
+                        <dl class="credencial-datos">
+                            <div>
+                                <dt>RUT</dt>
+                                <dd>{{ p.rut|default:"—" }}</dd>
+                            </div>
+                            <div>
+                                <dt>Curso</dt>
+                                <dd>{{ p.curso|default:"Por asignar" }}</dd>
+                            </div>
+                            <div>
+                                <dt>Año escolar</dt>
+                                <dd>{% now "Y" %}</dd>
+                            </div>
+                            <div>
+                                <dt>Estado</dt>
+                                <dd class="credencial-activo">Activo</dd>
+                            </div>
+                        </dl>
                     </div>
+
+                    <footer class="credencial-pie">
+                        <span class="credencial-barras" aria-hidden="true"></span>
+                        <small>N° {{ request.user.pk|stringformat:"05d" }}</small>
+                    </footer>
                 </article>
             </div>
+            {% endwith %}
 
             <div class="companeros-curso">
                 <div class="companeros-encabezado">

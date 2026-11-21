@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('portales', '0003_delete_aviso'),
         ('portales', '0004_bloques_por_defecto'),
-        ('portales', '0004_reservaespacio'),
     ]
 
     operations = [
