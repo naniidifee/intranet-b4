@@ -1,5 +1,9 @@
+import os
+import re
+import uuid
+
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 # Create your models here.
 
 class BloqueHorario(models.Model):
@@ -136,23 +140,81 @@ class ClaseHorario(models.Model):
     def __str__(self):
         return f"{self.curso} - {self.get_dia_display()} - {self.asignatura}"
 
+def ruta_horario(instance, filename):
+    """Guarda el archivo dentro de horarios con un nombre único."""
+    extension = os.path.splitext(filename)[1].lower()
+    curso = re.sub(r"[^A-Za-z0-9]+", "-", instance.curso).strip("-") or "curso"
+    return f"horarios/{curso}-{uuid.uuid4().hex[:8]}{extension}"
+
+
+class HorarioArchivo(models.Model):
+    """Horario de un curso subido como PDF o imagen."""
+
+    curso = models.CharField(max_length=25, unique=True)
+    archivo = models.FileField(upload_to=ruta_horario)
+    actualizado = models.DateTimeField(auto_now=True)
+    subido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    class Meta:
+        ordering = ["curso"]
+        verbose_name = "horario en archivo"
+        verbose_name_plural = "horarios en archivo"
+
+    def __str__(self):
+        return f"Horario {self.curso}"
+
+    @property
+    def extension(self):
+        return os.path.splitext(self.archivo.name)[1].lower()
+
+    @property
+    def es_pdf(self):
+        return self.extension == ".pdf"
+
+    @property
+    def es_imagen(self):
+        return self.extension in {".png", ".jpg", ".jpeg"}
+
+    @property
+    def nombre_descarga(self):
+        curso = re.sub(r"[^A-Za-z0-9]+", "-", self.curso).strip("-") or "curso"
+        return f"horario-{curso}{self.extension}"
+
+    def delete(self, *args, **kwargs):
+        nombre = self.archivo.name
+        almacenamiento = self.archivo.storage
+        resultado = super().delete(*args, **kwargs)
+        if nombre:
+            almacenamiento.delete(nombre)
+        return resultado
+
+
 class ReservaEspacio(models.Model):
+    """Solicitud de un docente para usar un espacio del liceo."""
+
     ESPACIOS = [
         ("biblioteca", "Biblioteca"),
         ("laboratorio", "Laboratorio"),
         ("gimnasio", "Gimnasio"),
-        ("patio_central", "Patio central"),
         ("cancha", "Cancha"),
+        ("patio_central", "Patio central"),
     ]
 
     ESTADOS = [
         ("pendiente", "Pendiente"),
         ("aprobada", "Aprobada"),
         ("rechazada", "Rechazada"),
+        ("cancelada", "Cancelada"),
     ]
 
     docente = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="reservas_espacios",
     )
@@ -161,19 +223,56 @@ class ReservaEspacio(models.Model):
     bloque = models.ForeignKey(
         BloqueHorario,
         on_delete=models.PROTECT,
-        related_name="reservas_espacios",
+        related_name="reservas",
     )
-    motivo = models.TextField()
+    motivo = models.CharField(max_length=150)
     estado = models.CharField(
         max_length=10,
         choices=ESTADOS,
         default="pendiente",
     )
-    respuesta_administracion = models.TextField(blank=True)
-    fecha_solicitud = models.DateTimeField(auto_now_add=True)
+    creada = models.DateTimeField(auto_now_add=True)
+    revisada_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    revisada_en = models.DateTimeField(null=True, blank=True)
+    comentario_admin = models.CharField(max_length=200, blank=True)
 
     class Meta:
-        ordering = ["-fecha_solicitud"]
+        ordering = ["-creada"]
+        verbose_name = "reserva de espacio"
+        verbose_name_plural = "reservas de espacios"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["espacio", "fecha", "bloque"],
+                condition=models.Q(estado="aprobada"),
+                name="reserva_aprobada_unica",
+            ),
+            models.UniqueConstraint(
+                fields=["docente", "espacio", "fecha", "bloque"],
+                condition=models.Q(estado__in=["pendiente", "aprobada"]),
+                name="reserva_activa_unica_por_docente",
+            ),
+        ]
+
+    @property
+    def fecha_solicitud(self):
+        return self.creada
+
+    @property
+    def respuesta_administracion(self):
+        return self.comentario_admin
+
+    @respuesta_administracion.setter
+    def respuesta_administracion(self, valor):
+        self.comentario_admin = valor
 
     def __str__(self):
-        return f"{self.get_espacio_display()} - {self.fecha} - {self.get_estado_display()}"
+        return (
+            f"{self.get_espacio_display()} - "
+            f"{self.fecha:%d/%m/%Y} - {self.get_estado_display()}"
+        )

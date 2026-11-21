@@ -1,0 +1,59 @@
+{% extends "portales/base_docente.html" %}
+
+{% block titulo_docente %}Mi horario{% endblock %}
+
+{% block contenido_docente %}
+<section class="docente-horario">
+    <div class="docente-horario-encabezado">
+        <span>GESTIÓN DOCENTE</span>
+        <h2>Mi horario de clases</h2>
+        <p>Clases asignadas a {{ nombre_docente }}.</p>
+    </div>
+
+    {% if clases %}
+        <div class="docente-horario-tabla-contenedor">
+            <table class="docente-horario-tabla">
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Horario</th>
+                        <th>Curso</th>
+                        <th>Asignatura</th>
+                        <th>Sala</th>
+                        <th>Grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for clase in clases %}
+                        <tr>
+                            <td>{{ clase.get_dia_display }}</td>
+                            <td>
+                                {{ clase.bloque.hora_inicio|time:"H:i" }}
+                                – {{ clase.bloque.hora_fin|time:"H:i" }}
+                            </td>
+                            <td>{{ clase.curso }}</td>
+                            <td>{{ clase.asignatura }}</td>
+                            <td>{{ clase.sala|default:"Por asignar" }}</td>
+                            <td>
+                                {% if clase.grupo != "todos" %}
+                                    {{ clase.get_grupo_display }}
+                                {% elif clase.segmento != "completo" %}
+                                    {{ clase.get_segmento_display }}
+                                {% else %}
+                                    Curso completo
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="docente-horario-vacio">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <h3>Aún no tienes clases asignadas</h3>
+            <p>Cuando UTP te asigne a un horario, aparecerá aquí.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

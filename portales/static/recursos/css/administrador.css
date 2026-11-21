@@ -678,6 +678,7 @@
 .portal-admin-menu form {
     margin-top: auto;
 }
+
 /* Menú de Administración con el estilo de Comunicaciones */
 .portal-admin-general .portal-admin-menu a:not(.admin-menu-marca) {
     border-right: 3px solid transparent;
@@ -906,6 +907,92 @@
     cursor: pointer;
 }
 
+
+/* Solicitudes de reserva: tabla y acciones */
+.admin-reservas-mensaje {
+    margin: 1rem 0 0;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.admin-reservas-mensaje.success {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.admin-reservas-mensaje.error {
+    background: #fff1f2;
+    color: #9f1239;
+}
+
+.admin-reservas-filtros form {
+    margin: 0;
+}
+
+.admin-reservas-tabla-scroll {
+    overflow-x: auto;
+}
+
+.admin-reservas-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.admin-reservas-tabla th,
+.admin-reservas-tabla td {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid #e5e9f0;
+    text-align: left;
+    vertical-align: top;
+}
+
+.admin-reservas-tabla th {
+    background: #f3f6fa;
+    color: #102b5c;
+}
+
+.admin-reservas-tabla small {
+    display: block;
+    margin-top: 0.2rem;
+    color: #64748b;
+    font-size: 0.7rem;
+}
+
+.admin-reservas-acciones {
+    display: grid;
+    gap: 0.4rem;
+    min-width: 210px;
+}
+
+.admin-reservas-acciones form {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0;
+}
+
+.admin-reservas-acciones input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.75rem;
+}
+
+.admin-reservas-acciones button {
+    padding: 0.35rem 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
 .admin-formulario form > a {
     color: #52647e;
     text-decoration: none;
@@ -994,3 +1081,26 @@
         padding: 1rem;
     }
 }
+
+.admin-reservas-acciones .aprobar {
+    background: #16a34a;
+    color: #fff;
+}
+
+.admin-reservas-acciones .rechazar {
+    background: #fee2e2;
+    color: #9f1239;
+}
+
+.reserva-estado {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.reserva-estado.pendiente { background: #fffbeb; color: #92400e; }
+.reserva-estado.aprobada { background: #f0fdf4; color: #166534; }
+.reserva-estado.rechazada { background: #fff1f2; color: #9f1239; }
+.reserva-estado.cancelada { background: #f3f4f6; color: #64748b; }

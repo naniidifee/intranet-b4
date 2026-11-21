@@ -94,6 +94,8 @@
                     <strong>
                         {% if bloques %}
                             {{ bloques.0.jornada }}
+                        {% elif archivo_horario %}
+                            Ver horario
                         {% else %}
                             Sin horario asignado
                         {% endif %}
@@ -102,7 +104,7 @@
 
                 <article class="estudiante-resumen-tarjeta">
                     <span>Horario</span>
-                    <strong>{% if bloques %}Disponible{% else %}Pendiente{% endif %}</strong>
+                    <strong>{% if bloques or archivo_horario %}Disponible{% else %}Pendiente{% endif %}</strong>
                 </article>
             </section>
         <section class="horario-estudiante pagina-estudiante activa" id="mi-horario">
@@ -119,6 +121,29 @@
                 <span class="horario-etiqueta">Lunes a viernes</span>
             </div>
 
+            {% if archivo_horario %}
+                <div class="horario-archivo-visor">
+                    {% if archivo_horario.es_imagen %}
+                        <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}" target="_blank" rel="noopener">
+                            <img src="{% url 'ver_horario_archivo' archivo_horario.pk %}"
+                                 alt="Horario del curso {{ archivo_horario.curso }}">
+                        </a>
+                    {% else %}
+                        <iframe src="{% url 'ver_horario_archivo' archivo_horario.pk %}#view=FitH"
+                                title="Horario del curso {{ archivo_horario.curso }}"></iframe>
+                    {% endif %}
+
+                    <div class="horario-archivo-acciones">
+                        <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-up-right-from-square"></i> Abrir en otra pestaña
+                        </a>
+                        <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}?descargar=1">
+                            <i class="fa-solid fa-download"></i> Descargar
+                        </a>
+                        <small>Actualizado el {{ archivo_horario.actualizado|date:"d/m/Y" }}</small>
+                    </div>
+                </div>
+            {% else %}
             <div class="tabla-horario-scroll">
                 <table class="horario-semanal">
                     <thead>
@@ -188,6 +213,7 @@
                     </tbody>
                 </table>
             </div>
+            {% endif %}
         </section>
 
         <section class="electividad-estudiante pagina-estudiante" id="mi-electividad">

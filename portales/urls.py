@@ -43,6 +43,21 @@ urlpatterns = [
         name="eliminar_clase_horario",
     ),
     path(
+        "administrador/horarios/archivo/subir/",
+        views.subir_horario_archivo,
+        name="subir_horario_archivo",
+    ),
+    path(
+        "administrador/horarios/archivo/<int:pk>/eliminar/",
+        views.eliminar_horario_archivo,
+        name="eliminar_horario_archivo",
+    ),
+    path(
+        "horarios/archivo/<int:pk>/",
+        views.ver_horario_archivo,
+        name="ver_horario_archivo",
+    ),
+    path(
         "estudiantes/cerrar-sesion/",
         views.cerrar_sesion_estudiante,
         name="cerrar_sesion_estudiante",
@@ -66,6 +81,26 @@ urlpatterns = [
         "docente/reservar-espacios/",
         views.reservar_espacios,
         name="reservar_espacios",
+    ),
+    path(
+        "docente/reservar-espacios/solicitar/",
+        views.solicitar_reserva,
+        name="solicitar_reserva",
+    ),
+    path(
+        "docente/reservas/<int:pk>/cancelar/",
+        views.cancelar_reserva,
+        name="cancelar_reserva",
+    ),
+    path(
+        "administrador/reservas/<int:pk>/aprobar/",
+        views.aprobar_reserva,
+        name="aprobar_reserva",
+    ),
+    path(
+        "administrador/reservas/<int:pk>/rechazar/",
+        views.rechazar_reserva,
+        name="rechazar_reserva",
     ),
     path(
         "docente/lista-curso/",
@@ -96,5 +131,10 @@ urlpatterns = [
         "administrador/reservas/<int:reserva_id>/estado/",
         views.actualizar_estado_reserva,
         name="actualizar_estado_reserva",
+    ),
+    path(
+        "docente/mi-horario/",
+        views.horario_docente,
+        name="horario_docente",
     ),
 ]
