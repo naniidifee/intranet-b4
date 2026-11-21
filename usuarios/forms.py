@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
+from portales.cursos import CURSOS_CHOICES
 from .models import Rol, perfil, SolicitudRecuperacion
 
 
@@ -24,8 +25,8 @@ class CrearUsuarioForm(UserCreationForm):
         choices=ROLES,
         label="Rol",
     )
-    curso = forms.CharField(
-        max_length=25,
+    curso = forms.ChoiceField(
+        choices=CURSOS_CHOICES,
         required=False,
         label="Curso",
     )
@@ -81,7 +82,11 @@ class CrearUsuarioForm(UserCreationForm):
                 usuario=usuario,
                 nombre_completo=self.cleaned_data["nombre_completo"],
                 rut=usuario.username,
-                curso=self.cleaned_data.get("curso", "").strip(),
+                curso=(
+                    self.cleaned_data.get("curso", "").strip()
+                    if rol_nombre == "Estudiante"
+                    else ""
+                ),
                 rol=rol,
             )
 
