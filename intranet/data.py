@@ -128,51 +128,118 @@ ESPECIALIDADES_DATA = {
 }
 
 equipo_data = [
-        {'nombre': 'David Delgado Meza', 'cargo': 'Director', 'area': 'Dirección', 'icon': 'fa-user-tie'},
-        {'nombre': 'Omar Garcia Maya', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
-        {'nombre': 'Freddy Rojas Olivares', 'cargo': 'Inspector General', 'area': 'Inspectoría', 'icon': 'fa-user-shield'},
-        {'nombre': 'Andrea Godoy Sáez', 'cargo': 'Jefe UTP', 'area': 'UTP', 'icon': 'fa-chalkboard-user'},
-        {'nombre': 'M. Alejandra Letelier S.', 'cargo': 'Jefe UTP', 'area': 'UTP', 'icon': 'fa-chalkboard-user'},
-        {'nombre': 'Nicole Aguilera V.', 'cargo': 'Coordinadora TP', 'area': 'Técnico', 'icon': 'fa-screwdriver-wrench'},
-        {'nombre': 'Yasna Caqueo Araya', 'cargo': 'Convivencia Escolar', 'area': 'Convivencia', 'icon': 'fa-heart'},
-        {'nombre': 'Guillermo Miranda', 'cargo': 'Orientador', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
-        {'nombre': 'Marysol Mondaca R.', 'cargo': 'Orientadora', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
-        {'nombre': 'Paulina Aguirre', 'cargo': 'Orientadora', 'area': 'Orientación', 'icon': 'fa-graduation-cap'},
-        {'nombre': 'Carmen Robledo R.', 'cargo': 'Coordinadora PIE', 'area': 'PIE', 'icon': 'fa-puzzle-piece'},
-        {'nombre': 'Santos Rementeria P.', 'cargo': 'Coord. Biblioteca', 'area': 'Biblioteca', 'icon': 'fa-book'},
-        {'nombre': 'José Guiñez Oyarce', 'cargo': 'Coord. Enlaces TI', 'area': 'Tecnología', 'icon': 'fa-laptop'},
-        {'nombre': 'Gerardo López M.', 'cargo': 'Coord. Extraescolar', 'area': 'Extraescolar', 'icon': 'fa-person-running'},
-    ]
+    {
+        "nombre": "David Delgado Meza",
+        "cargo": "Director",
+        "area": "Dirección",
+        "icon": "fa-user-tie",
+        "imagen": "recursos/img/equipo/david-delgado.png",
+    },
+    {
+        "nombre": "Omar Garcia Maya",
+        "cargo": "Inspector General",
+        "area": "Inspectoría",
+        "icon": "fa-user-shield",
+    },
+    {
+        "nombre": "Freddy Rojas Olivares",
+        "cargo": "Inspector General",
+        "area": "Inspectoría",
+        "icon": "fa-user-shield",
+    },
+    {
+        "nombre": "Andrea Godoy Sáez",
+        "cargo": "Jefe UTP",
+        "area": "UTP",
+        "icon": "fa-chalkboard-user",
+        "imagen": "recursos/img/equipo/andrea-godoy.png",
+    },
+    {
+        "nombre": "M. Alejandra Letelier S.",
+        "cargo": "Jefe UTP",
+        "area": "UTP",
+        "icon": "fa-chalkboard-user",
+    },
+    {
+        "nombre": "Nicole Aguilera V.",
+        "cargo": "Coordinadora TP",
+        "area": "Técnico",
+        "icon": "fa-screwdriver-wrench",
+        "imagen": "recursos/img/equipo/nicole-aguilera.png",
+    },
+    {
+        "nombre": "Yasna Caqueo Araya",
+        "cargo": "Convivencia Escolar",
+        "area": "Convivencia",
+        "icon": "fa-heart",
+    },
+    {
+        "nombre": "Guillermo Miranda",
+        "cargo": "Orientador",
+        "area": "Orientación",
+        "icon": "fa-graduation-cap",
+    },
+    {
+        "nombre": "Marysol Mondaca R.",
+        "cargo": "Orientadora",
+        "area": "Orientación",
+        "icon": "fa-graduation-cap",
+    },
+    {
+        "nombre": "Paulina Aguirre",
+        "cargo": "Orientadora",
+        "area": "Orientación",
+        "icon": "fa-graduation-cap",
+    },
+    {
+        "nombre": "Carmen Robledo R.",
+        "cargo": "Coordinadora PIE",
+        "area": "PIE",
+        "icon": "fa-puzzle-piece",
+    },
+    {
+        "nombre": "Santos Rementeria P.",
+        "cargo": "Coord. Biblioteca",
+        "area": "Biblioteca",
+        "icon": "fa-book",
+    },
+    {
+        "nombre": "José Guiñez Oyarce",
+        "cargo": "Coord. Enlaces TI",
+        "area": "Tecnología",
+        "icon": "fa-laptop",
+        "imagen": "recursos/img/equipo/jose-guinez.png",
+    },
+    {
+        "nombre": "Gerardo López M.",
+        "cargo": "Coord. Extraescolar",
+        "area": "Extraescolar",
+        "icon": "fa-person-running",
+    },
+]
 
-NOTICIAS_DATA = [
-        {
-            'id': 1,
-            'titulo': 'Ceremonia de Certificación de Especialidades Técnicas',
-            'categoria': 'Académico',
-            'fecha': '12 Nov, 2026',
-            'autor': 'Dirección Académica',
-            'descripcion': 'Nuestros estudiantes de cuarto medio culminaron con éxito sus procesos prácticos en las distintas especialidades.',
-            'contenido': 'Durante la jornada de este miércoles, los alumnos de las carreras técnico-profesionales recibieron sus constancias de culminación de prácticas en una emotiva ceremonia junto a sus familias y docentes directivos.',
-            'icon': 'fa-graduation-cap'
-        },
-        {
-            'id': 2,
-            'titulo': 'Destacada participación en Feria de Innovación Tecnológica',
-            'categoria': 'Actividades',
-            'fecha': '05 Nov, 2026',
-            'autor': 'Departamento de Informática',
-            'descripcion': 'Alumnos del área de tecnología presentaron proyectos de automatización e IoT desarrollados en los talleres del liceo.',
-            'contenido': 'Con prototipos basados en Arduino, sensores y control móvil, los estudiantes demostraron el alto nivel de desarrollo técnico alcanzado en las especialidades de Programación y Electrónica.',
-            'icon': 'fa-trophy'
-        },
-        {
-            'id': 3,
-            'titulo': 'Proceso de Admisión y Matrículas para el Próximo Año',
-            'categoria': 'Institucional',
-            'fecha': '28 Oct, 2026',
-            'autor': 'Inspectoría General',
-            'descripcion': 'Conoce los plazos, requisitos y modalidades para postular a nuestras especialidades técnico profesionales acreditadas.',
-            'contenido': 'Se informa a toda la comunidad los periodos oficiales habilitados por el sistema de admisión escolar y las fechas de atención presencial en secretaría para consultas sobre vacantes disponibles.',
-            'icon': 'fa-bullhorn'
-        }
-    ]
+sellos_educativos = [
+    {
+        "icono": "fa-earth-americas",
+        "titulo": "Interculturalidad",
+        "descripcion": (
+            "Fomentamos el conocimiento y valoración de las diversas culturas "
+            "presentes en Arica y Parinacota."
+        ),
+    },
+    {
+        "icono": "fa-lightbulb",
+        "titulo": "Emprendimiento y Tecnología",
+        "descripcion": (
+            "Desarrollamos competencias para la innovación y aplicación de "
+            "tecnología en contextos laborales reales."
+        ),
+    },
+    {
+        "icono": "fa-seedling",
+        "titulo": "Cuidado por la Vida y el Medioambiente",
+        "descripcion": (
+            "Formamos ciudadanos comprometidos con la protección del medioambiente."
+        ),
+    },
+]

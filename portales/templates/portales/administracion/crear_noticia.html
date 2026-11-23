@@ -1,4 +1,5 @@
 {% extends "portales/base_comunicaciones.html" %}
+{% load static %}
 
 {% block title %}{% if modo_edicion %}Editar Noticia{% else %}Nueva Noticia{% endif %}{% endblock %}
 
@@ -69,13 +70,17 @@
 
                 <article class="noticia-vista-previa">
                     <div class="noticia-imagen-previa">
-                        <i class="fa-regular fa-image"></i>
+                        {% if form.instance.imagen %}
+                            <img src="{{ form.instance.imagen.url }}" alt="{{ form.instance.titulo|default:'Imagen de la noticia' }}">
+                        {% else %}
+                            <i class="fa-regular fa-image"></i>
+                        {% endif %}
                     </div>
 
                     <div class="noticia-vista-contenido">
                         <span>VISTA PREVIA</span>
-                        <h3>La noticia aparecerá aquí</h3>
-                        <p>Completa el título y la descripción para redactar tu publicación.</p>
+                        <h3>{{ form.instance.titulo|default:"La noticia aparecerá aquí" }}</h3>
+                        <p>{{ form.instance.descripcion|default:"Completa el título y la descripción para redactar tu publicación." }}</p>
                         <small>
                             <i class="fa-regular fa-calendar"></i>
                             {% now "d/m/Y" %}

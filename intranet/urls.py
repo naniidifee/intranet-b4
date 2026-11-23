@@ -31,5 +31,11 @@ urlpatterns = [
     
     path('intranet/dashboard/', views.intranet_dashboard, name='intranet_dashboard'),
 
+    # Ruta para valores
+    path('valores/', views.valores_view, name='valores'),
+
+    # Ruta para talleres 
+    path('talleres/', views.talleres_view, name='talleres'),
+
 
 ]

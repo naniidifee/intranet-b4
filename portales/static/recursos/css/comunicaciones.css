@@ -637,3 +637,222 @@
     color: #0a1628;
     line-height: 1;
 }
+
+/* Contenedor general del panel de comunicaciones */
+.portal-comunicaciones {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.comunicaciones-contenido {
+  flex: 1;
+  min-width: 0;
+}
+
+.comunicaciones-pagina {
+  padding: 2rem;
+}
+
+/* Control de imágenes dentro del panel de comunicaciones (formularios, vistas previas y tablas) */
+.comunicaciones-pagina img,
+.comunicaciones-preview-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.comunicaciones-img-preview-box {
+  width: 100%;
+  max-width: 320px;
+  height: 190px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  background-color: #f1f5f9;
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.comunicaciones-img-preview-box img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* Miniatura si muestras la imagen actual junto al input file de Django */
+.comunicaciones-pagina .file-upload-preview,
+.comunicaciones-pagina p img,
+.comunicaciones-pagina div > img:not(.comunicaciones-marca img) {
+  max-width: 280px;
+  max-height: 180px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+/* ==========================================================================
+   CONTROL DE IMÁGENES EN CREAR / EDITAR Y GESTIONAR NOTICIAS
+   ========================================================================== */
+
+/* Contenedor de vista previa en crear_noticia.html */
+.noticia-imagen-previa {
+  width: 100%;
+  height: 210px;
+  max-height: 210px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.noticia-imagen-previa img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Zona de subida de imagen en crear_noticia.html */
+.noticia-zona-imagen {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 18px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  cursor: pointer;
+  text-align: center;
+}
+
+.noticia-zona-imagen img {
+  max-width: 100%;
+  max-height: 180px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Miniatura en el listado de gestionar_noticias.html */
+.noticia-admin-imagen {
+  width: 150px;
+  min-width: 150px;
+  height: 105px;
+  max-height: 105px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.noticia-admin-imagen img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Seguro general para cualquier imagen dentro del panel de comunicaciones */
+.comunicaciones-pagina img:not(.comunicaciones-marca img) {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 720px) {
+  .noticia-admin-imagen {
+    width: 100%;
+    min-width: 100%;
+    height: 180px;
+    max-height: 180px;
+  }
+}
+.noticia-admin {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+.noticia-admin-imagen {
+  position: static;
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  height: 105px;
+  max-height: 105px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.noticia-admin-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.noticia-admin-texto {
+  position: static;
+  flex: 1;
+  min-width: 0;
+  margin-left: 0;
+  z-index: 2;
+}
+
+.noticia-admin-acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 720px) {
+  .noticia-admin {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .noticia-admin-imagen {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 180px;
+    max-height: 180px;
+  }
+
+  .noticia-admin-acciones {
+    margin-left: 0;
+  }
+}

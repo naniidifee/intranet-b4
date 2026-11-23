@@ -1,0 +1,149 @@
+.talleres-page {
+  background-color: #f8fafc;
+  padding: 3.5rem 1.5rem 5rem;
+  min-height: calc(100vh - 80px);
+}
+
+.talleres-container {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.talleres-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem;
+}
+
+.talleres-eyebrow {
+  display: inline-block;
+  color: #d97706;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.talleres-header h1 {
+  font-size: clamp(2rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.65rem 0;
+}
+
+.talleres-header p {
+  font-size: 0.96rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.talleres-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.taller-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.taller-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1);
+  border-color: rgba(217, 119, 6, 0.45);
+}
+
+.taller-img-box {
+  width: 100%;
+  height: 215px;
+  background-color: #f1f5f9;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.taller-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.taller-body {
+  padding: 22px 22px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.taller-titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px 0;
+}
+
+.taller-desc {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #475569;
+  margin: 0 0 20px 0;
+  flex: 1;
+}
+
+.taller-niveles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.nivel-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #334155;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.talleres-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 3rem 1.5rem;
+  color: #64748b;
+}
+
+@media (max-width: 980px) {
+  .talleres-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .talleres-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .taller-img-box {
+    height: 195px;
+  }
+}

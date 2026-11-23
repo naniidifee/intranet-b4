@@ -123,8 +123,19 @@
 
             {% if archivo_horario %}
                 <div class="horario-archivo-visor">
+                    <div class="horario-archivo-barra">
+                        <span>
+                            <i class="fa-regular fa-image"></i>
+                            Horario subido · {{ archivo_horario.curso }}
+                        </span>
+                        <small>Actualizado el {{ archivo_horario.actualizado|date:"d/m/Y" }}</small>
+                    </div>
+
                     {% if archivo_horario.es_imagen %}
-                        <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}" target="_blank" rel="noopener">
+                        <a class="horario-archivo-imagen-link"
+                           href="{% url 'ver_horario_archivo' archivo_horario.pk %}"
+                           target="_blank"
+                           rel="noopener">
                             <img src="{% url 'ver_horario_archivo' archivo_horario.pk %}"
                                  alt="Horario del curso {{ archivo_horario.curso }}">
                         </a>
@@ -140,7 +151,6 @@
                         <a href="{% url 'ver_horario_archivo' archivo_horario.pk %}?descargar=1">
                             <i class="fa-solid fa-download"></i> Descargar
                         </a>
-                        <small>Actualizado el {{ archivo_horario.actualizado|date:"d/m/Y" }}</small>
                     </div>
                 </div>
             {% else %}
@@ -368,28 +378,8 @@
     </div>
 </div>
 {% endblock %}
+
 {% block extra_js %}
-<script>
-    const enlacesMenu = document.querySelectorAll("[data-seccion]");
-    const paneles = document.querySelectorAll(".pagina-estudiante");
-
-    enlacesMenu.forEach(function (enlace) {
-        enlace.addEventListener("click", function (evento) {
-            evento.preventDefault();
-
-            const idSeccion = enlace.dataset.seccion;
-
-            paneles.forEach(function (panel) {
-                panel.classList.remove("activa");
-            });
-
-            enlacesMenu.forEach(function (item) {
-                item.classList.remove("activo");
-            });
-
-            document.getElementById(idSeccion).classList.add("activa");
-            enlace.classList.add("activo");
-        });
-    });
-</script>
+{{ block.super }}
+<script src="{% static 'recursos/js/horario_estudiante.js' %}"></script>
 {% endblock %}

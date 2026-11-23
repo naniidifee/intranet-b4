@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'intranet','usuarios','portales',
+    'intranet','usuarios','portales',"correo_avb",
 ]
 
 MIDDLEWARE = [
@@ -125,15 +125,21 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+GMAIL_USUARIO = os.getenv("GMAIL_USUARIO", "")
+EMAIL_HOST_PASSWORD = os.getenv("GMAIL_CONTRASENA_APLICACION", "").replace(" ", "")
+if GMAIL_USUARIO and EMAIL_HOST_PASSWORD:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = GMAIL_USUARIO
+DEFAULT_FROM_EMAIL = f"AVB INTRANET <{GMAIL_USUARIO}>" if GMAIL_USUARIO else "webmaster@localhost"
+CORREO_RESPONDER_A = GMAIL_USUARIO
+CORREO_LIMITE_DIARIO = 500
 
 # En desarrollo, muestra los correos en la consola del servidor.
 DEFAULT_FROM_EMAIL = "intranet@liceoavb.local"

@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="avb-portal-wrapper">
-  
+
   <!-- CABECERA -->
   <header class="avb-portal-header">
     <span class="avb-portal-subtitle">Comunicaciones AVB</span>
@@ -37,7 +37,7 @@
   <div class="avb-news-list" id="avbNewsList">
     {% for noticia in noticias %}
       <a href="{% url 'detalle_noticia' slug=noticia.slug %}" class="avb-news-row-card" data-title="{{ noticia.titulo|lower }}">
-        
+
         <div class="avb-news-row-img">
           {% if noticia.imagen %}
             <img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}">
@@ -52,7 +52,7 @@
           <div class="avb-news-row-header">
             <h2 class="avb-news-row-title">{{ noticia.titulo }}</h2>
           </div>
-          
+
           <p class="avb-news-row-desc">
             {{ noticia.descripcion|truncatechars:210 }}
           </p>
@@ -72,7 +72,7 @@
       </div>
     {% endfor %}
 
-    <div id="noSearchResults" class="avb-empty-state" style="display: none;">
+    <div id="noSearchResults" class="avb-empty-state is-hidden">
       <i class="fa-solid fa-magnifying-glass"></i>
       <h3>Sin resultados para tu búsqueda</h3>
       <p>Prueba escribiendo otras palabras clave.</p>
@@ -88,35 +88,9 @@
 
 </div>
 
-<!-- SCRIPT ÚNICO DE BÚSQUEDA -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('newsSearchInput');
-    const cards = document.querySelectorAll('.avb-news-row-card');
-    const noResultsMsg = document.getElementById('noSearchResults');
+{% include 'intranet/footer.html' %}
+{% endblock %}
 
-    if (!searchInput) return;
-
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      let visibleCount = 0;
-
-      cards.forEach((card) => {
-        const title = card.getAttribute('data-title') || '';
-        if (title.includes(query)) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      if (noResultsMsg && cards.length > 0) {
-        noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    });
-  });
-</script>
-
-  {% include 'intranet/footer.html' %}
+{% block extra_js %}
+  <script src="{% static 'recursos/js/noticias.js' %}"></script>
 {% endblock %}
