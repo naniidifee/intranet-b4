@@ -15,9 +15,9 @@
 
 | Integrante | Rol / Contribución |
 | :--- | :--- |
-| **Marjorie Gómez** | esarrollo web institucional e intranet (`proyecto-avb`) trazabilidad de HUs |
-| **Alison Limachi** | Panel de administración, módulos de gestión (`views_admin_extra.py`), plantillas administrativas |
-| **Lucas Muñoz** | Panel de usuarios (`proyecto-avb`) |
+| **Marjorie Gómez** | esarrollo web institucional e intranet trazabilidad de HUs |
+| **Alison Limachi** | Panel de administración, módulos de gestión , plantillas administrativas |
+| **Lucas Muñoz** | Panel de usuarios |
 
 ---
 
@@ -27,7 +27,7 @@ El desarrollo del sistema se encuentra organizado de forma modular a través de 
 
 # 🏫 Trazabilidad de Historias de Usuario - Módulo Intranet y Administración
 
-Este documento detalla la correspondencia técnica y funcional entre los componentes desarrollados en el frontend/backend (`base.html`, `base_administrador.html`, `views_admin_extra.py`, `index.html`, `footer.html`, `especialidades.html`) y las Historias de Usuario (HUs) trabajadas en el proyecto para el **Liceo Bicentenario de Excelencia Antonio Varas de la Barra**.
+Este documento detalla la correspondencia técnica y funcional entre los componentes desarrollados en el frontend/backend y las Historias de Usuario (HUs) trabajadas en el proyecto para el **Liceo Bicentenario de Excelencia Antonio Varas de la Barra**.
 
 ---
 
