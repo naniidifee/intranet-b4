@@ -132,4 +132,5 @@ urlpatterns = [
         views.horario_docente,
         name="horario_docente",
     ),
+    
 ]

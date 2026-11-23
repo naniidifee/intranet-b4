@@ -25,6 +25,7 @@ from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
 
 from correo_avb.recuperacion import procesar_recuperacion_usuario
 from .models import SolicitudRecuperacion
+
 # Create your views here.
 
 @login_required(login_url="login")
@@ -1257,3 +1258,4 @@ def atender_solicitud_recuperacion(request, solicitud_id):
         messages.error(request, mensaje)
 
     return redirect("listar_solicitudes_recuperacion")
+
