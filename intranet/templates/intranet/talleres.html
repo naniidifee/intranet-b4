@@ -1,0 +1,50 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}Talleres - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/talleres.css' %}">
+{% endblock %}
+
+{% block content %}
+  <section class="talleres-page">
+    <div class="talleres-container">
+
+      <div class="talleres-header">
+        <span class="talleres-eyebrow">Formación Complementaria</span>
+        <h1>Nuestros Talleres</h1>
+        <p>Espacios formativos y de desarrollo académico orientados a potenciar habilidades y vocaciones de nuestros estudiantes.</p>
+      </div>
+
+      <div class="talleres-grid">
+        {% for taller in talleres %}
+          <article class="taller-card">
+            <div class="taller-img-box">
+              {% if taller.imagen %}
+                <img src="{{ taller.imagen.url }}" alt="{{ taller.titulo }}">
+              {% endif %}
+            </div>
+            <div class="taller-body">
+              <h2 class="taller-titulo">{{ taller.titulo }}</h2>
+              <p class="taller-desc">{{ taller.descripcion }}</p>
+
+              {% if taller.niveles.all %}
+                <div class="taller-niveles">
+                  {% for nivel in taller.niveles.all %}
+                    <span class="nivel-badge">{{ nivel.nombre }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </article>
+        {% empty %}
+          <div class="talleres-vacio">
+            <p>Proximamente se vienen los talleres, esten atentos!</p>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+{% endblock %}

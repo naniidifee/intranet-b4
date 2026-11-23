@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from .data import ESPECIALIDADES_DATA, equipo_data, NOTICIAS_DATA
-from .models import Noticia
+from .data import ESPECIALIDADES_DATA, equipo_data
+from .models import Noticia, Taller
 
 
 # -------------------------------------------------------------------
@@ -117,3 +117,10 @@ def proyecto_educativo_view(request):
 
 def egresados_view(request):
     return render(request, 'intranet/egresados.html')
+
+def valores_view(request):
+    return render(request, 'intranet/valores.html')
+
+def talleres_view(request):
+    talleres = Taller.objects.filter(activo=True).prefetch_related("niveles")
+    return render(request, "intranet/talleres.html", {"taller": talleres})

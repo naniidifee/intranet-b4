@@ -1,0 +1,161 @@
+/* ==========================================================
+   css de valores
+   ========================================================== */
+
+.valores-page {
+  min-height: calc(100vh - 80px);
+  background:
+    radial-gradient(circle at 88% 15%, rgba(245, 168, 0, 0.12) 0%, transparent 38%),
+    radial-gradient(circle at 15% 85%, rgba(37, 99, 235, 0.18) 0%, transparent 45%),
+    linear-gradient(160deg, #06142b 0%, #0b2247 55%, #071936 100%);
+  color: #ffffff;
+  padding: 4.5rem 1.5rem 6rem;
+}
+
+.valores-container {
+  max-width: 1260px;
+  margin: 0 auto;
+}
+
+.valores-header {
+  margin-bottom: 3rem;
+}
+
+.valores-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5a800;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.valores-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background-color: #f5a800;
+  display: inline-block;
+}
+
+.valores-header h1 {
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.6rem 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.valores-subtitulo {
+  max-width: 620px;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: rgba(203, 213, 225, 0.85);
+  margin: 0;
+}
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.valor-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(19, 46, 89, 0.78) 0%, rgba(12, 30, 61, 0.88) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  padding: 22px 22px 24px;
+  min-height: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(2, 10, 24, 0.35);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.valor-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f5a800, #fbbf24);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.valor-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245, 168, 0, 0.55);
+  box-shadow: 0 16px 32px rgba(2, 10, 24, 0.55);
+}
+
+.valor-card:hover::after {
+  opacity: 1;
+}
+
+.valor-numero {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(245, 168, 0, 0.11);
+  user-select: none;
+  pointer-events: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.valor-card:hover .valor-numero {
+  color: rgba(245, 168, 0, 0.22);
+  transform: scale(1.04);
+}
+
+.valor-titulo {
+  position: relative;
+  z-index: 1;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin: 0 0 8px 0;
+  padding-right: 46px;
+}
+
+.valor-desc {
+  position: relative;
+  z-index: 1;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(241, 245, 249, 0.88);
+  margin: 0;
+}
+
+@media (max-width: 1120px) {
+  .valores-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .valores-page {
+    padding: 3rem 1.15rem 4rem;
+  }
+
+  .valores-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .valor-card {
+    min-height: auto;
+  }
+}

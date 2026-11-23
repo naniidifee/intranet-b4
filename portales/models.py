@@ -264,3 +264,30 @@ class ReservaEspacio(models.Model):
             f"{self.get_espacio_display()} - "
             f"{self.fecha:%d/%m/%Y} - {self.get_estado_display()}"
         )
+
+from django.conf import settings
+from django.db import models
+
+
+class SolicitudRecuperacion(models.Model):
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("atendida", "Atendida"),
+        ("rechazada", "Rechazada"),
+    ]
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="solicitudes_recuperacion",
+    )
+    correo_contacto = models.EmailField(blank=True)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default="pendiente")
+    creada_en = models.DateTimeField(auto_now_add=True)
+    actualizada_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-creada_en"]
+
+    def __str__(self):
+        return f"Solicitud #{self.pk} - {self.usuario} ({self.estado})"

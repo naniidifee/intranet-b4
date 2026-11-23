@@ -21,12 +21,16 @@
   <section class="equipo-section">
     <div class="equipo-container">
       <div class="equipo-grid">
-        
+
         {% for miembro in equipo %}
         <div class="equipo-card">
           <div class="equipo-card-accent"></div>
           <div class="equipo-avatar">
-            <i class="fa-solid {{ miembro.icon }}"></i>
+            {% if miembro.imagen %}
+              <img src="{% static miembro.imagen %}" alt="Foto de {{ miembro.nombre }}">
+            {% else %}
+              <i class="fa-solid {{ miembro.icon }}"></i>
+            {% endif %}
           </div>
           <h3 class="equipo-name">{{ miembro.nombre }}</h3>
           <p class="equipo-role">{{ miembro.cargo }}</p>

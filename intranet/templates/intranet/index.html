@@ -229,60 +229,94 @@
   </section>
 
 <!-- NOTICIAS Y NOVEDADES -->
-  <section id="noticias" class="liceo-news-section">
-    <div class="liceo-news-container">
-      
-      <div class="liceo-news-header">
-        <span class="news-accent-bar"></span>
-        <h2>Noticias y Novedades</h2>
-      </div>
+<section id="noticias" class="liceo-news-section">
+  <div class="liceo-news-container">
 
-      <!-- Grid de Noticias con Django -->
+    <div class="liceo-news-header">
+      <span class="news-accent-bar"></span>
+      <h2>Noticias y Novedades</h2>
+    </div>
+
+    {% if ultimas_noticias %}
       <div class="liceo-news-grid">
-        {% for noticia in ultimas_noticias %}
-          <div class="liceo-news-card">
-            {% if noticia.imagen %}
-              <div class="liceo-news-img-wrap">
-                <img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}">
-                {% if noticia.destacado %}
-                  <span class="liceo-badge-destacado"><i class="fa-solid fa-star"></i> Destacado</span>
-                {% endif %}
-              </div>
-            {% endif %}
-            <div class="liceo-news-body">
-              <div class="liceo-news-meta">
-                <span class="liceo-news-cat">{{ noticia.categoria }}</span>
-                <span><i class="fa-regular fa-calendar"></i> {{ noticia.fecha|date:"d \d\e F \d\e Y" }}</span>
-              </div>
-              <h3 class="liceo-news-title">{{ noticia.titulo }}</h3>
-              <p class="liceo-news-desc">{{ noticia.descripcion|truncatechars:100 }}</p>
-              <a href="{% url 'detalle_noticia' slug=noticia.slug %}" class="liceo-read-more">
-                Leer noticia completa <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        {% empty %}
-          <p style="grid-column: 1 / -1; text-align: center; color: #64748b; padding: 2rem;">No hay noticias publicadas recientemente.</p>
-        {% endfor %}
-      </div>
 
-      <!-- BANNER ARCHIVO DE COMUNICADOS -->
-      <div class="avb-archive-wrapper">
-        <div class="avb-archive-banner">
-          <div class="avb-archive-text">
-            <h3>¿Buscas comunicados anteriores?</h3>
-            <p>Explora el archivo histórico completo de noticias de nuestro establecimiento.</p>
-          </div>
-          <div class="avb-archive-action">
-            <a href="{% url 'portal_noticias' %}" class="avb-archive-btn">
-              Ir a portal de noticias <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
+        {% for noticia in ultimas_noticias %}
+          {% if forloop.first %}
+            <!-- NOTICIA PRINCIPAL (IZQUIERDA) -->
+            <article class="liceo-news-card liceo-news-featured">
+              {% if noticia.imagen %}
+                <div class="liceo-news-img-wrap">
+                  <img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}">
+                  {% if noticia.destacado %}
+                    <span class="liceo-badge-destacado"><i class="fa-solid fa-star"></i> Destacado</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+              <div class="liceo-news-body">
+                <div class="liceo-news-meta">
+                  <span class="liceo-news-cat">{{ noticia.categoria }}</span>
+                  <span><i class="fa-regular fa-calendar"></i> {{ noticia.fecha|date:"d \d\e F \d\e Y" }}</span>
+                </div>
+                <h3 class="liceo-news-title">{{ noticia.titulo }}</h3>
+                <p class="liceo-news-desc">{{ noticia.descripcion|truncatechars:190 }}</p>
+                <a href="{% url 'detalle_noticia' slug=noticia.slug %}" class="liceo-read-more">
+                  Leer noticia completa <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            </article>
+
+            {% if ultimas_noticias|length > 1 %}
+              <div class="liceo-news-secondary-stack">
+            {% endif %}
+          {% elif forloop.counter <= 4 %}
+            <!-- NOTICIAS SECUNDARIAS (DERECHA) -->
+            <article class="liceo-news-card liceo-news-compact">
+              {% if noticia.imagen %}
+                <div class="liceo-news-img-wrap">
+                  <img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}">
+                </div>
+              {% endif %}
+              <div class="liceo-news-body">
+                <div class="liceo-news-meta">
+                  <span class="liceo-news-cat">{{ noticia.categoria }}</span>
+                  <span><i class="fa-regular fa-calendar"></i> {{ noticia.fecha|date:"d M Y" }}</span>
+                </div>
+                <h3 class="liceo-news-title">{{ noticia.titulo|truncatechars:75 }}</h3>
+                <p class="liceo-news-desc">{{ noticia.descripcion|truncatechars:95 }}</p>
+                <a href="{% url 'detalle_noticia' slug=noticia.slug %}" class="liceo-read-more">
+                  Ver más <i class="fa-solid fa-chevron-right"></i>
+                </a>
+              </div>
+            </article>
+          {% endif %}
+
+          {% if forloop.last and ultimas_noticias|length > 1 %}
+              </div>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+    {% else %}
+      <p class="liceo-news-empty">No hay noticias publicadas recientemente.</p>
+    {% endif %}
+
+    <!-- BANNER ARCHIVO DE COMUNICADOS -->
+    <div class="avb-archive-wrapper">
+      <div class="avb-archive-banner">
+        <div class="avb-archive-text">
+          <h3>¿Buscas comunicados anteriores?</h3>
+          <p>Explora el archivo histórico completo de noticias de nuestro establecimiento.</p>
+        </div>
+        <div class="avb-archive-action">
+          <a href="{% url 'portal_noticias' %}" class="avb-archive-btn">
+            Ir a portal de noticias <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
       </div>
-
     </div>
-  </section>
+
+  </div>
+</section>
 
   <!-- UBICACIÓN Y CONTACTO -->
   <section id="contacto" class="contacto-section">

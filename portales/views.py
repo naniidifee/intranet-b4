@@ -18,10 +18,13 @@ from django.utils.text import capfirst, slugify
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.http import require_POST
 
-from intranet.models import Noticia
+from intranet.models import Noticia, Taller
 
 from .forms import BloqueHorarioForm, ClaseHorarioForm, HorarioArchivoForm, NoticiaForm, SolicitudReservaForm
 from .models import BloqueHorario, ClaseHorario, HorarioArchivo, ReservaEspacio
+
+from correo_avb.recuperacion import procesar_recuperacion_usuario
+from .models import SolicitudRecuperacion
 
 # Create your views here.
 
@@ -1236,3 +1239,23 @@ def rechazar_reserva(request, pk):
         messages.success(request, "La solicitud fue rechazada.")
 
     return _volver_a_solicitudes(request)
+
+def atender_solicitud_recuperacion(request, solicitud_id):
+    if request.method != "POST":
+        return redirect("listar_solicitudes_recuperacion")
+
+    solicitud = get_object_or_404(SolicitudRecuperacion, id=solicitud_id)
+    usuario = solicitud.usuario  # Ajusta si el campo se llama distinto en tu modelo
+
+    ok, mensaje = procesar_recuperacion_usuario(usuario)
+
+    if ok:
+        # Ajusta según cómo guardes el estado en tu modelo de portales
+        solicitud.estado = "atendida"
+        solicitud.save()
+        messages.success(request, mensaje)
+    else:
+        messages.error(request, mensaje)
+
+    return redirect("listar_solicitudes_recuperacion")
+

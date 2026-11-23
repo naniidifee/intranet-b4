@@ -32,3 +32,34 @@ class Noticia(models.Model):
 
     def __str__(self):
         return self.titulo
+
+# models de talleres
+class NivelCurso(models.Model):
+    nombre = models.CharField(max_length=40, unique=True)
+    orden = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        ordering = ["orden", "nombre"]
+        verbose_name = "Nivel / Curso"
+        verbose_name_plural = "Niveles / Cursos"
+
+    def __str__(self):
+        return self.nombre
+
+
+class Taller(models.Model):
+    titulo = models.CharField(max_length=120)
+    descripcion = models.TextField()
+    imagen = models.ImageField(upload_to="talleres/")
+    niveles = models.ManyToManyField(NivelCurso, related_name="talleres", blank=True)
+    activo = models.BooleanField(default=True)
+    orden = models.PositiveSmallIntegerField(default=0)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["orden", "titulo"]
+        verbose_name = "Taller"
+        verbose_name_plural = "Talleres"
+
+    def __str__(self):
+        return self.titulo

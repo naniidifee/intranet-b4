@@ -1,0 +1,88 @@
+{% extends 'intranet/base.html' %}
+{% load static %}
+
+{% block title %}Nuestros Valores - Liceo Antonio Varas de la Barra{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recursos/css/valores.css' %}">
+{% endblock %}
+
+{% block content %}
+  <section class="valores-page">
+    <div class="valores-container">
+
+      <div class="valores-header">
+        <span class="valores-eyebrow">Identidad</span>
+        <h1>Nuestros Valores</h1>
+        <p class="valores-subtitulo">
+          Principios que guían la convivencia, el aprendizaje y la formación integral de nuestra comunidad educativa.
+        </p>
+      </div>
+
+      <div class="valores-grid">
+
+        <article class="valor-card">
+          <span class="valor-numero">01</span>
+          <h2 class="valor-titulo">Respeto</h2>
+          <p class="valor-desc">Tratamos a todos con dignidad y consideración.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">02</span>
+          <h2 class="valor-titulo">Honestidad</h2>
+          <p class="valor-desc">Actuamos con transparencia y verdad en todas nuestras relaciones.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">03</span>
+          <h2 class="valor-titulo">Responsabilidad</h2>
+          <p class="valor-desc">Asumimos nuestros compromisos con integridad.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">04</span>
+          <h2 class="valor-titulo">Justicia</h2>
+          <p class="valor-desc">Promovemos la equidad y el trato justo para todos.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">05</span>
+          <h2 class="valor-titulo">Libertad</h2>
+          <p class="valor-desc">Respetamos la autonomía y el pensamiento crítico.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">06</span>
+          <h2 class="valor-titulo">Compromiso</h2>
+          <p class="valor-desc">Dedicación con pasión a la formación integral.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">07</span>
+          <h2 class="valor-titulo">Solidaridad</h2>
+          <p class="valor-desc">Nos apoyamos mutuamente construyendo comunidad.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">08</span>
+          <h2 class="valor-titulo">Civismo</h2>
+          <p class="valor-desc">Ciudadanía activa comprometida con el bien común.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">09</span>
+          <h2 class="valor-titulo">Democracia</h2>
+          <p class="valor-desc">Fomentamos el diálogo y decisiones colectivas.</p>
+        </article>
+
+        <article class="valor-card">
+          <span class="valor-numero">10</span>
+          <h2 class="valor-titulo">Cooperación</h2>
+          <p class="valor-desc">Los logros colectivos superan los individuales.</p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+{% endblock %}
